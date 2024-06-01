@@ -162,7 +162,12 @@
         attribution: ["Perthshire, Sheet LXII, Survey date: 1864, Publication date: 1867, produced by Ordnance Survey", attr_overpass].join(', ')
     });
 
-    var tile_1937_61 = L.tileLayer('https://api.maptiler.com/tiles/uk-osgb25k1937/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx', {
+    var tile_1945 = L.tileLayer('https://mapseries-tilesets.s3.amazonaws.com/os/25000_outline/{z}/{x}/{y}.png', {
+        maxZoom: 28,
+        attribution: ["Great Britain - OS 1:25,000 (Outline), 1945-65, produced by Ordnance Survey", attr_overpass].join(', ')
+      });
+
+    var tile_1965 = L.tileLayer('https://api.maptiler.com/tiles/uk-osgb25k1937/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx', {
         maxZoom: 28,
         attribution: ["NO04, Revised: 1938 - 1955, Published: 1957, produced by Ordnance Survey", attr_overpass].join(', ')
       });
@@ -173,7 +178,7 @@
         touchZoom: false, // disable zooming
         zoomControl: false, // hide zoom buttons
         zoom: 16,
-        layers: [osm, tile_1747, tile_1823, tile_1864, tile_1937_61] // Add all layers here
+        layers: [osm, tile_1747, tile_1823, tile_1864, tile_1945, tile_1965] // Add all layers here
     });
 
     var baseLayers = {
@@ -185,7 +190,8 @@
         "1747": tile_1747,
         "1823": tile_1823,
         "1864": tile_1864,
-        "1955": tile_1937_61,
+        "1945": tile_1945,
+        "1965": tile_1965,
         "2024": osm
     };
 
