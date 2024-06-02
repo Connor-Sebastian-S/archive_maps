@@ -130,6 +130,11 @@
 <button class="toggle-button" id="toggle-button">Switch to redrawn map</button>
 
 <script>
+
+if (location.protocol !== 'https:') {
+    location.replace(`https:${location.href.substring(location.protocol.length)}`);
+}
+
     // Initialize Leaflet
 
     //POI attribute text
