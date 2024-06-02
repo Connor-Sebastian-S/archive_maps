@@ -23,7 +23,7 @@
       #map {
           width: 100%;
           height: calc(100% - 60px); /* Adjust the height based on the slider's height */
-          background-image: url('images/background.png'); /* Replace with your image path */
+          background-image: url('images/background.png');/*  Replace with your image path */
           background-size: cover; /* Ensure the image covers the entire area */
           background-position: center center;
           background-repeat: repeat;
@@ -102,6 +102,18 @@
           opacity: 1;
       }
 
+      .toggle-button {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          z-index: 1000;
+          background-color: white;
+          border: 1px solid #ccc;
+          padding: 10px;
+          cursor: pointer;
+          border-radius: 5px;
+      }
+
   </style>
 </head>
 <body>
@@ -114,85 +126,89 @@
   <div id="slider-label">Layer Name</div>
 </div>
 
-
+<button class="toggle-button" id="toggle-button">Switch to redrawn map</button>
 
 <script>
     // Initialize Leaflet
 
     //POI attribute text
-    var attr_overpass = 'POI via <a href="http://www.overpass-api.de/">Overpass API</a>';
+    var attr_overpass = 'POI via Overpass API';
 
-    var attr_osm = 'Map data &copy; <a href="http://openstreetmap.org/">OpenStreetMap</a> contributors';
+    var attr_osm = 'Map data &copy; OpenStreetMap contributors';
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
         attribution: [attr_osm, attr_overpass].join(', ')
     });
 
-    // Here we specify our map layers, earliest to latest.
-    // The earliest becomes our 'basemap' and is set as the 'layers' in 'modernMap' variable
-    // Each of these maps is georeferenced in QGIS and exported, the images and data is held in the 'data' folder
-
-    // var layer_1747_0 = new L.ImageOverlay("data/1747_0.png" ,
-    //   [[56.56352338161414, -3.593942911392028], [56.56779636459364, -3.583077326101295]], {
-    //   attribution: "Produced by x in 1747, as part of x"
-    // });
-
-    // var layer_1823_0 = new L.ImageOverlay("data/1823_0.png" ,
-    //   [[56.56414553831824,-3.5911778614642507],[56.56790816284288,-3.5820294644259865]], {
-    //   attribution: "Produced by x in 1823, as part of x"
-    // });
-
-
-    // Since these maps are already georeferenced thanks to NLS
-    // they take the form of tiles, not image overlays.
-    // Other than that the behave the same way
-
-    var tile_1747 = L.tileLayer('data/1747/{z}/{x}/{y}.png', {
-        minZoom: 9, maxZoom: 16, tms: false,
-        attribution: ["Produced by x in 1747, as part of x", attr_overpass].join(', ')
-    });
-
-    var tile_1823 = L.tileLayer('data/1823/{z}/{x}/{y}.png', {
-        minZoom: 9, maxZoom: 16, tms: false,
-        attribution: ["Produced by x in 1823, as part of x", attr_overpass].join(', ')
-    });
-
-    var tile_1864 = L.tileLayer('https://api.maptiler.com/tiles/uk-osgb10k1888/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx', {
-        maxZoom: 28,
-        attribution: ["Perthshire, Sheet LXII, Survey date: 1864, Publication date: 1867, produced by Ordnance Survey", attr_overpass].join(', ')
-    });
-
-    var tile_1945 = L.tileLayer('https://mapseries-tilesets.s3.amazonaws.com/os/25000_outline/{z}/{x}/{y}.png', {
-        maxZoom: 28,
-        attribution: ["Great Britain - OS 1:25,000 (Outline), 1945-65, produced by Ordnance Survey", attr_overpass].join(', ')
-      });
-
-    var tile_1965 = L.tileLayer('https://api.maptiler.com/tiles/uk-osgb25k1937/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx', {
-        maxZoom: 28,
-        attribution: ["NO04, Revised: 1938 - 1955, Published: 1957, produced by Ordnance Survey", attr_overpass].join(', ')
-      });
-
-    var modernMap = L.map('map', {
+    // Initial state variables
+    var initialState = {
         center: [56.56585, -3.5875],
-        //dragging: false, //disable panning
-        touchZoom: false, // disable zooming
-        zoomControl: false, // hide zoom buttons
         zoom: 16,
-        layers: [osm, tile_1747, tile_1823, tile_1864, tile_1945, tile_1965] // Add all layers here
-    });
-
-    var baseLayers = {
-        //
+        layers: []
     };
 
-    // In chronological order, list maps here
+    var map = L.map('map', {
+        center: initialState.center,
+        zoom: initialState.zoom,
+        layers: [],
+        dragging: false, //disable panning
+        touchZoom: false, // disable zooming
+        zoomControl: false, // hide zoom buttons
+    });
+
+    // Layers
     var mainOverlayLayers = {
-        "1747": tile_1747,
-        "1823": tile_1823,
-        "1864": tile_1864,
-        "1945": tile_1945,
-        "1965": tile_1965,
-        "2024": osm
+        "1747": L.tileLayer('data/1747/{z}/{x}/{y}.png', {
+            minZoom: 9, maxZoom: 16, tms: false,
+            attribution: "Produced by x in 1747, as part of x"
+        }),
+        "1823": L.tileLayer('data/1823/{z}/{x}/{y}.png', {
+            minZoom: 9, maxZoom: 16, tms: false,
+            attribution: "Produced by x in 1823, as part of x"
+        }),
+        "1864": L.tileLayer('https://api.maptiler.com/tiles/uk-osgb10k1888/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx', {
+            maxZoom: 28,
+            attribution: "Perthshire, Sheet LXII, Survey date: 1864, Publication date: 1867, produced by Ordnance Survey"
+        }),
+        "1945": L.tileLayer('https://mapseries-tilesets.s3.amazonaws.com/os/25000_outline/{z}/{x}/{y}.png', {
+            maxZoom: 28,
+            attribution: "Great Britain - OS 1:25,000 (Outline), 1945-65, produced by Ordnance Survey"
+        }),
+        "1965": L.tileLayer('https://api.maptiler.com/tiles/uk-osgb25k1937/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx', {
+            maxZoom: 28,
+            attribution: "NO04, Revised: 1938 - 1955, Published: 1957, produced by Ordnance Survey"
+        }),
+        "2024": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 28,
+            attribution: "Map data &copy; OpenStreetMap contributors"
+        })
+    };
+
+    var alternativeOverlayLayers = {
+        "1747": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 9, maxZoom: 16, tms: false,
+            attribution: "Alternative 1747 Map"
+        }),
+        "1823": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 9, maxZoom: 16, tms: false,
+            attribution: "Alternative 1823 Map"
+        }),
+        "1864": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 28,
+            attribution: "Alternative 1864 Map"
+        }),
+        "1945": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 28,
+            attribution: "Alternative 1945 Map"
+        }),
+        "1965": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 28,
+            attribution: "Alternative 1965 Map"
+        }),
+        "2024": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 28,
+            attribution: "Alternative 2024 Map"
+        })
     };
 
     // Embedding points data directly
@@ -391,15 +407,6 @@
         "Photos": photoLayer
     };
 
-    // Add main overlay layers to the map
-    for (var overlayName in mainOverlayLayers) {
-        // Set layers to be hidden initially
-        modernMap.addLayer(mainOverlayLayers[overlayName]);
-        if (overlayName != "1747") {
-          modernMap.removeLayer(mainOverlayLayers[overlayName]);
-        }
-    }
-
     // The scrollbar for our POIs
     var horizontalLayerControl2 = L.Control.extend({
         options: {
@@ -430,97 +437,151 @@
         }
     });
 
-  modernMap.addControl(new horizontalLayerControl2());
+map.addControl(new horizontalLayerControl2());
 
-  // Add slider functionality for both mouse and touch events
-  var sliderHandle = document.getElementById('slider-handle');
-  var sliderBar = document.getElementById('slider');
-  var sliderLabel = document.getElementById('slider-label');
-  var sliderBarRect = sliderBar.getBoundingClientRect();
-  var sliderWidth = sliderBar.offsetWidth - sliderHandle.offsetWidth;
-  var numLayers = Object.keys(mainOverlayLayers).length;
-  var layerNames = Object.keys(mainOverlayLayers);
 
-  var startDate = 1747
-  var endDate = 2024
-  var diff = endDate-startDate;
+    var activeOverlayLayers = mainOverlayLayers;
+    var alternativeActive = false;
 
-  function handleStart(event) {
-      event.preventDefault();
-      var startX = (event.type === 'touchstart') ? event.touches[0].clientX : event.clientX;
-      var initialLeft = sliderHandle.offsetLeft;
+    for (var layerName in activeOverlayLayers) {
+        initialState.layers.push(activeOverlayLayers[layerName]);
+        //map.addLayer(activeOverlayLayers[layerName]);
+    }
 
-      function handleMove(event) {
-          event.preventDefault();
-          var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
-          var newX = initialLeft + (clientX - startX);
-          if (newX < 0) newX = 0;
-          if (newX > sliderWidth) newX = sliderWidth;
-          var percentage = newX / sliderWidth;
-          var activeIndex = Math.round((numLayers - 1) * percentage);
-          var activeLayerName = layerNames[activeIndex];
-          var activeLayer = mainOverlayLayers[activeLayerName];
+    // Track current active layer
+    var currentLayerIndex = -1;
 
-        //sliderLabel.textContent = activeLayerName;
-        sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
+    // Toggle button
+    var toggleButton = document.getElementById('toggle-button');
+    toggleButton.addEventListener('click', function() {
+        // Remove current active layer
+        for (var layerName in activeOverlayLayers) {
+            map.removeLayer(activeOverlayLayers[layerName]);
+        }
+        alternativeActive = !alternativeActive;
+        activeOverlayLayers = alternativeActive ? alternativeOverlayLayers : mainOverlayLayers;
+        // Add only the current active layer from the new layer set
+        map.addLayer(activeOverlayLayers[layerNames[currentLayerIndex]]);
+        toggleButton.textContent = alternativeActive ? 'Switch to original map' : 'Switch to redrawn map';
+    });
 
-          for (var i = 0; i < layerNames.length; i++) {
-            //var differenceBetweenYears = layerNames[i+1]-layerNames[i];
-              var layerName = layerNames[i];
-              var nextLayerName = layerNames[i+1];
-              var layer = mainOverlayLayers[layerName];
 
-              if (i < (layerNames.length-1)){
-                if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
-                    modernMap.addLayer(layer);
+    // Slider functionality
+    var sliderHandle = document.getElementById('slider-handle');
+    var sliderBar = document.getElementById('slider');
+    var sliderLabel = document.getElementById('slider-label');
+    var sliderBarRect = sliderBar.getBoundingClientRect();
+    var sliderWidth = sliderBar.offsetWidth - sliderHandle.offsetWidth;
+    var layerNames = Object.keys(mainOverlayLayers);
+    var numLayers = layerNames.length;
+
+    var startDate = 1740;
+    var endDate = 2024;
+    var diff = endDate - startDate;
+
+    function handleStart(event) {
+        event.preventDefault();
+        resetInactivityTimer();
+        var startX = (event.type === 'touchstart') ? event.touches[0].clientX : event.clientX;
+        var initialLeft = sliderHandle.offsetLeft;
+
+        function handleMove(event) {
+            event.preventDefault();
+            var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
+            var newX = initialLeft + (clientX - startX);
+            if (newX < 0) newX = 0;
+            if (newX > sliderWidth) newX = sliderWidth;
+            var percentage = newX / sliderWidth;
+            var activeIndex = Math.round((numLayers - 1) * percentage);
+            var activeLayerName = layerNames[activeIndex];
+            var activeLayer = activeOverlayLayers[activeLayerName];
+
+            sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
+
+            for (var i = 0; i < layerNames.length; i++) {
+                var layerName = layerNames[i];
+                var nextLayerName = layerNames[i + 1];
+                var layer = activeOverlayLayers[layerName];
+
+                if (i < (layerNames.length - 1)) {
+                    currentLayerIndex = activeIndex;
+                    if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
                 } else {
-                    modernMap.removeLayer(layer);
+                    currentLayerIndex = activeIndex;
+                    if (sliderLabel.textContent >= layerName) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
                 }
-              }
-              else {
-                {
-                  if (sliderLabel.textContent >= layerName) {
-                      modernMap.addLayer(layer);
-                  } else {
-                      modernMap.removeLayer(layer);
-                  }
-                }
-              }
+                //currentLayerIndex = i;
+            }
+            sliderHandle.style.left = newX + 'px';
+            sliderLabel.style.left = newX + 'px';
+            currentLayerIndex = activeIndex;
+        }
 
-          }
-          sliderHandle.style.left = newX + 'px';
-          sliderLabel.style.left = newX + 'px';
-      }
+        function handleEnd(event) {
+            event.preventDefault();
+            document.removeEventListener('mousemove', handleMove);
+            document.removeEventListener('mouseup', handleEnd);
+            document.removeEventListener('touchmove', handleMove);
+            document.removeEventListener('touchend', handleEnd);
+        }
 
-      function handleEnd(event) {
-          event.preventDefault();
-          document.removeEventListener('mousemove', handleMove);
-          document.removeEventListener('mouseup', handleEnd);
-          document.removeEventListener('touchmove', handleMove);
-          document.removeEventListener('touchend', handleEnd);
-      }
+        document.addEventListener('mousemove', handleMove);
+        document.addEventListener('mouseup', handleEnd);
+        document.addEventListener('touchmove', handleMove);
+        document.addEventListener('touchend', handleEnd);
+    }
 
-      document.addEventListener('mousemove', handleMove);
-      document.addEventListener('mouseup', handleEnd);
-      document.addEventListener('touchmove', handleMove);
-      document.addEventListener('touchend', handleEnd);
-  }
+    sliderHandle.addEventListener('mousedown', handleStart);
+    sliderHandle.addEventListener('touchstart', handleStart);
 
-  sliderHandle.addEventListener('mousedown', handleStart);
-  sliderHandle.addEventListener('touchstart', handleStart);
+    // Set initial position of slider handle
+    var initialPosition = 0;
+    sliderHandle.style.left = initialPosition + 'px';
+    sliderLabel.textContent = startDate;//layerNames[0]; // Set initial label text
 
-  // Set initial position of slider handle
-  var initialPosition = 0;
-  sliderHandle.style.left = initialPosition + 'px';
-  sliderLabel.textContent = layerNames[0]; // Set initial label text
+    sliderLabel.style.left = initialPosition + 'px';
 
-  sliderLabel.style.left = initialPosition + 'px';
+    // Update sliderBarRect on window resize
+    window.addEventListener('resize', function() {
+        sliderBarRect = sliderBar.getBoundingClientRect();
+    });
 
-  // Update sliderBarRect on window resize
-  window.addEventListener('resize', function() {
-      sliderBarRect = sliderBar.getBoundingClientRect();
-  });
+    // Disable all clickable URLs
+    var links = document.getElementsByTagName('a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function(event) {
+            event.preventDefault();
+        });
+    }
+
+    // Revert to initial state after 20 seconds of inactivity
+    var inactivityTimeout;
+
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimeout);
+        inactivityTimeout = setTimeout(function() {
+            map.setView(initialState.center, initialState.zoom);
+            for (var i = 0; i < initialState.layers.length; i++) {
+                map.addLayer(initialState.layers[i]);
+            }
+        }, 20000);
+    }
+
+    document.addEventListener('mousemove', resetInactivityTimer);
+    document.addEventListener('mousedown', resetInactivityTimer);
+    document.addEventListener('touchstart', resetInactivityTimer);
+
+    resetInactivityTimer(); // Initialize the inactivity timer on page load
+
 </script>
 
- </body>
+</body>
 </html>
