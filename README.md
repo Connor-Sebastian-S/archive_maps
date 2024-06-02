@@ -1,6 +1,6 @@
 # Map Timeline and Point of Interest Viewer
 
-Can be viewed at  [Map development over time](https://connor-sebastian-s.github.io/archive_maps/)).
+Can be viewed at  [Map development over time](https://connor-sebastian-s.github.io/archive_maps/).
 
 * Long story short, this webpage has a series of maps that, when the slider at the bottom is moved it will move through those maps. 
 * There's a label above the slider handle that shows the current year.
