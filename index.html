@@ -588,10 +588,24 @@
         clearTimeout(inactivityTimeout);
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
-            for (var i = 0; i < initialState.layers.length; i++) {
-                map.addLayer(initialState.layers[i]);
+            for (var layerName in activeOverlayLayers) {
+                map.removeLayer(activeOverlayLayers[layerName]);
             }
-        }, 20000);
+            var currentLayerIndex = -1;
+            sliderHandle.style.left = initialPosition + 'px';
+            sliderLabel.textContent = startDate;
+            sliderLabel.style.left = initialPosition + 'px';
+            alternativeActive = false;
+
+            checkboxes = document.querySelectorAll("input[type='checkbox']");
+
+            for (let i = 0; i < checkboxes.length; i++) {
+              if (checkboxes[i].checked == true){
+                checkboxes[i].click();
+              }
+              //sliderLabel.textContent = p;
+            }
+        }, 2000);
     }
 
     document.addEventListener('mousemove', resetInactivityTimer);
