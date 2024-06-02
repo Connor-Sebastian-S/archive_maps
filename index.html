@@ -219,7 +219,8 @@
             "latitude": 56.56561477,
             "longitude": -3.58550088,
             "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Scanian_War_Collage.jpg/1280px-Scanian_War_Collage.jpg",
-            "year": 1823
+            "startYear": 1820,
+            "endYear": 1830
         }
     ];
 
@@ -232,13 +233,16 @@
         var circle = L.circle(pos, 10, {
             color: '#000',
             fillColor: '#000',
-            fillOpacity: 0.5
+            fillOpacity: 0.5,
+            pointYear: {startYear: point.startYear, endYear: point.endYear}
         }).bindPopup(popup);
 
-        if (!pointLayers[point.year]) {
-            pointLayers[point.year] = L.layerGroup();
+        for (var year = point.startYear; year <= point.endYear; year++) {
+            if (!pointLayers[year]) {
+                pointLayers[year] = L.layerGroup();
+            }
+            pointLayers[year].addLayer(circle);
         }
-        pointLayers[point.year].addLayer(circle);
     });
 
     // Overpass layers - our POIs
@@ -523,6 +527,7 @@
             var activeLayerName = layerNames[activeIndex];
             var activeLayer = activeOverlayLayers[activeLayerName];
 
+            var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
             sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
 
             for (var i = 0; i < layerNames.length; i++) {
@@ -550,11 +555,15 @@
 
             // Handle point layers
             for (var year in pointLayers) {
-                if (year == sliderLabel.textContent) {
-                    map.addLayer(pointLayers[year]);
-                } else {
-                    map.removeLayer(pointLayers[year]);
-                }
+                var pointsForYear = pointLayers[year];
+                pointsForYear.eachLayer(function(layer) {
+                    var pointYear = layer.options.pointYear;
+                    if (currentYear >= pointYear.startYear && currentYear <= pointYear.endYear) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
+                });
             }
         }
 
