@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
   <title>Dunkeld Growth</title>
@@ -211,6 +210,7 @@
         })
     };
 
+
     // Embedding points data directly
     var pointsData = [
         {
@@ -218,12 +218,13 @@
             "description": "This photo show a thing happening at that place",
             "latitude": 56.56561477,
             "longitude": -3.58550088,
-            "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Scanian_War_Collage.jpg/1280px-Scanian_War_Collage.jpg"
+            "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Scanian_War_Collage.jpg/1280px-Scanian_War_Collage.jpg",
+            "year": 1823
         }
     ];
 
     // Process the points data
-    var photoLayer = L.layerGroup();
+    var pointLayers = {};
 
     pointsData.forEach(point => {
         var pos = new L.LatLng(point.latitude, point.longitude);
@@ -233,7 +234,11 @@
             fillColor: '#000',
             fillOpacity: 0.5
         }).bindPopup(popup);
-        photoLayer.addLayer(circle);
+
+        if (!pointLayers[point.year]) {
+            pointLayers[point.year] = L.layerGroup();
+        }
+        pointLayers[point.year].addLayer(circle);
     });
 
     // Overpass layers - our POIs
@@ -403,8 +408,8 @@
         "Bins": bins,
         "Defibrillator": defib,
         "Historic": historic,
-        "Tourism": tourism,
-        "Photos": photoLayer
+        "Tourism": tourism
+        //"Photos": photoLayer
     };
 
     // The scrollbar for our POIs
@@ -542,6 +547,15 @@
             sliderHandle.style.left = newX + 'px';
             sliderLabel.style.left = newX + 'px';
             currentLayerIndex = activeIndex;
+
+            // Handle point layers
+            for (var year in pointLayers) {
+                if (year == sliderLabel.textContent) {
+                    map.addLayer(pointLayers[year]);
+                } else {
+                    map.removeLayer(pointLayers[year]);
+                }
+            }
         }
 
         function handleEnd(event) {
@@ -611,7 +625,7 @@
     document.addEventListener('mousedown', resetInactivityTimer);
     document.addEventListener('touchstart', resetInactivityTimer);
 
-    resetInactivityTimer(); // Initialize the inactivity timer on page load
+    resetInactivityTimer(); // Initialise the inactivity timer on page load
 
 </script>
 
