@@ -591,10 +591,6 @@ processPointsData();
               }
           }
         }
-        else{
-          toggleButton.textContent = "No map to show"
-        }
-
     });
 
     // Slider functionality
@@ -725,12 +721,6 @@ processPointsData();
             sliderLabel.style.left = newX + 'px';
             currentLayerIndex = activeIndex;
 
-            if (currentLayerIndex < 0){
-              toggleButton.textContent = "No map to show"
-            }
-            if (currentLayerIndex >= 0){
-              toggleButton.textContent = alternativeActive ? 'Switch to original map' : 'Switch to redrawn map';
-            }
 
             // Handle point layers
             for (var year in pointLayers) {
