@@ -626,6 +626,26 @@ processPointsData();
             sliderLabel.style.left = yearPosition + 'px';
             // Logic to update map layers goes here
 
+            for (var i = 0; i < layerNames.length; i++) {
+                var layerName = layerNames[i];
+                var nextLayerName = layerNames[i + 1];
+                var layer = activeOverlayLayers[layerName];
+
+                if (i < (layerNames.length - 1)) {
+                    if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
+                } else {
+                    if (sliderLabel.textContent >= layerName) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
+                }
+            }
+
         }
 
     for (const d of yearsOfInterest) {
