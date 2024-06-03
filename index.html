@@ -332,8 +332,10 @@ if (location.protocol !== 'https:') {
                   }
                   pointLayers[year].addLayer(marker);
               }
-              var year = point.startYear;
-              yearsOfInterest.push(year)
+              if (point.type != "photo"){
+                var year = point.startYear;
+                yearsOfInterest.push(year)
+              }
           }
       });
   }
