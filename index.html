@@ -129,7 +129,7 @@
              position: absolute;
              transform: rotate(90deg);
              transform-origin: left bottom;
-             margin-top: -50px; /* Adjust this value to control the distance above the slider bar */
+             margin-top: -100px; /* Adjust this value to control the distance above the slider bar */
              z-index: 1000;
          }
 
@@ -611,7 +611,7 @@ processPointsData();
 
             // Calculate position of button based on year
             var yearPosition = ((date - startDate) / diff) * sliderWidth;
-            year_button.style.left = yearPosition+20 + 'px';
+            year_button.style.left = yearPosition+10 + 'px';
 
             sliderBar.appendChild(year_button);
 
