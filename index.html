@@ -125,6 +125,13 @@
         left: 10px;
       }
 
+      .year-button {
+            position: absolute;
+            transform: rotate(90deg);
+            transform-origin: left bottom;
+            margin-top: -30px;
+        }
+
   </style>
 </head>
 <body>
@@ -583,8 +590,6 @@ processPointsData();
 
     });
 
-
-
     // Slider functionality
     var sliderHandle = document.getElementById('slider-handle');
     var sliderBar = document.getElementById('slider');
@@ -598,24 +603,30 @@ processPointsData();
     var endDate = 2024;
     var diff = endDate - startDate;
 
-    function getDate(date){
+    function getDate(date) {
+            var year_button = document.createElement("button");
+            year_button.innerHTML = date;
+            year_button.classList.add('year-button');
 
-      var year_button = document.createElement("button");
+            // Calculate position of button based on year
+            var yearPosition = ((date - startDate) / diff) * sliderWidth;
+            year_button.style.left = yearPosition + 'px';
 
-      year_button.innerHTML = date; // Set the button text
-      year_button.classList.add('rotate-element')
+            sliderBar.appendChild(year_button);
 
-      //var newPosition = findPositionFromDate(date);
+            year_button.addEventListener("click", function () {
+                moveSliderToYear(date);
+            });
+        }
 
-      // Set the position of the slider handle
-      //year_button.style.left = newPosition + 'px';
+        function moveSliderToYear(year) {
+            var yearPosition = ((year - startDate) / diff) * sliderWidth;
+            sliderHandle.style.left = yearPosition + 'px';
+            sliderLabel.textContent = year;
+            sliderLabel.style.left = yearPosition + 'px';
+            // Logic to update map layers goes here
+        }
 
-      sliderBar.appendChild(year_button);
-
-      year_button.addEventListener("click", function() {
-          alert(year_button.innerHTML);
-      });
-    }
 
     for (const d of yearsOfInterest) {
       getDate(d);
