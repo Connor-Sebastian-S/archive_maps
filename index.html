@@ -241,7 +241,8 @@ if (location.protocol !== 'https:') {
             "photo": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Scanian_War_Collage.jpg/1280px-Scanian_War_Collage.jpg",
             "startYear": 1820,
             "endYear": 1830,
-            "type": "photo"
+            "type": "photo",
+            "color": "hue-rotate(180deg) brightness(0.7)"
         },
         {
             "name": "Battle of Dunkeld",
@@ -250,7 +251,8 @@ if (location.protocol !== 'https:') {
             "longitude": -3.5896846,
             "startYear": 1689,
             "endYear": 1689,
-            "type": "battle"
+            "type": "battle",
+            "color": "hue-rotate(90deg) brightness(0.7)"
         }
     ];
 
@@ -279,9 +281,10 @@ if (location.protocol !== 'https:') {
                   pointYear: {startYear: point.startYear, endYear: point.endYear}
               }).bindPopup(popup);
           } else if (point.type === "battle") {
+            var colourFilter = point.colour || "";
             marker = L.marker(pos, {
                 icon: L.divIcon({
-                    html: `<img src="images/poi_battle.png" class="custom-icon">`,
+                    html: `<img src="images/poi_photo.png" style="filter: ${colourFilter}; width: 50px; height: 50px;">`,
                     iconSize: [50, 50], // Size of the icon
                     iconAnchor: [25, 25], // Point of the icon which will correspond to marker's location
                     popupAnchor: [0, -25], // Point from which the popup should open relative to the iconAnchor
