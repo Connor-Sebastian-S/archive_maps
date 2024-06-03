@@ -321,7 +321,6 @@ if (location.protocol !== 'https:') {
                   pointLayers[year].addLayer(marker);
               }
               var year = point.startYear;
-              console.info(year);
               yearsOfInterest.push(year)
           }
       });
@@ -584,6 +583,8 @@ processPointsData();
       var perYear = sliderWidth / diff;
       //var tDate = yearsOfInterest[date]
       var posDate = perYear * date;
+
+      console.info(date);
 
       var button = document.createElement("button");
 
