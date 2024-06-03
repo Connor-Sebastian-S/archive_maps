@@ -666,9 +666,7 @@ if (location.protocol !== 'https:') {
                 map.removeLayer(activeOverlayLayers[layerName]);
             }
 
-            for (var pointerName in pointLayers) {
-                map.removeLayer(pointLayers[pointerName]);
-            }
+            for (var member in pointLayers) delete pointLayers[member];
 
             var currentLayerIndex = -1;
             sliderHandle.style.left = initialPosition + 'px';
