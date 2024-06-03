@@ -296,6 +296,7 @@ if (location.protocol !== 'https:') {
       });
   }
 
+processPointsData();
     // Overpass layers - our POIs
     var plaques = new L.OverPassLayer({
         query: "node(BBOX)['memorial'='blue_plaque'];out;",
@@ -577,9 +578,6 @@ if (location.protocol !== 'https:') {
             var activeIndex = Math.round((numLayers - 1) * percentage);
             var activeLayerName = layerNames[activeIndex];
             var activeLayer = activeOverlayLayers[activeLayerName];
-
-            // Reprocess the points data
-            processPointsData();
 
             var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
             sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
