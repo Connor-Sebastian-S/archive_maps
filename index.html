@@ -656,6 +656,11 @@ if (location.protocol !== 'https:') {
             for (var layerName in activeOverlayLayers) {
                 map.removeLayer(activeOverlayLayers[layerName]);
             }
+
+            for (var pointerName in pointLayers) {
+                map.removeLayer(pointLayers[pointerName]);
+            }
+
             var currentLayerIndex = -1;
             sliderHandle.style.left = initialPosition + 'px';
             sliderLabel.textContent = startDate;
