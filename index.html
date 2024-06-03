@@ -666,13 +666,19 @@ if (location.protocol !== 'https:') {
                 map.removeLayer(activeOverlayLayers[layerName]);
             }
 
-            for (var member in pointLayers) delete pointLayers[member];
-
             var currentLayerIndex = -1;
             sliderHandle.style.left = initialPosition + 'px';
             sliderLabel.textContent = startDate;
             sliderLabel.style.left = initialPosition + 'px';
             alternativeActive = false;
+
+            // Remove all point layers
+            for (var year in pointLayers) {
+                var pointsForYear = pointLayers[year];
+                pointsForYear.eachLayer(function(layer) {
+                    map.removeLayer(layer);
+                });
+            }
 
             checkboxes = document.querySelectorAll("input[type='checkbox']");
 
