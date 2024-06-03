@@ -543,67 +543,10 @@ processPointsData();
     map.addControl(new horizontalLayerControl2());
 
     var activeOverlayLayers = mainOverlayLayers;
-    var alternativeActive = false;
+        var layerNames = Object.keys(mainOverlayLayers);
+        var currentLayerIndex = -1;
 
-    for (var layerName in activeOverlayLayers) {
-        initialState.layers.push(activeOverlayLayers[layerName]);
-        //map.addLayer(activeOverlayLayers[layerName]);
-    }
-
-    // Track current active layer
-    var currentLayerIndex = -1;
-
-    // Toggle button
-    var toggleButton = document.getElementById('toggle-button');
-    toggleButton.addEventListener('click', function() {
-        // Remove current active layer
-        for (var layerName in activeOverlayLayers) {
-            map.removeLayer(activeOverlayLayers[layerName]);
-        }
-
-        alternativeActive = !alternativeActive;
-        activeOverlayLayers = alternativeActive ? alternativeOverlayLayers : mainOverlayLayers;
-
-        // Add only the current active layer from the new layer set
-        map.addLayer(activeOverlayLayers[layerNames[currentLayerIndex]]);
-        toggleButton.textContent = alternativeActive ? 'Switch to original map' : 'Switch to redrawn map';
-
-        for (var i = 0; i < layerNames.length; i++) {
-            var layerName = layerNames[i];
-            var nextLayerName = layerNames[i + 1];
-            var layer = activeOverlayLayers[layerName];
-
-            if (i < (layerNames.length - 1)) {
-                if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
-                    map.addLayer(layer);
-                } else {
-                    map.removeLayer(layer);
-                }
-            } else {
-                if (sliderLabel.textContent >= layerName) {
-                    map.addLayer(layer);
-                } else {
-                    map.removeLayer(layer);
-                }
-            }
-        }
-
-    });
-
-    // Slider functionality
-    var sliderHandle = document.getElementById('slider-handle');
-    var sliderBar = document.getElementById('slider');
-    var sliderLabel = document.getElementById('slider-label');
-    var sliderBarRect = sliderBar.getBoundingClientRect();
-    var sliderWidth = sliderBar.offsetWidth - sliderHandle.offsetWidth;
-    var layerNames = Object.keys(mainOverlayLayers);
-    var numLayers = layerNames.length;
-
-    var startDate = 1650;
-    var endDate = 2024;
-    var diff = endDate - startDate;
-
-    function getDate(date) {
+        function getDate(date) {
             var year_button = document.createElement("button");
             year_button.innerHTML = date;
             year_button.classList.add('year-button');
@@ -615,97 +558,103 @@ processPointsData();
             sliderBar.appendChild(year_button);
 
             year_button.addEventListener("click", function () {
-                moveSliderToYear(date);
+                var newX = yearPosition;
+                var startX = sliderHandle.offsetLeft;
+                animateSliderMove(startX, newX);
             });
         }
 
         function moveSliderToYear(year) {
             var yearPosition = ((year - startDate) / diff) * sliderWidth;
-            sliderHandle.style.left = yearPosition + 'px';
-            sliderLabel.textContent = year;
-            sliderLabel.style.left = yearPosition + 'px';
-            // Logic to update map layers goes here
+            handleMove(yearPosition); // Call handleMove with the new position
         }
 
+        function animateSliderMove(startX, newX) {
+            var duration = 500; // Duration in milliseconds
+            var startTime = null;
 
-    for (const d of yearsOfInterest) {
-      getDate(d);
-    }
+            function animationStep(currentTime) {
+                if (!startTime) startTime = currentTime;
+                var elapsedTime = currentTime - startTime;
+                var progress = Math.min(elapsedTime / duration, 1);
+                var currentX = startX + (newX - startX) * progress;
 
-    function handleStart(event) {
-        event.preventDefault();
-        resetInactivityTimer();
-        var startX = (event.type === 'touchstart') ? event.touches[0].clientX : event.clientX;
-        var initialLeft = sliderHandle.offsetLeft;
+                handleMove(currentX); // Update the slider handle position
 
-        function handleMove(event) {
-            event.preventDefault();
-            var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
-            var newX = initialLeft + (clientX - startX);
+                if (progress < 1) {
+                    requestAnimationFrame(animationStep);
+                }
+            }
+
+            requestAnimationFrame(animationStep);
+        }
+
+        function handleMove(newX) {
             if (newX < 0) newX = 0;
             if (newX > sliderWidth) newX = sliderWidth;
             var percentage = newX / sliderWidth;
-            var activeIndex = Math.round((numLayers - 1) * percentage);
-            var activeLayerName = layerNames[activeIndex];
-            var activeLayer = activeOverlayLayers[activeLayerName];
-
             var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
-            sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
+            sliderLabel.textContent = currentYear;
+            sliderHandle.style.left = newX + 'px';
+            sliderLabel.style.left = newX + 'px';
 
+            // Update layers based on the current year
             for (var i = 0; i < layerNames.length; i++) {
                 var layerName = layerNames[i];
                 var nextLayerName = layerNames[i + 1];
                 var layer = activeOverlayLayers[layerName];
 
                 if (i < (layerNames.length - 1)) {
-                    if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
+                    if (currentYear >= layerName && currentYear < nextLayerName) {
                         map.addLayer(layer);
                     } else {
                         map.removeLayer(layer);
                     }
                 } else {
-                    if (sliderLabel.textContent >= layerName) {
+                    if (currentYear >= layerName) {
                         map.addLayer(layer);
                     } else {
                         map.removeLayer(layer);
                     }
                 }
             }
-            sliderHandle.style.left = newX + 'px';
-            sliderLabel.style.left = newX + 'px';
-            currentLayerIndex = activeIndex;
-
-            // Handle point layers
-            for (var year in pointLayers) {
-                var pointsForYear = pointLayers[year];
-                pointsForYear.eachLayer(function(layer) {
-                    var pointYear = layer.options.pointYear;
-                    if (currentYear >= pointYear.startYear && currentYear <= pointYear.endYear) {
-                        map.addLayer(layer);
-                    } else {
-                        map.removeLayer(layer);
-                    }
-                });
-            }
         }
 
-        function handleEnd(event) {
+        yearsOfInterest.forEach(getDate);
+
+        function handleStart(event) {
             event.preventDefault();
-            document.removeEventListener('mousemove', handleMove);
-            document.removeEventListener('mouseup', handleEnd);
-            document.removeEventListener('touchmove', handleMove);
-            document.removeEventListener('touchend', handleEnd);
+            var startX = (event.type === 'touchstart') ? event.touches[0].clientX : event.clientX;
+            var initialLeft = sliderHandle.offsetLeft;
+
+            function handleMoveEvent(event) {
+                event.preventDefault();
+                var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
+                var newX = initialLeft + (clientX - startX);
+                handleMove(newX);
+            }
+
+            function handleEnd(event) {
+                event.preventDefault();
+                document.removeEventListener('mousemove', handleMoveEvent);
+                document.removeEventListener('mouseup', handleEnd);
+                document.removeEventListener('touchmove', handleMoveEvent);
+                document.removeEventListener('touchend', handleEnd);
+            }
+
+            document.addEventListener('mousemove', handleMoveEvent);
+            document.addEventListener('mouseup', handleEnd);
+            document.addEventListener('touchmove', handleMoveEvent);
+            document.addEventListener('touchend', handleEnd);
         }
 
-        document.addEventListener('mousemove', handleMove);
-        document.addEventListener('mouseup', handleEnd);
-        document.addEventListener('touchmove', handleMove);
-        document.addEventListener('touchend', handleEnd);
-    }
+        sliderHandle.addEventListener('mousedown', handleStart);
+        sliderHandle.addEventListener('touchstart', handleStart);
 
-    sliderHandle.addEventListener('mousedown', handleStart);
-    sliderHandle.addEventListener('touchstart', handleStart);
+        // Set initial position of slider handle
+        moveSliderToYear(startDate);
 
+        
     // Set initial position of slider handle
     var initialPosition = 0;
     sliderHandle.style.left = initialPosition + 'px';
