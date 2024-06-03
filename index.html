@@ -579,22 +579,6 @@ processPointsData();
 
     });
 
-    function getDate(date){
-      var perYear = sliderWidth / diff;
-      //var tDate = yearsOfInterest[date]
-      var posDate = perYear * date;
-
-      var button = document.createElement("button");
-
-      button.innerHTML = date; // Set the button text
-
-      //document.body.appendChild(button);
-      document.getElementById("slider-container").appendChild(button);
-
-      button.addEventListener("click", function() {
-          alert(button.innerHTML);
-      });
-    }
 
 
     // Slider functionality
@@ -609,6 +593,24 @@ processPointsData();
     var startDate = 1650;
     var endDate = 2024;
     var diff = endDate - startDate;
+
+
+    function getDate(date){
+      var perYear = sliderWidth / diff;
+      //var tDate = yearsOfInterest[date]
+      var posDate = perYear * date;
+
+      var button = document.createElement("button");
+
+      button.innerHTML = date; // Set the button text
+
+      //document.body.appendChild(button);
+      sliderBar.appendChild(button);
+
+      button.addEventListener("click", function() {
+          alert(button.innerHTML);
+      });
+    }
 
     for (const d of yearsOfInterest) {
       getDate(d);
