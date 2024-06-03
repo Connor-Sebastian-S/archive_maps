@@ -267,11 +267,10 @@ if (location.protocol !== 'https:') {
           if (point.type === "photo" && point.photo) {
               popup += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
               marker = L.marker(pos, {
-                  icon: L.icon({
-                      iconUrl: 'images/poi_photo.png',
+                  icon: L.divIcon({
+                      html: `<img src="images/poi_photo.png" class="custom-icon">`,
                       iconSize: [50, 50], // Size of the icon
-                      iconAnchor: [25, 25], // Point of the icon which will correspond to marker's location
-                      popupAnchor: [0, -25] // Point from which the popup should open relative to the iconAnchor
+                      className: 'custom-div-icon' // Use an empty class to prevent default icon styling
                   }),
                   pointYear: {startYear: point.startYear, endYear: point.endYear}
               }).bindPopup(popup);
