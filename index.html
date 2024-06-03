@@ -251,6 +251,15 @@ if (location.protocol !== 'https:') {
             "startYear": 1689,
             "endYear": 1689,
             "type": "battle"
+        },
+        {
+            "name": "Dunkeld Bridge - Thomas Telford",
+            "description": "The bridge was built between 1805 and 1809 by Thomas Telford. It cost £33,978. The pontage was abolished in 1879.",
+            "latitude": 56.563956,
+            "longitude": -3.585274,
+            "startYear": 1805,
+            "endYear": 1809,
+            "type": "construction"
         }
     ];
 
@@ -282,6 +291,17 @@ if (location.protocol !== 'https:') {
             marker = L.marker(pos, {
                 icon: L.divIcon({
                     html: `<img src="images/poi_battle.png" style="width: 100%; height: auto;">`,
+                    iconSize: [50, 50], // Size of the icon
+                    iconAnchor: [25, 25], // Point of the icon which will correspond to marker's location
+                    popupAnchor: [0, -25], // Point from which the popup should open relative to the iconAnchor
+                    className: 'custom-div-icon' // Use an empty class to prevent default icon styling
+                }),
+                  pointYear: {startYear: point.startYear, endYear: point.endYear}
+              }).bindPopup(popup);
+          } else if (point.type === "construction") {
+            marker = L.marker(pos, {
+                icon: L.divIcon({
+                    html: `<img src="images/poi_construction.png" style="width: 100%; height: auto;">`,
                     iconSize: [50, 50], // Size of the icon
                     iconAnchor: [25, 25], // Point of the icon which will correspond to marker's location
                     popupAnchor: [0, -25], // Point from which the popup should open relative to the iconAnchor
