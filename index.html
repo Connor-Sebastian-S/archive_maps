@@ -268,13 +268,22 @@ if (location.protocol !== 'https:') {
                 pointYear: {startYear: point.startYear, endYear: point.endYear}
             }).bindPopup(popup);
         } else if (point.type === "battle") {
-            marker = L.circle(pos, {
-                color: '#ff0000',
-                fillColor: '#ff0000',
-                fillOpacity: 0.5,
-                radius: 100,
-                pointYear: {startYear: point.startYear, endYear: point.endYear}
-            }).bindPopup(popup);
+              marker = L.marker(pos, {
+              icon: L.icon({
+                  iconUrl: 'images/poi_battle.png',
+                  iconSize: [50, 50], // Size of the icon
+                  iconAnchor: [25, 25], // Point of the icon which will correspond to marker's location
+                  popupAnchor: [0, -25] // Point from which the popup should open relative to the iconAnchor
+              }),
+              pointYear: {startYear: point.startYear, endYear: point.endYear}
+          }).bindPopup(popup);
+            // marker = L.circle(pos, {
+            //     color: '#ff0000',
+            //     fillColor: '#ff0000',
+            //     fillOpacity: 0.5,
+            //     radius: 100,
+            //     pointYear: {startYear: point.startYear, endYear: point.endYear}
+            // }).bindPopup(popup);
         }
 
         if (marker) {
