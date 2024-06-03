@@ -609,25 +609,22 @@ processPointsData();
     }
 
     function getDate(date){
-      var perYear = sliderWidth / diff;
-      //var tDate = yearsOfInterest[date]
-      var posDate = perYear * date;
 
-      var button = document.createElement("button");
+      var year_button = document.createElement("button");
 
-      button.innerHTML = date; // Set the button text
-      button.classList.add('rotate-element')
+      year_button.innerHTML = date; // Set the button text
+      year_button.classList.add('rotate-element')
 
-      var newPosition = findPositionFromDate(posDate);
+      var newPosition = findPositionFromDate(date);
 
       // Set the position of the slider handle
-      button.style.left = newPosition + 'px';
+      year_button.style.left = newPosition + 'px';
 
       //document.body.appendChild(button);
-      sliderBar.appendChild(button);
+      sliderBar.appendChild(year_button);
 
-      button.addEventListener("click", function() {
-          alert(button.innerHTML);
+      year_button.addEventListener("click", function() {
+          alert(year_button.innerHTML);
       });
     }
 
