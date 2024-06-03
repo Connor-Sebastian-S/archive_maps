@@ -553,36 +553,41 @@ processPointsData();
     // Toggle button
     var toggleButton = document.getElementById('toggle-button');
     toggleButton.addEventListener('click', function() {
-        // Remove current active layer
-        for (var layerName in activeOverlayLayers) {
-            map.removeLayer(activeOverlayLayers[layerName]);
+      if (currentLayerIndex >= 0){
+          // Remove current active layer
+          for (var layerName in activeOverlayLayers) {
+              map.removeLayer(activeOverlayLayers[layerName]);
+          }
+
+          alternativeActive = !alternativeActive;
+          activeOverlayLayers = alternativeActive ? alternativeOverlayLayers : mainOverlayLayers;
+
+          // Add only the current active layer from the new layer set
+          map.addLayer(activeOverlayLayers[layerNames[currentLayerIndex]]);
+          toggleButton.textContent = alternativeActive ? 'Switch to original map' : 'Switch to redrawn map';
+
+          for (var i = 0; i < layerNames.length; i++) {
+              var layerName = layerNames[i];
+              var nextLayerName = layerNames[i + 1];
+              var layer = activeOverlayLayers[layerName];
+
+              if (i < (layerNames.length - 1)) {
+                  if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
+                      map.addLayer(layer);
+                  } else {
+                      map.removeLayer(layer);
+                  }
+              } else {
+                  if (sliderLabel.textContent >= layerName) {
+                      map.addLayer(layer);
+                  } else {
+                      map.removeLayer(layer);
+                  }
+              }
+          }
         }
-
-        alternativeActive = !alternativeActive;
-        activeOverlayLayers = alternativeActive ? alternativeOverlayLayers : mainOverlayLayers;
-
-        // Add only the current active layer from the new layer set
-        map.addLayer(activeOverlayLayers[layerNames[currentLayerIndex]]);
-        toggleButton.textContent = alternativeActive ? 'Switch to original map' : 'Switch to redrawn map';
-
-        for (var i = 0; i < layerNames.length; i++) {
-            var layerName = layerNames[i];
-            var nextLayerName = layerNames[i + 1];
-            var layer = activeOverlayLayers[layerName];
-
-            if (i < (layerNames.length - 1)) {
-                if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
-                    map.addLayer(layer);
-                } else {
-                    map.removeLayer(layer);
-                }
-            } else {
-                if (sliderLabel.textContent >= layerName) {
-                    map.addLayer(layer);
-                } else {
-                    map.removeLayer(layer);
-                }
-            }
+        else{
+          toggleButton.textContent = "No map to show"
         }
 
     });
