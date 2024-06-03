@@ -121,6 +121,11 @@
           height: 50px;
       }
 
+      .rotate-element {
+        transform: rotate(90deg);
+        transform-origin: center center;
+      }
+
   </style>
 </head>
 <body>
@@ -603,6 +608,7 @@ processPointsData();
       var button = document.createElement("button");
 
       button.innerHTML = date; // Set the button text
+      button.classList.add('rotate-element') 
 
       //document.body.appendChild(button);
       sliderBar.appendChild(button);
