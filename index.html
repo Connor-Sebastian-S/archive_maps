@@ -117,6 +117,8 @@
 
       .custom-icon {
           filter: hue-rotate(180deg) brightness(0.7);
+          width: 50px;
+          height: 50px;
       }
 
   </style>
@@ -270,6 +272,8 @@ if (location.protocol !== 'https:') {
                   icon: L.divIcon({
                       html: `<img src="images/poi_photo.png" class="custom-icon">`,
                       iconSize: [50, 50], // Size of the icon
+                      iconAnchor: [25, 25], // Point of the icon which will correspond to marker's location
+                      popupAnchor: [0, -25], // Point from which the popup should open relative to the iconAnchor
                       className: 'custom-div-icon' // Use an empty class to prevent default icon styling
                   }),
                   pointYear: {startYear: point.startYear, endYear: point.endYear}
