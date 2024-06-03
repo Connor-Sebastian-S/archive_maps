@@ -553,10 +553,6 @@ processPointsData();
     // Toggle button
     var toggleButton = document.getElementById('toggle-button');
 
-    if (currentLayerIndex < 0){
-      toggleButton.textContent = "No map to show"
-    }
-
     toggleButton.addEventListener('click', function() {
       if (currentLayerIndex >= 0){
           // Remove current active layer
