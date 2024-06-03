@@ -584,14 +584,12 @@ processPointsData();
       //var tDate = yearsOfInterest[date]
       var posDate = perYear * date;
 
-      console.info(date);
-
       var button = document.createElement("button");
 
       button.innerHTML = date; // Set the button text
-      //button.className = "btn btn-primary"; // Set the CSS class
 
-      document.body.appendChild(button);
+      //document.body.appendChild(button);
+      document.getElementById("slider-container").appendChild(button);
 
       button.addEventListener("click", function() {
           alert(button.innerHTML);
@@ -613,7 +611,6 @@ processPointsData();
     var diff = endDate - startDate;
 
     for (const d of yearsOfInterest) {
-      console.info(d);
       getDate(d);
     }
 
