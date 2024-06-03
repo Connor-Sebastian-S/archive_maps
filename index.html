@@ -583,19 +583,16 @@ processPointsData();
       var tDate = yearsOfInterest[date]
       var posDate = perYear * tDate;
 
-      //Create an input type dynamically.
-      var element = document.createElement("input");
-      //Assign different attributes to the element.
-      element.type = "button";
-      element.value = date; // Really? You want the default value to be the type string?
-      element.name = date; // And the name too?
-      element.onclick = function() { // Note this is a function
-        alert("blabla");
-      };
+      var button = document.createElement("button");
 
-      var foo = document.getElementById("fooBar");
-      //Append the element in page (in span).
-      foo.appendChild(element);
+      button.innerHTML = date; // Set the button text
+      //button.className = "btn btn-primary"; // Set the CSS class
+
+      document.body.appendChild(button);
+
+      button.addEventListener("click", function() {
+          alert("Button clicked!");
+      });
     }
 
 
