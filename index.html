@@ -608,7 +608,8 @@ processPointsData();
       var button = document.createElement("button");
 
       button.innerHTML = date; // Set the button text
-      button.classList.add('rotate-element') 
+      button.classList.add('rotate-element')
+      button.style.left = posDate + 'px';
 
       //document.body.appendChild(button);
       sliderBar.appendChild(button);
