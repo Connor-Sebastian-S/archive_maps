@@ -612,8 +612,9 @@ processPointsData();
     var endDate = 2024;
     var diff = endDate - startDate;
 
-    for (var x in yearsOfInterest) {
-      getDate(x);
+    for (const d of yearsOfInterest) {
+      console.info(d);
+      getDate(d);
     }
 
     function handleStart(event) {
