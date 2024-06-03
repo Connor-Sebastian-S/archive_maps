@@ -249,7 +249,11 @@ if (location.protocol !== 'https:') {
     ];
 
     // Process the points data
-    var pointLayers = {};
+    //var pointLayers = {};
+
+    function processPointsData() {
+    // Clear existing point layers
+    pointLayers = {};
 
     pointsData.forEach(point => {
         var pos = new L.LatLng(point.latitude, point.longitude);
@@ -268,22 +272,13 @@ if (location.protocol !== 'https:') {
                 pointYear: {startYear: point.startYear, endYear: point.endYear}
             }).bindPopup(popup);
         } else if (point.type === "battle") {
-              marker = L.marker(pos, {
-              icon: L.icon({
-                  iconUrl: 'images/poi_battle.png',
-                  iconSize: [50, 50], // Size of the icon
-                  iconAnchor: [25, 25], // Point of the icon which will correspond to marker's location
-                  popupAnchor: [0, -25] // Point from which the popup should open relative to the iconAnchor
-              }),
-              pointYear: {startYear: point.startYear, endYear: point.endYear}
-          }).bindPopup(popup);
-            // marker = L.circle(pos, {
-            //     color: '#ff0000',
-            //     fillColor: '#ff0000',
-            //     fillOpacity: 0.5,
-            //     radius: 100,
-            //     pointYear: {startYear: point.startYear, endYear: point.endYear}
-            // }).bindPopup(popup);
+            marker = L.circle(pos, {
+                color: '#ff0000',
+                fillColor: '#ff0000',
+                fillOpacity: 0.5,
+                radius: 100,
+                pointYear: {startYear: point.startYear, endYear: point.endYear}
+            }).bindPopup(popup);
         }
 
         if (marker) {
@@ -295,6 +290,11 @@ if (location.protocol !== 'https:') {
             }
         }
     });
+}
+
+// Call the function initially to process the points data
+processPointsData();
+
 
     // Overpass layers - our POIs
     var plaques = new L.OverPassLayer({
@@ -578,6 +578,8 @@ if (location.protocol !== 'https:') {
             var activeLayerName = layerNames[activeIndex];
             var activeLayer = activeOverlayLayers[activeLayerName];
 
+            processPointsData();
+
             var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
             sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
 
@@ -662,15 +664,11 @@ if (location.protocol !== 'https:') {
         clearTimeout(inactivityTimeout);
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
+
+            // Remove all active overlay layers
             for (var layerName in activeOverlayLayers) {
                 map.removeLayer(activeOverlayLayers[layerName]);
             }
-
-            var currentLayerIndex = -1;
-            sliderHandle.style.left = initialPosition + 'px';
-            sliderLabel.textContent = startDate;
-            sliderLabel.style.left = initialPosition + 'px';
-            alternativeActive = false;
 
             // Remove all point layers and clear the pointLayers object
             for (var year in pointLayers) {
@@ -682,15 +680,24 @@ if (location.protocol !== 'https:') {
             }
             pointLayers = {}; // Reset the pointLayers object
 
-            checkboxes = document.querySelectorAll("input[type='checkbox']");
+            var currentLayerIndex = -1;
+            sliderHandle.style.left = initialPosition + 'px';
+            sliderLabel.textContent = startDate;
+            sliderLabel.style.left = initialPosition + 'px';
+            alternativeActive = false;
 
+            checkboxes = document.querySelectorAll("input[type='checkbox']");
             for (let i = 0; i < checkboxes.length; i++) {
-              if (checkboxes[i].checked == true){
-                checkboxes[i].click();
-              }
+                if (checkboxes[i].checked == true) {
+                    checkboxes[i].click();
+                }
             }
+
+            // Reprocess the points data
+            processPointsData();
         }, 20000);
     }
+
 
     document.addEventListener('mousemove', resetInactivityTimer);
     document.addEventListener('mousedown', resetInactivityTimer);
