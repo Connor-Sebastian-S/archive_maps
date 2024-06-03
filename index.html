@@ -319,8 +319,8 @@ if (location.protocol !== 'https:') {
                       pointLayers[year] = L.layerGroup();
                   }
                   pointLayers[year].addLayer(marker);
-                  yearsOfInterest.push(year)
               }
+              yearsOfInterest.push(point.startYear)
           }
       });
   }
