@@ -257,7 +257,7 @@ if (location.protocol !== 'https:') {
         var marker;
 
         if (point.type === "photo" && point.photo) {
-            popup += `<img src="images/poi+photo.png" alt="${point.name}" style="width: 100%; height: auto;">`;
+            popup += `<img src="images/poi_photo.png" alt="${point.name}" style="width: 100%; height: auto;">`;
             marker = L.marker(pos, {
                 icon: L.icon({
                     iconUrl: point.photo,
