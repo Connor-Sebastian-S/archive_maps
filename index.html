@@ -578,6 +578,9 @@ processPointsData();
             var activeLayerName = layerNames[activeIndex];
             var activeLayer = activeOverlayLayers[activeLayerName];
 
+            // Reprocess the points data
+            processPointsData();
+
             var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
             sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
 
@@ -691,8 +694,6 @@ processPointsData();
                 }
             }
 
-            // Reprocess the points data
-            processPointsData();
         }, 20000);
 
     }
