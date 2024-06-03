@@ -646,6 +646,19 @@ processPointsData();
                 }
             }
 
+            // Handle point layers
+            for (var year in pointLayers) {
+                var pointsForYear = pointLayers[year];
+                pointsForYear.eachLayer(function(layer) {
+                    var pointYear = layer.options.pointYear;
+                    if (currentYear >= pointYear.startYear && currentYear <= pointYear.endYear) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
+                });
+            }
+
         }
 
     for (const d of yearsOfInterest) {
