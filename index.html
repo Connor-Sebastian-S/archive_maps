@@ -661,6 +661,14 @@ processPointsData();
                 });
             }
 
+            // Calculate and update currentLayerIndex
+            for (var i = 0; i < layerNames.length; i++) {
+                if (year < layerNames[i + 1] || i === layerNames.length - 1) {
+                    currentLayerIndex = i;
+                    break;
+                }
+            }
+
         }
 
     for (const d of yearsOfInterest) {
