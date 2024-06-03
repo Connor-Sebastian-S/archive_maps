@@ -320,7 +320,9 @@ if (location.protocol !== 'https:') {
                   }
                   pointLayers[year].addLayer(marker);
               }
-              yearsOfInterest.push(point.startYear)
+              var year = point.startYear;
+              console.info(year);
+              yearsOfInterest.push(year)
           }
       });
   }
