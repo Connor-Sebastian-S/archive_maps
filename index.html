@@ -586,9 +586,9 @@ processPointsData();
       //Create an input type dynamically.
       var element = document.createElement("input");
       //Assign different attributes to the element.
-      element.type = type;
+      element.type = "button";
       element.value = date; // Really? You want the default value to be the type string?
-      element.name = type; // And the name too?
+      element.name = date; // And the name too?
       element.onclick = function() { // Note this is a function
         alert("blabla");
       };
