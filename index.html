@@ -598,16 +598,6 @@ processPointsData();
     var endDate = 2024;
     var diff = endDate - startDate;
 
-    function findPositionFromDate(date) {
-        // Calculate the percentage of the date relative to the total date range
-        var percentage = (date - startDate) / (endDate - startDate);
-
-        // Calculate the position of the slider handle based on the percentage
-        var newPosition = percentage * sliderWidth;
-
-        return newPosition;
-    }
-
     function getDate(date){
 
       var year_button = document.createElement("button");
@@ -615,13 +605,11 @@ processPointsData();
       year_button.innerHTML = date; // Set the button text
       year_button.classList.add('rotate-element')
 
-      var newPosition = findPositionFromDate(date);
+      //var newPosition = findPositionFromDate(date);
 
       // Set the position of the slider handle
-      year_button.style.left = newPosition + 'px';
-      sliderHandle.style.left = newPosition + 'px';
+      //year_button.style.left = newPosition + 'px';
 
-      //document.body.appendChild(button);
       sliderBar.appendChild(year_button);
 
       year_button.addEventListener("click", function() {
