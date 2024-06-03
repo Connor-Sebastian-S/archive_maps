@@ -266,6 +266,8 @@ if (location.protocol !== 'https:') {
     // Process the points data
     var pointLayers = {};
 
+    var yearsOfInterest = [];
+
     function processPointsData() {
       // Clear existing point layers
       pointLayers = {};
@@ -317,12 +319,14 @@ if (location.protocol !== 'https:') {
                       pointLayers[year] = L.layerGroup();
                   }
                   pointLayers[year].addLayer(marker);
+                  yearsOfInterest.push(point.startYear)
               }
           }
       });
   }
 
 processPointsData();
+
     // Overpass layers - our POIs
     var plaques = new L.OverPassLayer({
         query: "node(BBOX)['memorial'='blue_plaque'];out;",
@@ -574,6 +578,26 @@ processPointsData();
 
     });
 
+    function getDate(date){
+      var perYear = sliderWidth / diff;
+      var tDate = yearsOfInterest[date]
+      var posDate = perYear * tDate;
+
+      //Create an input type dynamically.
+      var element = document.createElement("input");
+      //Assign different attributes to the element.
+      element.type = type;
+      element.value = date; // Really? You want the default value to be the type string?
+      element.name = type; // And the name too?
+      element.onclick = function() { // Note this is a function
+        alert("blabla");
+      };
+
+      var foo = document.getElementById("fooBar");
+      //Append the element in page (in span).
+      foo.appendChild(element);
+    }
+
 
     // Slider functionality
     var sliderHandle = document.getElementById('slider-handle');
@@ -587,6 +611,10 @@ processPointsData();
     var startDate = 1650;
     var endDate = 2024;
     var diff = endDate - startDate;
+
+    for (var x in yearsOfInterest) {
+      getDate(x);
+    }
 
     function handleStart(event) {
         event.preventDefault();
@@ -704,6 +732,7 @@ processPointsData();
                 pointsForYear.clearLayers(); // Clear the LayerGroup
             }
             pointLayers = {}; // Reset the pointLayers object
+            yearsOfInterest = [];
 
             var currentLayerIndex = -1;
             sliderHandle.style.left = initialPosition + 'px';
