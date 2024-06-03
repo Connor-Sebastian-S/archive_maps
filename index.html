@@ -600,6 +600,15 @@ processPointsData();
     var endDate = 2024;
     var diff = endDate - startDate;
 
+    function findPositionFromDate(date) {
+        // Calculate the percentage of the date relative to the total date range
+        var percentage = (date - startDate) / (endDate - startDate);
+
+        // Calculate the position of the slider handle based on the percentage
+        var newPosition = percentage * sliderWidth;
+
+        return newPosition;
+    }
 
     function getDate(date){
       var perYear = sliderWidth / diff;
@@ -610,7 +619,11 @@ processPointsData();
 
       button.innerHTML = date; // Set the button text
       button.classList.add('rotate-element')
-      button.style.left = posDate + 'px';
+
+      var newPosition = findPositionFromDate(posDate);
+
+      // Set the position of the slider handle
+      button.style.left = newPosition + 'px';
 
       //document.body.appendChild(button);
       sliderBar.appendChild(button);
