@@ -164,6 +164,10 @@ if (location.protocol !== 'https:') {
 
     // Layers
     var mainOverlayLayers = {
+        "1650": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 28,
+            attribution: "Map data &copy; OpenStreetMap contributors"
+        }),
         "1747": L.tileLayer('data/1747/{z}/{x}/{y}.png', {
             minZoom: 9, maxZoom: 16, tms: false,
             attribution: "Produced by x in 1747, as part of x"
@@ -191,6 +195,10 @@ if (location.protocol !== 'https:') {
     };
 
     var alternativeOverlayLayers = {
+        "1650": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            minZoom: 9, maxZoom: 16, tms: false,
+            attribution: "Alternative 1650 Map"
+        }),
         "1747": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             minZoom: 9, maxZoom: 16, tms: false,
             attribution: "Alternative 1747 Map"
