@@ -773,7 +773,7 @@ processPointsData();
     var inactivityTimeout;
     var autoTimeline = false;
     var intervalId;
-    
+
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
         clearInterval(intervalId);
@@ -781,6 +781,7 @@ processPointsData();
 
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
+            autoTimeline = true;
 
             // Remove all active overlay layers
             // for (var layerName in activeOverlayLayers) {
