@@ -164,9 +164,9 @@ if (location.protocol !== 'https:') {
         attribution: [attr_osm, attr_overpass].join(', ')
     });
 
-    var southWest = L.latLng(56.554596, -3.614255),
-    northEast = L.latLng(56.569676, -3.571052),
-    bounds = L.latLngBounds(southWest, northEast);
+    var southWest = L.latLng(56.554596, -3.614255)
+    var northEast = L.latLng(56.569676, -3.571052)
+    var bounds = L.latLngBounds(southWest, northEast);
 
     // Initial state variables
     var initialState = {
