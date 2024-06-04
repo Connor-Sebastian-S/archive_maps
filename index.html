@@ -771,17 +771,16 @@ processPointsData();
 
     // Revert to initial state after 20 seconds of inactivity
     var inactivityTimeout;
-    var autoTimeline = false;
     var intervalId;
 
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
         clearInterval(intervalId);
-        autoTimeline = false;
+
 
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
-            autoTimeline = true;
+
 
             // Remove all active overlay layers
             // for (var layerName in activeOverlayLayers) {
@@ -816,20 +815,20 @@ processPointsData();
             var currentYear = sliderLabel.textContent;
             var directionForward = true; // Direction flag: true for forward, false for backward
 
-            if (autoTimeline) {
-
               // Perform an action every 0.2 seconds
               var intervalId = setInterval(function() {
 
                   // Check if currentYear is within the bounds
                   if (directionForward && currentYear <= endDate) {
                       moveSliderToYear(currentYear + 1);
+                      sliderLabel.textContent = currentYear + 1;
                       currentYear++;
                       if (currentYear >= endDate) {
                           directionForward = false; // Change direction to backward
                       }
                   } else if (!directionForward && currentYear >= startDate) {
                       moveSliderToYear(currentYear - 1);
+                      sliderLabel.textContent = currentYear - 1;
                       currentYear--;
                       if (currentYear <= startDate) {
                           directionForward = true; // Change direction to forward
@@ -837,7 +836,6 @@ processPointsData();
                   }
 
               }, 20);
-            }
         }, 2000);
 
     }
@@ -845,12 +843,6 @@ processPointsData();
     document.addEventListener('mousemove', resetInactivityTimer);
     document.addEventListener('mousedown', resetInactivityTimer);
     document.addEventListener('touchstart', resetInactivityTimer);
-
-    if (autoTimeline) {
-      document.addEventListener('mousemove', autoTimeline = false);
-      document.addEventListener('mousedown', autoTimeline = false);
-      document.addEventListener('touchstart', autoTimeline = false);
-    }
 
     resetInactivityTimer(); // Initialise the inactivity timer on page load
 
