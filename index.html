@@ -772,10 +772,12 @@ processPointsData();
     // Revert to initial state after 20 seconds of inactivity
     var inactivityTimeout;
     var intervalId; // Interval ID to be cleared later
+    var inactivityTimeout2;
 
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
-        clearInterval(intervalId); // Clear the interval if it exists
+        clearInterval(intervalId);
+        clearIterval(inactivityTimeout2);
 
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
@@ -814,28 +816,30 @@ processPointsData();
             var currentYear = sliderLabel.textContent;
             var directionForward = true; // Direction flag: true for forward, false for backward
 
-            // Perform an action every 0.2 seconds
-            var intervalId = setInterval(function() {
-              //  console.log("Performing action every 0.2 seconds.");
+            inactivityTimeout2 = setTimeout(function() {
 
-                // Check if currentYear is within the bounds
-                if (directionForward && currentYear <= endDate) {
-                    moveSliderToYear(currentYear + 1);
-                    currentYear++;
-                    if (currentYear >= endDate) {
-                        directionForward = false; // Change direction to backward
-                    }
-                } else if (!directionForward && currentYear >= startDate) {
-                    moveSliderToYear(currentYear - 1);
-                    currentYear--;
-                    if (currentYear <= startDate) {
-                        directionForward = true; // Change direction to forward
-                    }
-                }
+              // Perform an action every 0.2 seconds
+              var intervalId = setInterval(function() {
+                //  console.log("Performing action every 0.2 seconds.");
 
-                // If you want to stop this interval at some point, use clearInterval(intervalId);
-            }, 200); // 200 milliseconds = 0.2 seconds
+                  // Check if currentYear is within the bounds
+                  if (directionForward && currentYear <= endDate) {
+                      moveSliderToYear(currentYear + 1);
+                      currentYear++;
+                      if (currentYear >= endDate) {
+                          directionForward = false; // Change direction to backward
+                      }
+                  } else if (!directionForward && currentYear >= startDate) {
+                      moveSliderToYear(currentYear - 1);
+                      currentYear--;
+                      if (currentYear <= startDate) {
+                          directionForward = true; // Change direction to forward
+                      }
+                  }
 
+                  // If you want to stop this interval at some point, use clearInterval(intervalId);
+              }, 200);
+            }, 10000);
         }, 20000);
 
     }
