@@ -814,7 +814,7 @@ processPointsData();
 
                 // You can add additional logic here as needed
 
-                var currentYear = startYear; // Assume startYear and endYear are defined
+                var currentYear = startDate; // Assume startYear and endYear are defined
                 var directionForward = true; // Direction flag: true for forward, false for backward
 
                 // Perform an action every 0.2 seconds
@@ -825,13 +825,13 @@ processPointsData();
                     if (directionForward && currentYear <= endYear) {
                         moveSliderToYear(currentYear + 1);
                         currentYear++;
-                        if (currentYear >= endYear) {
+                        if (currentYear >= endDate) {
                             directionForward = false; // Change direction to backward
                         }
-                    } else if (!directionForward && currentYear >= startYear) {
+                    } else if (!directionForward && currentYear >= startDate) {
                         moveSliderToYear(currentYear - 1);
                         currentYear--;
-                        if (currentYear <= startYear) {
+                        if (currentYear <= startDate) {
                             directionForward = true; // Change direction to forward
                         }
                     }
