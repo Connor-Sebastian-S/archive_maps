@@ -771,7 +771,8 @@ processPointsData();
 
     // Revert to initial state after 20 seconds of inactivity
     var inactivityTimeout;
-
+    var intervalId; // Interval ID to be cleared later
+    
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
         clearInterval(intervalId); // Clear the interval if it exists
