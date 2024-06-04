@@ -822,7 +822,7 @@ processPointsData();
                     console.log("Performing action every 0.2 seconds.");
 
                     // Check if currentYear is within the bounds
-                    if (directionForward && currentYear <= endYear) {
+                    if (directionForward && currentYear <= endDate) {
                         moveSliderToYear(currentYear + 1);
                         currentYear++;
                         if (currentYear >= endDate) {
