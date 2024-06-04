@@ -24,7 +24,7 @@
       #map {
           width: 100%;
           height: calc(100% - 60px); /* Adjust the height based on the slider's height */
-         background-image: url('images/background.png'); /*  Replace with your image path */
+        /*   background-image: url('images/background.png');  Replace with your image path */
           background-size: cover; /* Ensure the image covers the entire area */
           background-position: center center;
           background-repeat: repeat;
@@ -778,34 +778,67 @@ processPointsData();
             map.setView(initialState.center, initialState.zoom);
 
             // Remove all active overlay layers
-            for (var layerName in activeOverlayLayers) {
-                map.removeLayer(activeOverlayLayers[layerName]);
-            }
+            // for (var layerName in activeOverlayLayers) {
+            //     map.removeLayer(activeOverlayLayers[layerName]);
+            // }
 
             // Remove all point layers and clear the pointLayers object
-            for (var year in pointLayers) {
-                var pointsForYear = pointLayers[year];
-                pointsForYear.eachLayer(function(layer) {
-                    map.removeLayer(layer);
-                });
-                pointsForYear.clearLayers(); // Clear the LayerGroup
-            }
-            pointLayers = {}; // Reset the pointLayers object
-            yearsOfInterest = [];
+            // for (var year in pointLayers) {
+            //     var pointsForYear = pointLayers[year];
+            //     pointsForYear.eachLayer(function(layer) {
+            //         map.removeLayer(layer);
+            //     });
+            //     pointsForYear.clearLayers(); // Clear the LayerGroup
+            // }
+            //pointLayers = {}; // Reset the pointLayers object
+            //yearsOfInterest = [];
 
-            var currentLayerIndex = -1;
-            sliderHandle.style.left = initialPosition + 'px';
-            sliderLabel.textContent = startDate;
-            sliderLabel.style.left = initialPosition + 'px';
-            alternativeActive = false;
+            //var currentLayerIndex = -1;
+            //sliderHandle.style.left = initialPosition + 'px';
+            //sliderLabel.textContent = startDate;
+            //sliderLabel.style.left = initialPosition + 'px';
+            // alternativeActive = false;
+            //
+            // checkboxes = document.querySelectorAll("input[type='checkbox']");
+            // for (let i = 0; i < checkboxes.length; i++) {
+            //     if (checkboxes[i].checked == true) {
+            //         checkboxes[i].click();
+            //     }
+            // }
+            //processPointsData()
 
-            checkboxes = document.querySelectorAll("input[type='checkbox']");
-            for (let i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked == true) {
-                    checkboxes[i].click();
-                }
-            }
-            processPointsData()
+            // Start another timer after the initial 20-second timer elapses
+            setTimeout(function() {
+                // Actions to be performed after the second timer elapses
+                //console.log("Second timer elapsed. Perform further actions here.");
+
+                // You can add additional logic here as needed
+
+                var currentYear = startYear; // Assume startYear and endYear are defined
+                var directionForward = true; // Direction flag: true for forward, false for backward
+
+                // Perform an action every 0.2 seconds
+                var intervalId = setInterval(function() {
+                    console.log("Performing action every 0.2 seconds.");
+
+                    // Check if currentYear is within the bounds
+                    if (directionForward && currentYear <= endYear) {
+                        moveSliderToYear(currentYear + 1);
+                        currentYear++;
+                        if (currentYear >= endYear) {
+                            directionForward = false; // Change direction to backward
+                        }
+                    } else if (!directionForward && currentYear >= startYear) {
+                        moveSliderToYear(currentYear - 1);
+                        currentYear--;
+                        if (currentYear <= startYear) {
+                            directionForward = true; // Change direction to forward
+                        }
+                    }
+
+                    // If you want to stop this interval at some point, use clearInterval(intervalId);
+                }, 200); // 200 milliseconds = 0.2 seconds
+            }, 10000); // 10-second timer for example
 
         }, 20000);
 
