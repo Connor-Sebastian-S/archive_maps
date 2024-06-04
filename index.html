@@ -774,6 +774,8 @@ processPointsData();
 
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
+        clearInterval(intervalId); // Clear the interval if it exists
+
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
 
@@ -819,7 +821,7 @@ processPointsData();
 
                 // Perform an action every 0.2 seconds
                 var intervalId = setInterval(function() {
-                    console.log("Performing action every 0.2 seconds.");
+                  //  console.log("Performing action every 0.2 seconds.");
 
                     // Check if currentYear is within the bounds
                     if (directionForward && currentYear <= endDate) {
