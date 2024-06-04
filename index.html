@@ -779,6 +779,7 @@ processPointsData();
         clearTimeout(inactivityTimeout);
         clearInterval(intervalId);
         clearTimeout(inactivityTimeout2);
+        startAutoMove = false;
 
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
