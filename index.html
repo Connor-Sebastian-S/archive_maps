@@ -771,7 +771,7 @@ processPointsData();
 
     // Revert to initial state after 20 seconds of inactivity
     var inactivityTimeout;
-    var autoTimeline - false;
+    var autoTimeline = false;
 
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
@@ -835,6 +835,10 @@ processPointsData();
                   }
               }, 20);
         }, 2000);
+
+    }
+
+    function changeAutoScrolls (var e) {
 
     }
 
