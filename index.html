@@ -777,7 +777,7 @@ processPointsData();
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
         clearInterval(intervalId);
-        clearInterval(inactivityTimeout2);
+        clearTimeout(inactivityTimeout2);
 
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
