@@ -550,6 +550,9 @@ processPointsData();
     // Track current active layer
     var currentLayerIndex = -1;
 
+    var intervalId;
+    var inactivityTimeout;
+
     // Toggle button
     var toggleButton = document.getElementById('toggle-button');
 
@@ -769,19 +772,6 @@ processPointsData();
         });
     }
 
-    // Revert to initial state after 20 seconds of inactivity
-    var inactivityTimeout;
-    var intervalId;
-
-    function resetInactivityTimer() {
-        clearTimeout(inactivityTimeout);
-        clearInterval(intervalId);
-
-
-        inactivityTimeout = setTimeout(function() {
-            map.setView(initialState.center, initialState.zoom);
-
-
             // Remove all active overlay layers
             // for (var layerName in activeOverlayLayers) {
             //     map.removeLayer(activeOverlayLayers[layerName]);
@@ -812,33 +802,38 @@ processPointsData();
             // }
             //processPointsData()
 
-            var currentYear = sliderLabel.textContent;
-            var directionForward = true; // Direction flag: true for forward, false for backward
+            // Revert to initial state after 20 seconds of inactivity
+            function resetInactivityTimer() {
+                clearTimeout(inactivityTimeout);
+                clearInterval(intervalId);
 
-              // Perform an action every 0.2 seconds
-              var intervalId = setInterval(function() {
+                inactivityTimeout = setTimeout(function() {
+                    map.setView(initialState.center, initialState.zoom);
 
-                  // Check if currentYear is within the bounds
-                  if (directionForward && currentYear <= endDate) {
-                      moveSliderToYear(currentYear + 1);
-                      sliderLabel.textContent = currentYear + 1;
-                      currentYear++;
-                      if (currentYear >= endDate) {
-                          directionForward = false; // Change direction to backward
-                      }
-                  } else if (!directionForward && currentYear >= startDate) {
-                      moveSliderToYear(currentYear - 1);
-                      sliderLabel.textContent = currentYear - 1;
-                      currentYear--;
-                      if (currentYear <= startDate) {
-                          directionForward = true; // Change direction to forward
-                      }
-                  }
+                    var currentYear = sliderLabel.textContent;
+                    var directionForward = true; // Direction flag: true for forward, false for backward
 
-              }, 20);
-        }, 2000);
+                    // Perform an action every 0.2 seconds
+                    intervalId = setInterval(function() {
 
-    }
+                        // Check if currentYear is within the bounds
+                        if (directionForward && currentYear <= endDate) {
+                            moveSliderToYear(currentYear + 1);
+                            currentYear++;
+                            if (currentYear >= endDate) {
+                                directionForward = false; // Change direction to backward
+                            }
+                        } else if (!directionForward && currentYear >= startDate) {
+                            moveSliderToYear(currentYear - 1);
+                            currentYear--;
+                            if (currentYear <= startDate) {
+                                directionForward = true; // Change direction to forward
+                            }
+                        }
+
+                    }, 20);
+                }, 2000);
+            }
 
     document.addEventListener('mousemove', resetInactivityTimer);
     document.addEventListener('mousedown', resetInactivityTimer);
