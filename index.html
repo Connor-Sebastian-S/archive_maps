@@ -772,7 +772,8 @@ processPointsData();
     // Revert to initial state after 20 seconds of inactivity
     var inactivityTimeout;
     var autoTimeline = false;
-
+    var intervalId;
+    
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
         clearInterval(intervalId);
