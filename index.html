@@ -773,6 +773,7 @@ processPointsData();
     var inactivityTimeout;
     var intervalId; // Interval ID to be cleared later
     var inactivityTimeout2;
+    var startAutoMove = false;
 
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
@@ -811,32 +812,33 @@ processPointsData();
             //     }
             // }
             //processPointsData()
+            startAutoMove = true;
 
-            // Start another timer after the initial 20-second timer elapses
             var currentYear = sliderLabel.textContent;
             var directionForward = true; // Direction flag: true for forward, false for backward
 
             inactivityTimeout2 = setTimeout(function() {
 
-              // Perform an action every 0.2 seconds
-              var intervalId = setInterval(function() {
-                //  console.log("Performing action every 0.2 seconds.");
+              if (startAutoMove) {
+                // Perform an action every 0.2 seconds
+                var intervalId = setInterval(function() {
 
-                  // Check if currentYear is within the bounds
-                  if (directionForward && currentYear <= endDate) {
-                      moveSliderToYear(currentYear + 1);
-                      currentYear++;
-                      if (currentYear >= endDate) {
-                          directionForward = false; // Change direction to backward
-                      }
-                  } else if (!directionForward && currentYear >= startDate) {
-                      moveSliderToYear(currentYear - 1);
-                      currentYear--;
-                      if (currentYear <= startDate) {
-                          directionForward = true; // Change direction to forward
-                      }
-                  }
-              }, 20);
+                    // Check if currentYear is within the bounds
+                    if (directionForward && currentYear <= endDate) {
+                        moveSliderToYear(currentYear + 1);
+                        currentYear++;
+                        if (currentYear >= endDate) {
+                            directionForward = false; // Change direction to backward
+                        }
+                    } else if (!directionForward && currentYear >= startDate) {
+                        moveSliderToYear(currentYear - 1);
+                        currentYear--;
+                        if (currentYear <= startDate) {
+                            directionForward = true; // Change direction to forward
+                        }
+                    }
+                }, 20);
+              }
             }, 1000);
         }, 2000);
 
