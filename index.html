@@ -774,10 +774,8 @@ processPointsData();
     var intervalId; // Interval ID to be cleared later
 
     function resetInactivityTimer() {
-        var currentYear;
         clearTimeout(inactivityTimeout);
         clearInterval(intervalId); // Clear the interval if it exists
-        moveSliderToYear(currentYear);
 
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
@@ -813,7 +811,7 @@ processPointsData();
             //processPointsData()
 
             // Start another timer after the initial 20-second timer elapses
-            currentYear = sliderLabel.textContent;
+            var currentYear = sliderLabel.textContent;
             var directionForward = true; // Direction flag: true for forward, false for backward
 
             // Perform an action every 0.2 seconds
