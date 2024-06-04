@@ -160,7 +160,7 @@ if (location.protocol !== 'https:') {
 
     var attr_osm = 'Map data &copy; OpenStreetMap contributors';
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 28,
+        maxZoom: 18,
         attribution: [attr_osm, attr_overpass].join(', ')
     });
 
@@ -172,7 +172,7 @@ if (location.protocol !== 'https:') {
     var initialState = {
         center: [56.56585, -3.5875],
         //maxBounds: bounds,
-        maxZoom: 28,
+        maxZoom: 18,
         layers: []
     };
 
