@@ -164,10 +164,15 @@ if (location.protocol !== 'https:') {
         attribution: [attr_osm, attr_overpass].join(', ')
     });
 
+    var southWest = L.latLng(56.554596, -3.614255),
+    northEast = L.latLng(56.569676, -3.571052),
+    bounds = L.latLngBounds(southWest, northEast);
+
     // Initial state variables
     var initialState = {
         center: [56.56585, -3.5875],
-        zoom: 16,
+        maxBounds: bounds,
+        //zoom: 16,
         layers: []
     };
 
