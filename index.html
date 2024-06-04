@@ -820,6 +820,10 @@ processPointsData();
 
             inactivityTimeout2 = setTimeout(function() {
 
+            document.addEventListener('mousemove', startAutoMove = false);
+            document.addEventListener('mousedown', startAutoMove = false);
+            document.addEventListener('touchstart', startAutoMove = false);
+
               if (startAutoMove) {
                 // Perform an action every 0.2 seconds
                 var intervalId = setInterval(function() {
