@@ -771,15 +771,12 @@ processPointsData();
 
     // Revert to initial state after 20 seconds of inactivity
     var inactivityTimeout;
-    var intervalId; // Interval ID to be cleared later
-    var inactivityTimeout2;
-    var startAutoMove = false;
+    var autoTimeline - false;
 
     function resetInactivityTimer() {
         clearTimeout(inactivityTimeout);
         clearInterval(intervalId);
-        clearTimeout(inactivityTimeout2);
-        startAutoMove = false;
+        autoTimeline = false;
 
         inactivityTimeout = setTimeout(function() {
             map.setView(initialState.center, initialState.zoom);
@@ -813,38 +810,30 @@ processPointsData();
             //     }
             // }
             //processPointsData()
-            startAutoMove = true;
 
             var currentYear = sliderLabel.textContent;
             var directionForward = true; // Direction flag: true for forward, false for backward
 
-            inactivityTimeout2 = setTimeout(function() {
+            if (autoTimeline) {
 
-            document.addEventListener('mousemove', startAutoMove = false);
-            document.addEventListener('mousedown', startAutoMove = false);
-            document.addEventListener('touchstart', startAutoMove = false);
+              // Perform an action every 0.2 seconds
+              var intervalId = setInterval(function() {
 
-              if (startAutoMove) {
-                // Perform an action every 0.2 seconds
-                var intervalId = setInterval(function() {
-
-                    // Check if currentYear is within the bounds
-                    if (directionForward && currentYear <= endDate) {
-                        moveSliderToYear(currentYear + 1);
-                        currentYear++;
-                        if (currentYear >= endDate) {
-                            directionForward = false; // Change direction to backward
-                        }
-                    } else if (!directionForward && currentYear >= startDate) {
-                        moveSliderToYear(currentYear - 1);
-                        currentYear--;
-                        if (currentYear <= startDate) {
-                            directionForward = true; // Change direction to forward
-                        }
-                    }
-                }, 20);
-              }
-            }, 1000);
+                  // Check if currentYear is within the bounds
+                  if (directionForward && currentYear <= endDate) {
+                      moveSliderToYear(currentYear + 1);
+                      currentYear++;
+                      if (currentYear >= endDate) {
+                          directionForward = false; // Change direction to backward
+                      }
+                  } else if (!directionForward && currentYear >= startDate) {
+                      moveSliderToYear(currentYear - 1);
+                      currentYear--;
+                      if (currentYear <= startDate) {
+                          directionForward = true; // Change direction to forward
+                      }
+                  }
+              }, 20);
         }, 2000);
 
     }
@@ -853,6 +842,12 @@ processPointsData();
     document.addEventListener('mousemove', resetInactivityTimer);
     document.addEventListener('mousedown', resetInactivityTimer);
     document.addEventListener('touchstart', resetInactivityTimer);
+
+    if (autoTimeline) {
+      document.addEventListener('mousemove', autoTimeline = false);
+      document.addEventListener('mousedown', autoTimeline = false);
+      document.addEventListener('touchstart', autoTimeline = false);
+    }
 
     resetInactivityTimer(); // Initialise the inactivity timer on page load
 
