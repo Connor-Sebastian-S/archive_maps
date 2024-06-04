@@ -255,8 +255,6 @@ if (location.protocol !== 'https:') {
       // Clear existing point layers
       pointLayers = {};
 
-      pointsData =
-
       pointsData.forEach(point => {
           var pos = new L.LatLng(point.latitude, point.longitude);
           var popup = `<h3>${point.name}</h3><p>${point.description}</p>`;
