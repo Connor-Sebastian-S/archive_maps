@@ -654,9 +654,6 @@ processPointsData();
             sliderHandle.style.transition = '';
             sliderLabel.style.transition = '';
 
-            sliderHandle.style.transition = '';
-            sliderLabel.style.transition = '';
-
             event.preventDefault();
             var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
             var newX = initialLeft + (clientX - startX);
@@ -780,9 +777,6 @@ processPointsData();
                 clearTimeout(inactivityTimeout);
                 clearInterval(intervalId);
 
-                sliderHandle.style.transition = 'left 1.8s ease-in-out';
-                sliderLabel.style.transition = 'left 1.8s ease-in-out';
-
                 inactivityTimeout = setTimeout(function() {
                     // Dynamically add the transition property
                     
@@ -794,6 +788,9 @@ processPointsData();
 
                     // Perform an action every 0.2 seconds
                     intervalId = setInterval(function() {
+
+                        sliderHandle.style.transition = 'left 1.8s ease-in-out';
+                        sliderLabel.style.transition = 'left 1.8s ease-in-out';
 
                         // Check if currentYear is within the bounds
                         if (directionForward && currentYear <= endDate) {
