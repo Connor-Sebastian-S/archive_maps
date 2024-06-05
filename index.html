@@ -778,8 +778,6 @@ processPointsData();
                 clearInterval(intervalId);
 
                 inactivityTimeout = setTimeout(function() {
-                    // Dynamically add the transition property
-                    
 
                     map.setView(initialState.center, initialState.zoom);
 
@@ -789,8 +787,8 @@ processPointsData();
                     // Perform an action every 0.2 seconds
                     intervalId = setInterval(function() {
 
-                        sliderHandle.style.transition = 'left 1.8s ease-in-out';
-                        sliderLabel.style.transition = 'left 1.8s ease-in-out';
+                        //sliderHandle.style.transition = 'left 1.8s ease-in-out';
+                        //sliderLabel.style.transition = 'left 1.8s ease-in-out';
 
                         // Check if currentYear is within the bounds
                         if (directionForward && currentYear <= endDate) {
@@ -807,8 +805,8 @@ processPointsData();
                             }
                         }
                     }, 200);
-                    sliderHandle.style.transition = '';
-                    sliderLabel.style.transition = '';
+                    //sliderHandle.style.transition = '';
+                    //sliderLabel.style.transition = '';
                 }, 20000);
             }
 
