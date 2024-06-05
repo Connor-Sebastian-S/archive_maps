@@ -651,8 +651,8 @@ processPointsData();
 
         function handleMove(event) {
 
-            //sliderHandle.style.transition = '';
-            //sliderLabel.style.transition = '';
+            sliderHandle.removeProperty('transition');
+            sliderLabel.removeProperty('transition');
 
             event.preventDefault();
             var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
@@ -787,8 +787,8 @@ processPointsData();
                     // Perform an action every 0.2 seconds
                     intervalId = setInterval(function() {
 
-                        //sliderHandle.style.transition = 'left 1.8s ease-in-out';
-                        //sliderLabel.style.transition = 'left 1.8s ease-in-out';
+                        sliderHandle.style.transition = 'left 1.8s ease-in-out';
+                        sliderLabel.style.transition = 'left 1.8s ease-in-out';
 
                         // Check if currentYear is within the bounds
                         if (directionForward && currentYear <= endDate) {
@@ -805,8 +805,8 @@ processPointsData();
                             }
                         }
                     }, 200);
-                    //sliderHandle.style.transition = '';
-                    //sliderLabel.style.transition = '';
+                    sliderHandle.style.removeProperty('transition');
+                    sliderLabel.style.removeProperty('transition');
                 }, 20000);
             }
 
