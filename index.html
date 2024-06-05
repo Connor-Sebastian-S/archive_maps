@@ -654,6 +654,9 @@ processPointsData();
             sliderHandle.style.transition = '';
             sliderLabel.style.transition = '';
 
+            sliderHandle.style.transition = '';
+            sliderLabel.style.transition = '';
+
             event.preventDefault();
             var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
             var newX = initialLeft + (clientX - startX);
@@ -777,11 +780,13 @@ processPointsData();
                 clearTimeout(inactivityTimeout);
                 clearInterval(intervalId);
 
+                sliderHandle.style.transition = 'left 1.8s ease-in-out';
+                sliderLabel.style.transition = 'left 1.8s ease-in-out';
+
                 inactivityTimeout = setTimeout(function() {
                     // Dynamically add the transition property
-                    sliderHandle.style.transition = 'left 1.8s ease-in-out';
-                    sliderLabel.style.transition = 'left 1.8s ease-in-out';
-            
+                    
+
                     map.setView(initialState.center, initialState.zoom);
 
                     var currentYear = sliderLabel.textContent;
