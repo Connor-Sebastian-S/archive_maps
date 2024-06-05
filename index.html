@@ -653,8 +653,8 @@ processPointsData();
 
         function handleMove(event) {
 
-            sliderHandle.removeProperty('transition');
-            sliderLabel.removeProperty('transition');
+            sliderHandle.style.removeProperty('transition');
+            sliderLabel.style.removeProperty('transition');
 
             event.preventDefault();
             var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
