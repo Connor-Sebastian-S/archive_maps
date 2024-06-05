@@ -586,9 +586,7 @@ processPointsData();
         }
 
         function moveSliderToYear(year) {
-            // Dynamically add the transition property
-            sliderHandle.style.transition = 'left 1.8s ease-in-out';
-            sliderLabel.style.transition = 'left 1.8s ease-in-out';
+            
 
             var yearPosition = ((year - startDate) / diff) * sliderWidth;
             
@@ -780,6 +778,10 @@ processPointsData();
                 clearInterval(intervalId);
 
                 inactivityTimeout = setTimeout(function() {
+                    // Dynamically add the transition property
+                    sliderHandle.style.transition = 'left 1.8s ease-in-out';
+                    sliderLabel.style.transition = 'left 1.8s ease-in-out';
+            
                     map.setView(initialState.center, initialState.zoom);
 
                     var currentYear = sliderLabel.textContent;
