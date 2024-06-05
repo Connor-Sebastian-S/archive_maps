@@ -781,6 +781,9 @@ processPointsData();
 
                 inactivityTimeout = setTimeout(function() {
 
+                    sliderHandle.style.transition = 'left 1.8s ease-in-out';
+                        sliderLabel.style.transition = 'left 1.8s ease-in-out';
+
                     map.setView(initialState.center, initialState.zoom);
 
                     var currentYear = sliderLabel.textContent;
@@ -788,9 +791,6 @@ processPointsData();
 
                     // Perform an action every 0.2 seconds
                     intervalId = setInterval(function() {
-
-                        sliderHandle.style.transition = 'left 1.8s ease-in-out';
-                        sliderLabel.style.transition = 'left 1.8s ease-in-out';
 
                         // Check if currentYear is within the bounds
                         if (directionForward && currentYear <= endDate) {
@@ -807,8 +807,8 @@ processPointsData();
                             }
                         }
                     }, 200);
-                    sliderHandle.style.removeProperty('transition');
-                    sliderLabel.style.removeProperty('transition');
+                    //sliderHandle.style.removeProperty('transition');
+                    //sliderLabel.style.removeProperty('transition');
                 }, 20000);
             }
 
