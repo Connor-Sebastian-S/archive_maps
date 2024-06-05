@@ -85,7 +85,6 @@
           background-color: #007bff;
           border-radius: 50%;
           cursor: grab;
-          transition: left 0.1s ease-in-out;
       }
 
       #slider-label {
@@ -96,7 +95,6 @@
           padding: 5px;
           border-radius: 3px;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Optional shadow */
-          transition: left 0.1s ease-in-out;
       }
 
       .leaflet-layer {
@@ -588,56 +586,60 @@ processPointsData();
         }
 
         function moveSliderToYear(year) {
-    var yearPosition = ((year - startDate) / diff) * sliderWidth;
-    
-    // Update the position of the slider handle and label
-    sliderHandle.style.left = yearPosition + 'px';
-    sliderLabel.textContent = year;
-    sliderLabel.style.left = yearPosition + 'px';
-    
-    // Logic to update map layers goes here
-    for (var i = 0; i < layerNames.length; i++) {
-        var layerName = layerNames[i];
-        var nextLayerName = layerNames[i + 1];
-        var layer = activeOverlayLayers[layerName];
+            // Dynamically add the transition property
+            sliderHandle.style.transition = 'left 1.8s ease-in-out';
+            sliderLabel.style.transition = 'left 1.8s ease-in-out';
 
-        if (i < (layerNames.length - 1)) {
-            if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
-                map.addLayer(layer);
-            } else {
-                map.removeLayer(layer);
+            var yearPosition = ((year - startDate) / diff) * sliderWidth;
+            
+            // Update the position of the slider handle and label
+            sliderHandle.style.left = yearPosition + 'px';
+            sliderLabel.textContent = year;
+            sliderLabel.style.left = yearPosition + 'px';
+            
+            // Logic to update map layers goes here
+            for (var i = 0; i < layerNames.length; i++) {
+                var layerName = layerNames[i];
+                var nextLayerName = layerNames[i + 1];
+                var layer = activeOverlayLayers[layerName];
+
+                if (i < (layerNames.length - 1)) {
+                    if (sliderLabel.textContent >= layerName && sliderLabel.textContent < nextLayerName) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
+                } else {
+                    if (sliderLabel.textContent >= layerName) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
+                }
             }
-        } else {
-            if (sliderLabel.textContent >= layerName) {
-                map.addLayer(layer);
-            } else {
-                map.removeLayer(layer);
+
+            // Handle point layers
+            currentYear = year;
+            for (var y in pointLayers) {
+                var pointsForYear = pointLayers[y];
+                pointsForYear.eachLayer(function(layer) {
+                    var pointYear = layer.options.pointYear;
+                    if (currentYear >= pointYear.startYear && currentYear <= pointYear.endYear) {
+                        map.addLayer(layer);
+                    } else {
+                        map.removeLayer(layer);
+                    }
+                });
+            }
+
+            // Calculate and update currentLayerIndex
+            for (var i = 0; i < layerNames.length; i++) {
+                if (year < layerNames[i + 1] || i === layerNames.length - 1) {
+                    currentLayerIndex = i;
+                    break;
+                }
             }
         }
-    }
-
-    // Handle point layers
-    currentYear = year;
-    for (var y in pointLayers) {
-        var pointsForYear = pointLayers[y];
-        pointsForYear.eachLayer(function(layer) {
-            var pointYear = layer.options.pointYear;
-            if (currentYear >= pointYear.startYear && currentYear <= pointYear.endYear) {
-                map.addLayer(layer);
-            } else {
-                map.removeLayer(layer);
-            }
-        });
-    }
-
-    // Calculate and update currentLayerIndex
-    for (var i = 0; i < layerNames.length; i++) {
-        if (year < layerNames[i + 1] || i === layerNames.length - 1) {
-            currentLayerIndex = i;
-            break;
-        }
-    }
-}
 
     for (const d of yearsOfInterest) {
       getDate(d);
@@ -650,6 +652,9 @@ processPointsData();
         var initialLeft = sliderHandle.offsetLeft;
 
         function handleMove(event) {
+
+            sliderHandle.style.transition = '';
+            sliderLabel.style.transition = '';
 
             event.preventDefault();
             var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
