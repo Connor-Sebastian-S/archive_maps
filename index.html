@@ -653,8 +653,8 @@ processPointsData();
 
         function handleMove(event) {
 
-            sliderHandle.style.removeProperty('transition');
-            sliderLabel.style.removeProperty('transition');
+            //sliderHandle.style.removeProperty('transition');
+            //sliderLabel.style.removeProperty('transition');
 
             event.preventDefault();
             var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
@@ -781,8 +781,8 @@ processPointsData();
 
                 inactivityTimeout = setTimeout(function() {
 
-                    sliderHandle.style.transition = 'left 1.8s ease-in-out';
-                        sliderLabel.style.transition = 'left 1.8s ease-in-out';
+                    //sliderHandle.style.transition = 'left 1.8s ease-in-out';
+                    //sliderLabel.style.transition = 'left 1.8s ease-in-out';
 
                     map.setView(initialState.center, initialState.zoom);
 
