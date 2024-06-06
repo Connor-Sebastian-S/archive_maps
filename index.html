@@ -218,7 +218,7 @@ if (location.protocol !== 'https:') {
     var yearsOfInterest = [];
 
     document.addEventListener('DOMContentLoaded', () => {
-        fetch('./data/points_data.csv')
+        fetch('https://drive.google.com/file/d/1NjksXxJgYI7vikjIizws4UnnwL53w_P1/view?usp=sharing')
             .then(response => response.text())
             .then(data => {
                 parseCSV(data);
