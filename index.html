@@ -612,6 +612,8 @@ document.getElementById('save-map').addEventListener('click', function () {
             year_button.innerHTML = date;
             year_button.classList.add('year-button');
 
+            console.log(date);
+
             // Calculate position of button based on year
             var yearPosition = ((date - startDate) / diff) * sliderWidth;
             year_button.style.left = yearPosition+10 + 'px';
