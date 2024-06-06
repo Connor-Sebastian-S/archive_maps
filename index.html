@@ -176,7 +176,7 @@ if (location.protocol !== 'https:') {
 
     var attr_osm = 'Map data &copy; OpenStreetMap contributors';
     var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 19,
+        maxZoom: 15,
         attribution: [attr_osm, attr_overpass].join(', ')
     });
 
@@ -202,7 +202,7 @@ if (location.protocol !== 'https:') {
     });
 
     map.setMaxBounds(bounds);
-    map.setMinZoom(10);
+    map.setMinZoom(15);
     map.setMaxZoom(15);
 
     // Handle the map moving event to restrict the user from panning out of bounds
