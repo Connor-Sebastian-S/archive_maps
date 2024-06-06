@@ -1,5 +1,3 @@
-
-
 function parseCSV(csvText) {
     const lines = csvText.split('\n');
     const headers = lines[0].split(',');
