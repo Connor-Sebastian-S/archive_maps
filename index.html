@@ -202,16 +202,6 @@ if (location.protocol !== 'https:') {
 
     var pointsData = [];
 
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch('./data/points_data.csv')
-            .then(response => response.text())
-            .then(data => {
-                pointsData = parseCSV(data);
-                console.log(pointsData);
-            })
-            .catch(error => console.error('Error fetching the CSV file:', error));
-    });
-
     // Process the points data
     var pointLayers = {};
 
@@ -220,6 +210,18 @@ if (location.protocol !== 'https:') {
     function processPointsData() {
       // Clear existing point layers
       pointLayers = {};
+
+      document.addEventListener('DOMContentLoaded', () => {
+            fetch('./data/points_data.csv')
+                .then(response => response.text())
+                .then(data => {
+                    pointsData = parseCSV(data);
+                    
+                })
+                .catch(error => console.error('Error fetching the CSV file:', error));
+        });
+
+      console.log(pointsData);
 
       pointsData.forEach(point => {
           var pos = new L.LatLng(point.latitude, point.longitude);
@@ -315,8 +317,7 @@ document.getElementById('save-map').addEventListener('click', function () {
         });
     });
 
-    if (pointsData)
-        processPointsData();
+    processPointsData();
 
     // Overpass layers - our POIs
     var plaques = new L.OverPassLayer({
