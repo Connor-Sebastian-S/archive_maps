@@ -21,6 +21,9 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
+    <script src="./papaparse.min.js"></script>
+
+
 
   <style>
       html, body {
@@ -212,6 +215,14 @@ if (location.protocol !== 'https:') {
             .catch(error => console.error('Error fetching the CSV file:', error));
 
     });
+
+    function parseCSV(csvText) {
+
+        const options = { header: true };
+        const pointsData = Papa.parse(csvText, options);
+
+        return pointsData;
+    }
 
     // Process the points data
     var pointLayers = {};
