@@ -205,6 +205,11 @@ if (location.protocol !== 'https:') {
 
     var pointsData = [];
 
+    // Process the points data
+    var pointLayers = {};
+
+    var yearsOfInterest = [];
+
     document.addEventListener('DOMContentLoaded', () => {
         fetch('./data/points_data.csv')
             .then(response => response.text())
@@ -224,14 +229,11 @@ if (location.protocol !== 'https:') {
             pointsData.forEach(point => {
                 console.log(point.name);
                 });
+            for (var d of yearsOfInterest) {
+              getDate(d);
+            }
         }
     }
-
-    // Process the points data
-    var pointLayers = {};
-
-    var yearsOfInterest = [];
-
 
  function processPointsData() {
     // Clear existing point layers
@@ -678,10 +680,6 @@ document.getElementById('save-map').addEventListener('click', function () {
                 }
             }
         }
-
-    for (const d of yearsOfInterest) {
-      getDate(d);
-    }
 
     function handleStart(event, newPos) {
         event.preventDefault();
