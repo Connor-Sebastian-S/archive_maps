@@ -188,7 +188,9 @@ if (location.protocol !== 'https:') {
     var initialState = {
         center: [56.563729541410666, -3.584791427303605],
         zoom: 15,
-        layers: []
+        layers: [],
+        map.setMinZoom: 15,
+        map.setMaxZoom: 15
     };
 
     var map = L.map('map', {
