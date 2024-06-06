@@ -199,21 +199,21 @@ if (location.protocol !== 'https:') {
         zoomControl: false, // hide zoom buttons
     });
 
-    // Process the points data
-    var pointLayers = {};
+
+    var pointsdata;
 
     document.addEventListener('DOMContentLoaded', () => {
         fetch('./data/points_data.csv')
             .then(response => response.text())
             .then(data => {
-                pointLayers = parseCSV(data);
-                console.log(pointLayers);
+                pointsdata = parseCSV(data);
+                console.log(pointsdata);
             })
             .catch(error => console.error('Error fetching the CSV file:', error));
     });
 
     // Process the points data
-    //var pointLayers = {};
+    var pointLayers = {};
 
     var yearsOfInterest = [];
 
@@ -314,7 +314,8 @@ document.getElementById('save-map').addEventListener('click', function () {
             link.click();
         });
     });
-    if (pointLayers)
+
+    if (pointsdata)
         processPointsData();
 
     // Overpass layers - our POIs
