@@ -208,6 +208,7 @@ if (location.protocol !== 'https:') {
             .then(data => {
                 pointsData = parseCSV(data);
             })
+            processPointsData();
             .catch(error => console.error('Error fetching the CSV file:', error));
 
     });
@@ -217,9 +218,9 @@ if (location.protocol !== 'https:') {
 
     var yearsOfInterest = [];
 
-    if (pointsData.length > 0) {
-        processPointsData();
-    }
+    //if (pointsData.length > 0) {
+     //   processPointsData();
+    //}
 
     function processPointsData() {
       // Clear existing point layers
