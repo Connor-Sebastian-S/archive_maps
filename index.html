@@ -202,6 +202,19 @@ if (location.protocol !== 'https:') {
     // Process the points data
     var pointLayers = {};
 
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('./data/points_data.csv')
+            .then(response => response.text())
+            .then(data => {
+                pointLayers = parseCSV(data);
+                console.log(pointsData);
+            })
+            .catch(error => console.error('Error fetching the CSV file:', error));
+    });
+
+    // Process the points data
+    //var pointLayers = {};
+
     var yearsOfInterest = [];
 
     function processPointsData() {
@@ -301,8 +314,8 @@ document.getElementById('save-map').addEventListener('click', function () {
             link.click();
         });
     });
-
-processPointsData();
+    if (pointsData)
+        processPointsData();
 
     // Overpass layers - our POIs
     var plaques = new L.OverPassLayer({
