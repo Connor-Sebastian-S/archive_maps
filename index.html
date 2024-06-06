@@ -217,8 +217,12 @@ if (location.protocol !== 'https:') {
 
     var yearsOfInterest = [];
 
+    var fileUrl = 'https://drive.google.com/uc?export=download&id=NjksXxJgYI7vikjIizws4UnnwL53w_P1';
+    var proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    var url = proxyUrl + fileUrl;
+
     document.addEventListener('DOMContentLoaded', () => {
-        fetch('https://drive.google.com/uc?export=download&id=NjksXxJgYI7vikjIizws4UnnwL53w_P1')
+        fetch(url)
             .then(response => response.text())
             .then(data => {
                 parseCSV(data);
