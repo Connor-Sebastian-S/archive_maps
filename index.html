@@ -187,7 +187,6 @@ if (location.protocol !== 'https:') {
     // Initial state variables
     var initialState = {
         center: [56.563729541410666, -3.584791427303605],
-        maxBounds: bounds,
         zoom: 15,
         layers: []
     };
@@ -202,6 +201,12 @@ if (location.protocol !== 'https:') {
         zoomControl: false, // hide zoom buttons
     });
 
+    map.setMaxBounds(bounds);
+
+    // Handle the map moving event to restrict the user from panning out of bounds
+    map.on('drag', function() {
+        map.panInsideBounds(bounds, { animate: false });
+    });
 
     var pointsData = [];
 
