@@ -212,6 +212,9 @@ if (location.protocol !== 'https:') {
             .catch(error => console.error('Error fetching the CSV file:', error));
     });
 
+    if (pointsData.length > 0)
+        processPointsData();
+
     // Process the points data
     var pointLayers = {};
 
@@ -317,8 +320,7 @@ document.getElementById('save-map').addEventListener('click', function () {
         });
     });
 
-    if (pointsData.length > 0)
-        processPointsData();
+
 
     // Overpass layers - our POIs
     var plaques = new L.OverPassLayer({
