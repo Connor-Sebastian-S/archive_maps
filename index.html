@@ -221,6 +221,9 @@ if (location.protocol !== 'https:') {
         pointsData = parsedData.data; // Accessing the data property
         if (pointsData.length > 0) {
             processPointsData();
+            pointsData.forEach(point => {
+                console.log(point.name);
+                });
         }
     }
 
