@@ -219,6 +219,9 @@ if (location.protocol !== 'https:') {
 
         const options = { header: true };
         pointsData = Papa.parse(csvText, options);
+        if (pointsData.length > 0) {
+            processPointsData();
+        }
     }
 
     // Process the points data
@@ -226,9 +229,6 @@ if (location.protocol !== 'https:') {
 
     var yearsOfInterest = [];
 
-    if (pointsData.length > 0) {
-        processPointsData();
-    }
 
     function processPointsData() {
       // Clear existing point layers
