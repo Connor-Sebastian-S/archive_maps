@@ -1,8 +1,8 @@
 name,description,latitude,longitude,photo,startYear,endYear,type
 Wow look at this photo,This photo shows a thing happening at that place,56.56561477,-3.58550088,https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Scanian_War_Collage.jpg/1280px-Scanian_War_Collage.jpg,1820,1830,photo
-Battle of Dunkeld,"Part of the Jacobite rising of 1689, fought between Jacobite clans supporting the deposed king James VII of Scotland and covenanters supporting William of Orange, King of Scotland, in the streets around Dunkeld Cathedral on 21 August 1689",56.5651269,-3.5896846,,1689,1689,battle
-Dunkeld Bridge - Thomas Telford,"The bridge was built between 1805 and 1809 by Thomas Telford. It cost £33,978. The pontage was abolished in 1879.",56.563956,-3.585274,,1805,1809,construction
-Establishment of The Birnam Institute,"The Birnam Institute was established to serve as a community center and library, fostering local education and cultural activities.",56.5577,-3.5707,,1883,1883,construction
-Birnam Oak,"The Birnam Oak is a historically significant tree, believed to be over 500 years old, linked to Shakespeare's 'Macbeth'.",56.5607,-3.5801,,1500,1500,natural monument
-Opening of Dunkeld and Birnam Railway Station,"The Dunkeld and Birnam Railway Station was opened, enhancing connectivity and contributing to the growth of the area.",56.5567,-3.5714,,1856,1856,infrastructure
-Little Dunkeld Parish Church,"Built in 1798 and rebuilt in 1907, the church serves as a notable example of ecclesiastical architecture.",56.5584,-3.5806,,1798,1798,construction
+Battle of Dunkeld,Part of the Jacobite rising of 1689, fought between Jacobite clans supporting the deposed king James VII of Scotland and covenanters supporting William of Orange, King of Scotland, in the streets around Dunkeld Cathedral on 21 August 1689,56.5651269,-3.5896846,,1689,1689,battle
+Dunkeld Bridge - Thomas Telford,The bridge was built between 1805 and 1809 by Thomas Telford. It cost £33,978. The pontage was abolished in 1879.,56.563956,-3.585274,,1805,1809,construction
+Establishment of The Birnam Institute,The Birnam Institute was established to serve as a community center and library, fostering local education and cultural activities.,56.5577,-3.5707,,1883,1883,construction
+Birnam Oak,The Birnam Oak is a historically significant tree, believed to be over 500 years old, linked to Shakespeare's 'Macbeth'.,56.5607,-3.5801,,1500,1500,natural monument
+Opening of Dunkeld and Birnam Railway Station,The Dunkeld and Birnam Railway Station was opened, enhancing connectivity and contributing to the growth of the area.,56.5567,-3.5714,,1856,1856,infrastructure
+Little Dunkeld Parish Church,Built in 1798 and rebuilt in 1907, the church serves as a notable example of ecclesiastical architecture.,56.5584,-3.5806,,1798,1798,construction
