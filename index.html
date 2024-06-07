@@ -24,6 +24,7 @@
     <script src="./papaparse.min.js"></script>
 
     <script src="./leaflet.rrose-src.js"></script>
+    <link rel="stylesheet" href="leaflet.rrose.css"
 
 
 
@@ -337,7 +338,7 @@ pointsData.forEach(point => {
             var rrosePopup = new L.Rrose({
                 offset: L.point(0, -25),
                 closeButton: false,
-                autoPan: true,
+                autoPan: false,
                 autoPanPadding: L.point(10, 10) // Adjust padding as needed
             }).setContent(popupContent).setLatLng(pos);
 
