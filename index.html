@@ -269,7 +269,7 @@ if (location.protocol !== 'https:') {
 
     console.log(pointsData); // Debugging: Check the structure of pointsData
 
- pointsData.forEach(point => {
+pointsData.forEach(point => {
     if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
         var pos = new L.LatLng(point.latitude, point.longitude);
         var popupContent = `<h3>${point.name}</h3><p>${point.description}</p>`;
@@ -307,8 +307,12 @@ if (location.protocol !== 'https:') {
                     className: 'custom-div-icon'
                 }),
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
-            }).bindPopup(popupContent, {closeButton: false, offset: L.point(0, -25)}).on('click', function(e) {
-                this.openPopup();
+            }).on('click', function(e) {
+                var rrosePopup = new L.Rrose({
+                    offset: L.point(0, -25),
+                    closeButton: false
+                }).setContent(popupContent).setLatLng(pos);
+                this.bindPopup(rrosePopup).openPopup();
             });
 
             for (var year = point.startYear; year <= point.endYear; year++) {
@@ -324,6 +328,7 @@ if (location.protocol !== 'https:') {
         }
     }
 });
+
 
 
     console.log(yearsOfInterest)
