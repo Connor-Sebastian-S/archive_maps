@@ -263,12 +263,6 @@ if (location.protocol !== 'https:') {
         //map.addLayer(activeOverlayLayers[layerName]);
     }
 
- function processPointsData() {
-    // Clear existing point layers
-    pointLayers = {};
-
-    console.log(pointsData); // Debugging: Check the structure of pointsData
-
 pointsData.forEach(point => {
     if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
         var pos = new L.LatLng(point.latitude, point.longitude);
@@ -307,13 +301,8 @@ pointsData.forEach(point => {
                     className: 'custom-div-icon'
                 }),
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
-            }).on('click', function(e) {
-                var rrosePopup = new L.Rrose({
-                    offset: L.point(0, -25),
-                    closeButton: false
-                }).setContent(popupContent).setLatLng(pos);
-                .bindPopup(rrosePopup).openPopup();
-                //.openOn(map);
+            }).bindPopup(popupContent, {closeButton: false, offset: L.point(0, -25)}).on('click', function(e) {
+                this.openPopup();
             });
 
             for (var year = point.startYear; year <= point.endYear; year++) {
@@ -329,6 +318,7 @@ pointsData.forEach(point => {
         }
     }
 });
+
 
     console.log(yearsOfInterest)
 }
