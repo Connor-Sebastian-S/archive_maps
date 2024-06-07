@@ -303,7 +303,7 @@ pointsData.forEach(point => {
                     html: iconHtml,
                     iconSize: [50, 50],
                     iconAnchor: [25, 25],
-                    popupAnchor: [0, -25],
+                    //popupAnchor: [0, -25],
                     className: 'custom-div-icon'
                 }),
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
@@ -311,7 +311,7 @@ pointsData.forEach(point => {
                 var mapBounds = map.getBounds();
                 var popupOffset = L.point(0, -25);
 
-                console.log(mapBounds);
+                //console.log(mapBounds);
                 
                 // Adjust the offset if the marker is near the edge of the map bounds
                 if (!mapBounds.contains(pos)) {
