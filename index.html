@@ -309,8 +309,9 @@ pointsData.forEach(point => {
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
             }).on('click', function(e) {
                 var rrosePopup = new L.Rrose({
-                    //offset: L.point(0, -25),
-                    closeButton: false
+                    offset: new L.Point(0,-10), 
+                    closeButton: false, 
+                    autoPan: false
                 }).setContent(popupContent).setLatLng(pos);
                 this.bindPopup(rrosePopup).openPopup();
             });
