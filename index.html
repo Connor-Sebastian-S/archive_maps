@@ -748,6 +748,7 @@ document.getElementById('save-map').addEventListener('click', function () {
         resetInactivityTimer();
         var startX = (event.type === 'touchstart') ? event.touches[0].clientX : event.clientX;
         var initialLeft = sliderHandle.offsetLeft;
+        console.log(layerNames)
 
         function handleMove(event) {
 
