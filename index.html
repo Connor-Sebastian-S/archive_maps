@@ -340,12 +340,12 @@ pointsData.forEach(point => {
         if (marker) {
             var rrosePopup = new L.responsivePopup({
                 //offset: L.point(0, -10),
-                //closeButton: false,
+                closeButton: false,
                 //autoPan: false
                 //autoPanPadding: L.point(10, 10) // Adjust padding as needed
             }).setContent(popupContent).setLatLng(pos);
 
-            marker.bindPopup(rrosePopup);
+            marker.bindPopup(rrosePopup); //.addTo(map).bindPopup(popup);
 
             for (var year = point.startYear; year <= point.endYear; year++) {
                 if (!pointLayers[year]) {
