@@ -195,7 +195,7 @@ if (location.protocol !== 'https:') {
         center: [56.563729541410666, -3.584791427303605],
         zoom: 15,
         layers: [],
-        setMinZoom: 6,
+        setMinZoom: 15,
         setMaxZoom: 19,
     };
 
@@ -213,7 +213,7 @@ if (location.protocol !== 'https:') {
     });
 
     map.setMaxBounds(bounds);
-    map.setMinZoom(6);
+    map.setMinZoom(15);
     map.setMaxZoom(19);
 
     // Handle the map moving event to restrict the user from panning out of bounds
