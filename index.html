@@ -311,7 +311,7 @@ pointsData.forEach(point => {
                 var rrosePopup = new L.Rrose({
                     offset: L.point(0, -25),
                     closeButton: true
-                }).setContent(popupContent).setLatLng(pos);
+                }).setContent(popupContent).setLatLng(pos).openOn(map);;
                 this.bindPopup(rrosePopup).openPopup();
                 //.openOn(map);
             });
