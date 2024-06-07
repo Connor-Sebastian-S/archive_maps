@@ -242,7 +242,11 @@ if (location.protocol !== 'https:') {
             })
             .catch(error => console.error('Error fetching the CSV file:', error));
 
+
     });
+
+    console.log(Object.keys(mainOverlayLayers));
+        console.log(Object.keys(alternativeOverlayLayers));
 
     function parsePointsCSV(csvText) {
         const options = { header: true };
@@ -289,8 +293,7 @@ if (location.protocol !== 'https:') {
 
         //return { mainOverlayLayers, alternativeOverlayLayers };
 
-        console.log(Object.keys(mainOverlayLayers));
-        console.log(Object.keys(alternativeOverlayLayers));
+        
 
 
 
