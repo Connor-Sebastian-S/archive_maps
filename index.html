@@ -710,6 +710,8 @@ document.getElementById('save-map').addEventListener('click', function () {
 
         function handleMove(event) {
 
+
+
             //sliderHandle.style.removeProperty('transition');
             //sliderLabel.style.removeProperty('transition');
 
@@ -725,6 +727,10 @@ document.getElementById('save-map').addEventListener('click', function () {
 
             var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
             sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
+
+            if (currentYear == endDate || currentYear == startDate) {
+                fetchAndParseCSV(pointsUrl, parsePointsCSV);
+            }
 
             for (var i = 0; i < layerNames.length; i++) {
                 var layerName = layerNames[i];
