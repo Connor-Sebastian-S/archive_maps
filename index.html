@@ -297,7 +297,7 @@ pointsData.forEach(point => {
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
             });
         } else if (point.type === "battle") {
-            if (point.photo) {
+            if (point.photo.length > 0) {
                 popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
             }
             marker = L.marker(pos, {
@@ -311,7 +311,7 @@ pointsData.forEach(point => {
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
             });
         } else if (point.type === "construction") {
-            if (point.photo) {
+            if (point.photo.length > 0) {
                 popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
             }
             marker = L.marker(pos, {
@@ -325,7 +325,7 @@ pointsData.forEach(point => {
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
             });
         } else if (point.type === "infrastructure") {
-            if (point.photo) {
+            if (point.photo.length > 0) {
                 popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
             }
             marker = L.marker(pos, {
@@ -339,7 +339,7 @@ pointsData.forEach(point => {
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
             });
         } else if (point.type === "natural monument") {
-            if (point.photo) {
+            if (point.photo.length > 0) {
                 popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
             }
             marker = L.marker(pos, {
