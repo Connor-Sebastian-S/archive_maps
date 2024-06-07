@@ -231,8 +231,6 @@ if (location.protocol !== 'https:') {
 
     });
 
-    var mapsUrl = './data/map_sources.csv';
-
     function parsePointsCSV(csvText) {
         const options = { header: true };
         let parsedData = Papa.parse(csvText, options);
@@ -706,7 +704,6 @@ document.getElementById('save-map').addEventListener('click', function () {
         resetInactivityTimer();
         var startX = (event.type === 'touchstart') ? event.touches[0].clientX : event.clientX;
         var initialLeft = sliderHandle.offsetLeft;
-        console.log(layerNames)
 
         function handleMove(event) {
 
@@ -722,8 +719,6 @@ document.getElementById('save-map').addEventListener('click', function () {
             var activeIndex = Math.round((numLayers - 1) * percentage);
             var activeLayerName = layerNames[activeIndex];
             var activeLayer = activeOverlayLayers[activeLayerName];
-
-            console.log(activeLayer)
 
             var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
             sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
