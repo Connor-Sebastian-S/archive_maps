@@ -310,7 +310,7 @@ pointsData.forEach(point => {
             }).on('click', function(e) {
                 var rrosePopup = new L.Rrose({
                     offset: L.point(0, -25),
-                    closeButton: false
+                    closeButton: true
                 }).setContent(popupContent).setLatLng(pos);
                 this.bindPopup(rrosePopup).openPopup();
             });
