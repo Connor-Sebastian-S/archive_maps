@@ -209,7 +209,8 @@ if (location.protocol !== 'https:') {
         zoomControl: false, // hide zoom buttons
         zoomSnap: 0.1,
         zoomDelta: 0.1,
-        bounceAtZoomLimits: false
+        bounceAtZoomLimits: false,
+        maxBoundsViscosity: 1.0
     });
 
     map.setMaxBounds(bounds);
