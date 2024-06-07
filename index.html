@@ -303,7 +303,7 @@ pointsData.forEach(point => {
                     html: iconHtml,
                     iconSize: [50, 50],
                     iconAnchor: [25, 25],
-                    //popupAnchor: [0, -25],
+                    popupAnchor: [0, -25],
                     className: 'custom-div-icon'
                 }),
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
@@ -314,7 +314,7 @@ pointsData.forEach(point => {
                     autoPan: true,
                     autoPanPadding: L.point(10, 10) // Adjust padding as needed
                 }).setContent(popupContent).setLatLng(pos);
-                this.bindPopup(rrosePopup).openPopup();
+                bindPopup(rrosePopup).openPopup();
             });
 
             for (var year = point.startYear; year <= point.endYear; year++) {
