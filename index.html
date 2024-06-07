@@ -266,8 +266,11 @@ if (location.protocol !== 'https:') {
 
         const options = { header: true };
         let parsedData = Papa.parse(csvText, options);
+        mapData = parsedData.data;
+        console.log(mapData);
 
-        parsedData.data.forEach(row => {
+        mapData.forEach(row => {
+            console.log(row);
             const year = row['Year'];
             
             mainOverlayLayers[year] = L.tileLayer(row['Main Overlay Layer URL'], {
