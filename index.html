@@ -219,11 +219,23 @@ if (location.protocol !== 'https:') {
 
     var yearsOfInterest = [];
 
-    var fileUrl = 'https://dl.dropboxusercontent.com/scl/fi/ld2b8iz9nc1tajc75glbe/points_data.csv?rlkey=notfe9hejjo3lixquvpe7kdmj&dl=0';
+    var pointsUrl = 'https://dl.dropboxusercontent.com/scl/fi/ld2b8iz9nc1tajc75glbe/points_data.csv?rlkey=notfe9hejjo3lixquvpe7kdmj&dl=0';
 
 
     document.addEventListener('DOMContentLoaded', () => {
-        fetch(fileUrl)
+        fetch(pointsUrl)
+            .then(response => response.text())
+            .then(data => {
+                parsePointsCSV(data);
+            })
+            .catch(error => console.error('Error fetching the CSV file:', error));
+
+    });
+
+    var mapsUrl = './data/map_sources.csv';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch(mapsUrl)
             .then(response => response.text())
             .then(data => {
                 parseCSV(data);
@@ -232,7 +244,7 @@ if (location.protocol !== 'https:') {
 
     });
 
-    function parseCSV(csvText) {
+    function parsePointsCSV(csvText) {
         const options = { header: true };
         let parsedData = Papa.parse(csvText, options);
         pointsData = parsedData.data; // Accessing the data property
@@ -246,6 +258,26 @@ if (location.protocol !== 'https:') {
             }
         }
     }
+
+var mainOverlayLayers = {};
+var alternativeOverlayLayers = {};
+
+function parseMapCSV(parsedData) {
+
+    parsedData.forEach(row => {
+        const year = row['Year'];
+        
+        mainOverlayLayers[year] = L.tileLayer(row['Main Overlay Layer URL'], {
+            attribution: row['Main Overlay Layer Attribution']
+        });
+
+        alternativeOverlayLayers[year] = L.tileLayer(row['Alternative Overlay Layer URL'], {
+            attribution: row['Alternative Overlay Layer Attribution']
+        });
+    });
+
+    return { mainOverlayLayers, alternativeOverlayLayers };
+}
 
  function processPointsData() {
     // Clear existing point layers
