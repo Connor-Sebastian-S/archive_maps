@@ -311,7 +311,8 @@ pointsData.forEach(point => {
                 var rrosePopup = new L.Rrose({
                     offset: new L.Point(0,-10), 
                     closeButton: false, 
-                    autoPan: false
+                    autoPan: true,
+                    autoPanPadding: L.point(10, 10) // Adjust padding as needed
                 }).setContent(popupContent).setLatLng(pos);
                 this.bindPopup(rrosePopup).openPopup();
             });
