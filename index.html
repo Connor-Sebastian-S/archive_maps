@@ -308,12 +308,32 @@ pointsData.forEach(point => {
                 }),
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
             }).on('click', function(e) {
+                var mapBounds = map.getBounds();
+                var popupOffset = L.point(0, -25);
+                
+                // Adjust the offset if the marker is near the edge of the map bounds
+                if (!mapBounds.contains(pos)) {
+                    if (pos.lat > mapBounds.getNorth()) {
+                        popupOffset = L.point(0, 25); // popup below marker
+                    } else if (pos.lat < mapBounds.getSouth()) {
+                        popupOffset = L.point(0, -75); // popup above marker
+                    }
+                    if (pos.lng > mapBounds.getEast()) {
+                        popupOffset = L.point(-50, 0); // popup to the left of marker
+                    } else if (pos.lng < mapBounds.getWest()) {
+                        popupOffset = L.point(50, 0); // popup to the right of marker
+                    }
+                }
+
                 var rrosePopup = new L.Rrose({
-                    offset: L.point(0, -25),
-                    closeButton: true
+                    offset: popupOffset,
+                    closeButton: false,
+                    autoPan: false // Ensure no auto-panning
                 }).setContent(popupContent).setLatLng(pos);
+
                 this.bindPopup(rrosePopup).openPopup();
             });
+
 
             for (var year = point.startYear; year <= point.endYear; year++) {
                 if (!pointLayers[year]) {
