@@ -259,25 +259,28 @@ if (location.protocol !== 'https:') {
         }
     }
 
-var mainOverlayLayers = {};
-var alternativeOverlayLayers = {};
+    var mainOverlayLayers = {};
+    var alternativeOverlayLayers = {};
 
-function parseMapCSV(parsedData) {
+    function parseMapCSV(csvText) {
 
-    parsedData.forEach(row => {
-        const year = row['Year'];
-        
-        mainOverlayLayers[year] = L.tileLayer(row['Main Overlay Layer URL'], {
-            attribution: row['Main Overlay Layer Attribution']
+        const options = { header: true };
+        let parsedData = Papa.parse(csvText, options);
+
+        parsedData.data.forEach(row => {
+            const year = row['Year'];
+            
+            mainOverlayLayers[year] = L.tileLayer(row['Main Overlay Layer URL'], {
+                attribution: row['Main Overlay Layer Attribution']
+            });
+
+            alternativeOverlayLayers[year] = L.tileLayer(row['Alternative Overlay Layer URL'], {
+                attribution: row['Alternative Overlay Layer Attribution']
+            });
         });
 
-        alternativeOverlayLayers[year] = L.tileLayer(row['Alternative Overlay Layer URL'], {
-            attribution: row['Alternative Overlay Layer Attribution']
-        });
-    });
-
-    return { mainOverlayLayers, alternativeOverlayLayers };
-}
+        return { mainOverlayLayers, alternativeOverlayLayers };
+    }
 
  function processPointsData() {
     // Clear existing point layers
