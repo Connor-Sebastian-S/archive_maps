@@ -962,18 +962,21 @@ document.getElementById('save-map').addEventListener('click', function () {
                 inactivityTimeout = setTimeout(function() {
 
                     //Remove all point layers and clear the pointLayers object
-                    for (var year in pointLayers) {
-                        var pointsForYear = pointLayers[year];
-                        pointsForYear.eachLayer(function(layer) {
-                            map.removeLayer(layer);
-                        });
-                        pointsForYear.clearLayers(); // Clear the LayerGroup
-                    }
-                    pointLayers = {}; // Reset the pointLayers object
-                    yearsOfInterest = [];
+                    // for (var year in pointLayers) {
+                    //     var pointsForYear = pointLayers[year];
+                    //     pointsForYear.eachLayer(function(layer) {
+                    //         map.removeLayer(layer);
+                    //     });
+                    //     pointsForYear.clearLayers(); // Clear the LayerGroup
+                    // }
+                    // pointLayers = {}; // Reset the pointLayers object
+                    // yearsOfInterest = [];
 
                     //sliderHandle.style.transition = 'left 1.8s ease-in-out';
                     //sliderLabel.style.transition = 'left 1.8s ease-in-out';
+
+                    map.closePopup();
+
 
                     map.setView(initialState.center, initialState.zoom);
 
