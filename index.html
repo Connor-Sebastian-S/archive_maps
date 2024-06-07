@@ -263,7 +263,13 @@ if (location.protocol !== 'https:') {
         //map.addLayer(activeOverlayLayers[layerName]);
     }
 
-pointsData.forEach(point => {
+ function processPointsData() {
+    // Clear existing point layers
+    pointLayers = {};
+
+    console.log(pointsData); // Debugging: Check the structure of pointsData
+
+ pointsData.forEach(point => {
     if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
         var pos = new L.LatLng(point.latitude, point.longitude);
         var popupContent = `<h3>${point.name}</h3><p>${point.description}</p>`;
