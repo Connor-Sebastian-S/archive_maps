@@ -1,5 +1,5 @@
 // Layers
-/*var mainOverlayLayers = {
+var mainOverlayLayers = {
 
     "1747": L.tileLayer('data/1747/{z}/{x}/{y}.png', {
         attribution: "Produced by x in 1747, as part of x"
@@ -41,4 +41,4 @@ var alternativeOverlayLayers = {
     "2024": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: "Alternative 2024 Map"
     })
-};*/
+};

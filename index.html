@@ -221,7 +221,6 @@ if (location.protocol !== 'https:') {
 
     var pointsUrl = 'https://dl.dropboxusercontent.com/scl/fi/ld2b8iz9nc1tajc75glbe/points_data.csv?rlkey=notfe9hejjo3lixquvpe7kdmj&dl=0';
 
-
     document.addEventListener('DOMContentLoaded', () => {
         fetch(pointsUrl)
             .then(response => response.text())
@@ -233,20 +232,6 @@ if (location.protocol !== 'https:') {
     });
 
     var mapsUrl = './data/map_sources.csv';
-
-    document.addEventListener('DOMContentLoaded', () => {
-        fetch(mapsUrl)
-            .then(response => response.text())
-            .then(data => {
-                parseMapCSV(data);
-            })
-            .catch(error => console.error('Error fetching the CSV file:', error));
-
-
-    });
-
-    console.log(Object.keys(mainOverlayLayers));
-        console.log(Object.keys(alternativeOverlayLayers));
 
     function parsePointsCSV(csvText) {
         const options = { header: true };
@@ -268,41 +253,11 @@ if (location.protocol !== 'https:') {
     var activeOverlayLayers = {};
     var alternativeActive = false;
 
-    function parseMapCSV(csvText) {
+    activeOverlayLayers = mainOverlayLayers;
 
-        const options = { header: true };
-        let parsedData = Papa.parse(csvText, options);
-        mapData = parsedData.data;
-        //console.log(mapData);
-
-        mapData.forEach(row => {
-            //console.log(row);
-            const year = row['Year'];
-            
-            mainOverlayLayers[year] = L.tileLayer(row['Main Overlay Layer URL'], {
-                attribution: row['Main Overlay Layer Attribution']
-            });
-
-            alternativeOverlayLayers[year] = L.tileLayer(row['Alternative Overlay Layer URL'], {
-                attribution: row['Alternative Overlay Layer Attribution']
-            });
-
-            //console.log(mainOverlayLayers[year])
-            //console.log(alternativeOverlayLayers[year])
-        });
-
-        //return { mainOverlayLayers, alternativeOverlayLayers };
-
-        
-
-
-
-        activeOverlayLayers = mainOverlayLayers;
-
-        for (var layerName in activeOverlayLayers) {
-            initialState.layers.push(activeOverlayLayers[layerName]);
-            //map.addLayer(activeOverlayLayers[layerName]);
-        }
+    for (var layerName in activeOverlayLayers) {
+        initialState.layers.push(activeOverlayLayers[layerName]);
+        //map.addLayer(activeOverlayLayers[layerName]);
     }
 
  function processPointsData() {
