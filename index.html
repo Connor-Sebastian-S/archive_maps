@@ -272,8 +272,7 @@ if (location.protocol !== 'https:') {
     pointsData.forEach(point => {
         if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
             var pos = new L.LatLng(point.latitude, point.longitude);
-            var popup = new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false })
-            //`<h3>${point.name}</h3><p>${point.description}</p>`;
+            var popup = `<h3>${point.name}</h3><p>${point.description}</p>`;
             var marker;
 
             if (point.type === "photo" && point.photo) {
