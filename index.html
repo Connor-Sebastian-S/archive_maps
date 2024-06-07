@@ -25,6 +25,10 @@
 
     <script src="./leaflet.rrose-src.js"></script>
 
+    <script src="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.css" />
+
+
 
 
   <style>
@@ -334,10 +338,10 @@ pointsData.forEach(point => {
         }
 
         if (marker) {
-            var rrosePopup = new L.Rrose({
-                offset: L.point(0, -10),
-                closeButton: false,
-                autoPan: false
+            var rrosePopup = new L.responsivePopup({
+                //offset: L.point(0, -10),
+                //closeButton: false,
+                //autoPan: false
                 //autoPanPadding: L.point(10, 10) // Adjust padding as needed
             }).setContent(popupContent).setLatLng(pos);
 
