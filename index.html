@@ -312,8 +312,8 @@ pointsData.forEach(point => {
                     offset: L.point(0, -25),
                     closeButton: true
                 }).setContent(popupContent).setLatLng(pos);
-                //this.bindPopup(rrosePopup).openPopup();
-                .openOn(map);
+                bindPopup(rrosePopup).openPopup();
+                //.openOn(map);
             });
 
             for (var year = point.startYear; year <= point.endYear; year++) {
