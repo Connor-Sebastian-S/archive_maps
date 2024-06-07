@@ -193,9 +193,9 @@ if (location.protocol !== 'https:') {
     // Initial state variables
     var initialState = {
         center: [56.563729541410666, -3.584791427303605],
-        zoom: 15,
+        zoom: 16,
         layers: [],
-        setMinZoom: 15,
+        setMinZoom: 16,
         setMaxZoom: 19,
     };
 
@@ -214,7 +214,7 @@ if (location.protocol !== 'https:') {
     });
 
     map.setMaxBounds(bounds);
-    map.setMinZoom(15);
+    map.setMinZoom(16);
     map.setMaxZoom(19);
 
     // Handle the map moving event to restrict the user from panning out of bounds
