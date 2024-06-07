@@ -310,6 +310,8 @@ pointsData.forEach(point => {
             }).on('click', function(e) {
                 var mapBounds = map.getBounds();
                 var popupOffset = L.point(0, -25);
+
+                console.log(mapBounds);
                 
                 // Adjust the offset if the marker is near the edge of the map bounds
                 if (!mapBounds.contains(pos)) {
