@@ -193,9 +193,9 @@ if (location.protocol !== 'https:') {
     // Initial state variables
     var initialState = {
         center: [56.563729541410666, -3.584791427303605],
-        zoom: 16,
+        zoom: 15,
         layers: [],
-        setMinZoom: 16,
+        setMinZoom: 15,
         setMaxZoom: 19,
     };
 
@@ -209,12 +209,12 @@ if (location.protocol !== 'https:') {
         zoomControl: false, // hide zoom buttons
         zoomSnap: 0.1,
         zoomDelta: 0.1,
-        bounceAtZoomLimits: false,
+        //bounceAtZoomLimits: false,
         maxBoundsViscosity: 1.0
     });
 
     map.setMaxBounds(bounds);
-    map.setMinZoom(16);
+    map.setMinZoom(15);
     map.setMaxZoom(19);
 
     // Handle the map moving event to restrict the user from panning out of bounds
