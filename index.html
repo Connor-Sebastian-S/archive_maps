@@ -23,6 +23,8 @@
 
     <script src="./papaparse.min.js"></script>
 
+    <script src="./leaflet.rrose-src.js"></script>
+
 
 
   <style>
@@ -273,8 +275,13 @@ if (location.protocol !== 'https:') {
             var popup = `<h3>${point.name}</h3><p>${point.description}</p>`;
             var marker;
 
+            var hover_bubble = new L.Rrose({ offset: new L.Point(0,-10), closeButton: true, autoPan: false })
+                  .setContent(feature.properties.name)
+                  .setLatLng(e.latlng)
+                  .openOn(map);
+
             if (point.type === "photo" && point.photo) {
-                popup += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
+                hover_bubble += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
                 marker = L.marker(pos, {
                     icon: L.divIcon({
                         html: `<img src="images/poi_photo.png" class="custom-icon">`,
@@ -284,7 +291,7 @@ if (location.protocol !== 'https:') {
                         className: 'custom-div-icon'
                     }),
                     pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
+                }).bindPopup(hover_bubble);
             } else if (point.type === "battle") {
                 marker = L.marker(pos, {
                     icon: L.divIcon({
