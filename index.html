@@ -800,6 +800,8 @@ document.getElementById('save-map').addEventListener('click', function () {
             event.preventDefault();
         });
     }
+    document.getElementsByClassName( 'leaflet-control-attribution' )[0].style.display = 'none';
+    
 
             // Remove all active overlay layers
             // for (var layerName in activeOverlayLayers) {
