@@ -851,6 +851,8 @@ document.getElementById('save-map').addEventListener('click', function () {
                     var currentYear = sliderLabel.textContent;
                     var directionForward = true; // Direction flag: true for forward, false for backward
 
+                    fetchAndParseCSV(pointsUrl, parsePointsCSV);
+
                     // Perform an action every 0.2 seconds
                     intervalId = setInterval(function() {
 
@@ -872,6 +874,7 @@ document.getElementById('save-map').addEventListener('click', function () {
                     //sliderHandle.style.removeProperty('transition');
                     //sliderLabel.style.removeProperty('transition');
                 }, 20000);
+
             }
 
     document.addEventListener('mousemove', resetInactivityTimer);
