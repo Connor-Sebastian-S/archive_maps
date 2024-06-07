@@ -282,12 +282,14 @@ if (location.protocol !== 'https:') {
             alternativeOverlayLayers[year] = L.tileLayer(row['Alternative Overlay Layer URL'], {
                 attribution: row['Alternative Overlay Layer Attribution']
             });
+
+            console.log(mainOverlayLayers[year])
+            console.log(alternativeOverlayLayers[year])
         });
 
         //return { mainOverlayLayers, alternativeOverlayLayers };
 
-        console.log(mainOverlayLayers.length)
-        console.log(alternativeOverlayLayers.length)
+
 
         activeOverlayLayers = mainOverlayLayers;
 
