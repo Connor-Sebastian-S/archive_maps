@@ -364,6 +364,7 @@ pointsData.forEach(point => {
             rrosePopup.update();
 
             marker.bindPopup(rrosePopup); //.addTo(map).bindPopup(popup);
+            rrosePopup.update();
 
             for (var year = point.startYear; year <= point.endYear; year++) {
                 if (!pointLayers[year]) {
