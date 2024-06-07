@@ -272,13 +272,9 @@ if (location.protocol !== 'https:') {
     pointsData.forEach(point => {
         if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
             var pos = new L.LatLng(point.latitude, point.longitude);
-            var popup = `<h3>${point.name}</h3><p>${point.description}</p>`;
+            var popup = new L.Rrose({ offset: new L.Point(0,-10), closeButton: false, autoPan: false })
+            //`<h3>${point.name}</h3><p>${point.description}</p>`;
             var marker;
-
-            var hover_bubble = new L.Rrose({ offset: new L.Point(0,-10), closeButton: true, autoPan: false })
-                  .setContent(feature.properties.name)
-                  .setLatLng(e.latlng)
-                  .openOn(map);
 
             if (point.type === "photo" && point.photo) {
                 hover_bubble += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
