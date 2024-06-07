@@ -195,8 +195,8 @@ if (location.protocol !== 'https:') {
         center: [56.563729541410666, -3.584791427303605],
         zoom: 15,
         layers: [],
-        setMinZoom: 15,
-        setMaxZoom: 6,
+        setMinZoom: 6,
+        setMaxZoom: 15,
     };
 
     var map = L.map('map', {
@@ -213,8 +213,8 @@ if (location.protocol !== 'https:') {
     });
 
     map.setMaxBounds(bounds);
-    map.setMinZoom(15);
-    map.setMaxZoom(6);
+    map.setMinZoom(6);
+    map.setMaxZoom(15);
 
     // Handle the map moving event to restrict the user from panning out of bounds
     // map.on('drag', function() {
