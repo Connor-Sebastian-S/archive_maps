@@ -245,9 +245,12 @@ if (location.protocol !== 'https:') {
         let parsedData = Papa.parse(csvText, options);
         pointsData = parsedData.data; // Accessing the data property
         if (pointsData.length > 0) {
-            if (point.photo) {
-                point.photo = point.photo.replace("https://www.dropbox.com", "https://dl.dropboxusercontent.com");
-            }
+            pointsData = pointsData.map(point => {
+                if (point.photo) {
+                    point.photo = point.photo.replace("https://www.dropbox.com", "https://dl.dropboxusercontent.com");
+                }
+                return point;
+            });
 
             processPointsData();
 
