@@ -210,9 +210,9 @@ if (location.protocol !== 'https:') {
     map.setMaxZoom(9);
 
     // Handle the map moving event to restrict the user from panning out of bounds
-    map.on('drag', function() {
-        map.panInsideBounds(bounds, { animate: false });
-    });
+    // map.on('drag', function() {
+    //     map.panInsideBounds(bounds, { animate: false });
+    // });
 
     var pointsData = [];
 
