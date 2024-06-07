@@ -238,7 +238,7 @@ if (location.protocol !== 'https:') {
         fetch(mapsUrl)
             .then(response => response.text())
             .then(data => {
-                parseCSV(data);
+                parseMapCSV(data);
             })
             .catch(error => console.error('Error fetching the CSV file:', error));
 
