@@ -303,22 +303,18 @@ pointsData.forEach(point => {
                     html: iconHtml,
                     iconSize: [50, 50],
                     iconAnchor: [25, 25],
-                    //popupAnchor: [0, -25],
+                    popupAnchor: [0, -25],
                     className: 'custom-div-icon'
                 }),
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
             }).on('click', function(e) {
                 var rrosePopup = new L.Rrose({
                     offset: L.point(0, -25),
-                    closeButton: false, 
-                    autoPan: false,
-                    //autoPanPadding: L.point(10, 10) // Adjust padding as needed
-                })
-                .setContent(popupContent).setLatLng(pos);
+                    closeButton: false
+                }).setContent(popupContent).setLatLng(pos);
+                .bindPopup(rrosePopup).openPopup();
                 .openOn(map);
-                bindPopup(rrosePopup).openPopup();
             });
-
 
             for (var year = point.startYear; year <= point.endYear; year++) {
                 if (!pointLayers[year]) {
