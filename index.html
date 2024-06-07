@@ -309,13 +309,15 @@ pointsData.forEach(point => {
                 pointYear: { startYear: point.startYear, endYear: point.endYear }
             }).on('click', function(e) {
                 var rrosePopup = new L.Rrose({
-                    offset: new L.Point(0,0), 
+                    offset: new L.Point(0,-10), 
                     closeButton: false, 
                     autoPan: false,
                     //autoPanPadding: L.point(10, 10) // Adjust padding as needed
                 }).setContent(popupContent).setLatLng(pos);
+                .openOn(map);
                 bindPopup(rrosePopup).openPopup();
             });
+
 
             for (var year = point.startYear; year <= point.endYear; year++) {
                 if (!pointLayers[year]) {
