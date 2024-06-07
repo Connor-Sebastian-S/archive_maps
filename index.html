@@ -23,7 +23,7 @@
 
     <script src="./papaparse.min.js"></script>
 
-    <script src="./papaparse.min.js"></script>
+    <script src="./leaflet.rrose-src.js"></script>
 
 
 
@@ -269,84 +269,66 @@ if (location.protocol !== 'https:') {
 
     console.log(pointsData); // Debugging: Check the structure of pointsData
 
-    pointsData.forEach(point => {
-        if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
-            var pos = new L.LatLng(point.latitude, point.longitude);
-            var popup = `<h3>${point.name}</h3><p>${point.description}</p>`;
-            var marker;
+ // Mapping object for icons
+const iconMapping = {
+    "photo": "poi_photo.png",
+    "battle": "poi_battle.png",
+    "construction": "poi_construction.png",
+    "infrastructure": "poi_infrastructure.png",
+    "natural monument": "poi_nature.png"
+};
 
-            if (point.type === "photo" && point.photo) {
-                popup += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_photo.png" class="custom-icon">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            } else if (point.type === "battle") {
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_battle.png" style="width: 100%; height: auto;">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            } else if (point.type === "construction") {
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_construction.png" style="width: 100%; height: auto;">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            } else if (point.type === "infrastructure") {
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_infrastructure.png" style="width: 100%; height: auto;">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            } else if (point.type === "natural monument") {
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_nature.png" style="width: 100%; height: auto;">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
+pointsData.forEach(point => {
+    if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
+        var pos = new L.LatLng(point.latitude, point.longitude);
+        var popupContent = `<h3>${point.name}</h3><p>${point.description}</p>`;
+        var marker;
+
+        // Check if point type exists in the mapping
+        if (iconMapping.hasOwnProperty(point.type)) {
+            var iconSrc = `images/${iconMapping[point.type]}`;
+            var iconHtml = `<img src="${iconSrc}" style="width: 100%; height: auto;">`;
+
+            marker = L.marker(pos, {
+                icon: L.divIcon({
+                    html: iconHtml,
+                    iconSize: [50, 50],
+                    iconAnchor: [25, 25],
+                    popupAnchor: [0, -25],
+                    className: 'custom-div-icon'
+                }),
+                pointYear: { startYear: point.startYear, endYear: point.endYear }
+            });
+
+            // Use Rrose plugin for popups
+            marker.on('click', function () {
+                var rrose = L.Rrose({
+                    offset: new L.Point(0, -10),
+                    closeButton: false,
+                    autoPan: false
+                });
+                rrose.setContent(popupContent);
+                rrose.setLatLng(pos);
+                rrose.openOn(map);
+            });
+
+            // Add marker to appropriate year layer
+            for (var year = point.startYear; year <= point.endYear; year++) {
+                if (!pointLayers[year]) {
+                    pointLayers[year] = L.layerGroup();
+                }
+                pointLayers[year].addLayer(marker);
             }
 
-            if (marker) {
-                for (var year = point.startYear; year <= point.endYear; year++) {
-                    if (!pointLayers[year]) {
-                        pointLayers[year] = L.layerGroup();
-                    }
-                    pointLayers[year].addLayer(marker);
-                }
-                if (point.type != "photo") {
-                    var year = point.startYear;
-                    yearsOfInterest.push(year);
-                }
+            // Add year of interest
+            if (point.type !== "photo") {
+                var year = point.startYear;
+                yearsOfInterest.push(year);
             }
         }
-    });
+    }
+});
+
     console.log(yearsOfInterest)
 }
 
