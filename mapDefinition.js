@@ -41,37 +41,37 @@ var mainOverlayLayers = {
 
 var alternativeOverlayLayers = {
 
-    "1747": L.tileLayer('data/basic_map/{z}/{x}/{y}.png', {
+    "1747": L.tileLayer('data/template/{z}/{x}/{y}.png', {
         attribution: "Alternative 1747 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1823": L.tileLayer('data/basic_map/{z}/{x}/{y}.png', {
+    "1823": L.tileLayer('data/template/{z}/{x}/{y}.png', {
         attribution: "Alternative 1823 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1864": L.tileLayer('data/basic_map/{z}/{x}/{y}.png', {
+    "1864": L.tileLayer('data/template/{z}/{x}/{y}.png', {
         attribution: "Alternative 1864 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1945": L.tileLayer('data/basic_map/{z}/{x}/{y}.png', {
+    "1945": L.tileLayer('data/template/{z}/{x}/{y}.png', {
         attribution: "Alternative 1945 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1965": L.tileLayer('data/basic_map/{z}/{x}/{y}.png', {
+    "1965": L.tileLayer('data/template/{z}/{x}/{y}.png', {
         attribution: "Alternative 1965 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "2024": L.tileLayer('data/basic_map/{z}/{x}/{y}.png', {
+    "2024": L.tileLayer('data/template/{z}/{x}/{y}.png', {
         attribution: "Alternative 2024 Map",
         
         maxZoom: 18,
