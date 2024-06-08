@@ -470,40 +470,6 @@ pointsData.forEach(point => {
     console.log(yearsOfInterest)
 }
 
-document.getElementById('save-map').addEventListener('click', function () {
-if (typeof leafletImage === 'undefined') {
-        console.error('leaflet-image library is not loaded.');
-        return;
-    }
-
-    // Use leaflet-image to render the map
-    leafletImage(map, function(err, canvas) {
-        if (err) {
-            console.error('Error rendering map:', err);
-            return;
-        }
-
-        // Create an image element
-        const img = document.createElement('img');
-        const dimensions = map.getSize();
-        img.width = dimensions.x;
-        img.height = dimensions.y;
-        img.src = canvas.toDataURL();
-
-        // Create a link element to download the image
-        const link = document.createElement('a');
-        link.href = img.src;
-        link.download = 'map.png';
-
-        // Append the link to the document, trigger click to download, and then remove the link
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    });
-    });
-
-
-
     // Overpass layers - our POIs
     var plaques = new L.OverPassLayer({
         query: "node(BBOX)['memorial'='blue_plaque'];out;",
