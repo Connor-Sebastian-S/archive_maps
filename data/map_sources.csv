@@ -1,7 +1,0 @@
-Year,Main Overlay Layer URL,Main Overlay Layer Attribution,Alternative Overlay Layer URL,Alternative Overlay Layer Attribution
-1747,data/1747/{z}/{x}/{y}.png,"Produced by x in 1747, as part of x",https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png,Alternative 1747 Map
-1823,data/1823/{z}/{x}/{y}.png,"Produced by x in 1823, as part of x",https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png,Alternative 1823 Map
-1864,https://api.maptiler.com/tiles/uk-osgb10k1888/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx,"Perthshire, Sheet LXII, Survey date: 1864, Publication date: 1867, produced by Ordnance Survey",https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png,Alternative 1864 Map
-1945,https://mapseries-tilesets.s3.amazonaws.com/os/25000_outline/{z}/{x}/{y}.png,"Great Britain - OS 1:25,000 (Outline), 1945-65, produced by Ordnance Survey",https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png,Alternative 1945 Map
-1965,https://api.maptiler.com/tiles/uk-osgb25k1937/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx,"NO04, Revised: 1938 - 1955, Published: 1957, produced by Ordnance Survey",https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png,Alternative 1965 Map
-2024,https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png,Map data &copy; OpenStreetMap contributors,https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png,Alternative 2024 Map

@@ -1,38 +1,38 @@
 // Layers
 var mainOverlayLayers = {
 
-    "1747": L.tileLayer('data/1747/{z}/{x}/{y}.png', {
+    "1747": L.tileLayer('data/original/1747-1752/{z}/{x}/{y}.png', {
         attribution: "Produced by x in 1747, as part of x",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1823": L.tileLayer('data/1823/{z}/{x}/{y}.png', {
+    "1843": L.tileLayer('data/original/1843-1882/{z}/{x}/{y}.png', {
         attribution: "Produced by x in 1823, as part of x",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1864": L.tileLayer('https://api.maptiler.com/tiles/uk-osgb10k1888/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx', {
+    "1888": L.tileLayer('data/original/1888-1913/{z}/{x}/{y}.png', {
         attribution: "Perthshire, Sheet LXII, Survey date: 1864, Publication date: 1867, produced by Ordnance Survey",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1945": L.tileLayer('https://mapseries-tilesets.s3.amazonaws.com/os/25000_outline/{z}/{x}/{y}.png', {       
+    "1926": L.tileLayer('data/original/1926-1935/{z}/{x}/{y}.png', {
+        attribution: "Perthshire, Sheet LXII, Survey date: 1864, Publication date: 1867, produced by Ordnance Survey",
+        
+        maxZoom: 18,
+        maxNativeZoom: 16
+    }),
+    "1937": L.tileLayer('data/original/1937-1961/{z}/{x}/{y}.png', {       
         attribution: "Great Britain - OS 1:25,000 (Outline), 1945-65, produced by Ordnance Survey",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1965": L.tileLayer('https://api.maptiler.com/tiles/uk-osgb25k1937/{z}/{x}/{y}.jpg?key=wv0AU1AXH7akvUkNUgLx', {
+    "1961": L.tileLayer('data/original/1961-2024/{z}/{x}/{y}.png', {
         attribution: "NO04, Revised: 1938 - 1955, Published: 1957, produced by Ordnance Survey",
-        
-        maxZoom: 18,
-        maxNativeZoom: 16
-    }),
-    "2024": L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: "Map data &copy; OpenStreetMap contributors",
         
         maxZoom: 18,
         maxNativeZoom: 16
@@ -41,38 +41,38 @@ var mainOverlayLayers = {
 
 var alternativeOverlayLayers = {
 
-    "1747": L.tileLayer('data/template/{z}/{x}/{y}.png', {
+    "1747": L.tileLayer('data/redrawn_maps/BASIC/{z}/{x}/{y}.png', {
         attribution: "Alternative 1747 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1823": L.tileLayer('data/template/{z}/{x}/{y}.png', {
-        attribution: "Alternative 1823 Map",
+    "1843": L.tileLayer('data/redrawn_maps/BASIC/{z}/{x}/{y}.png', {
+        attribution: "Alternative 1843 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1864": L.tileLayer('data/template/{z}/{x}/{y}.png', {
-        attribution: "Alternative 1864 Map",
+    "1888": L.tileLayer('data/redrawn_maps/BASIC/{z}/{x}/{y}.png', {
+        attribution: "Alternative 1888 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1945": L.tileLayer('data/template/{z}/{x}/{y}.png', {
-        attribution: "Alternative 1945 Map",
+    "1926": L.tileLayer('data/redrawn_maps/BASIC/{z}/{x}/{y}.png', {
+        attribution: "Alternative 1926 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "1965": L.tileLayer('data/template/{z}/{x}/{y}.png', {
-        attribution: "Alternative 1965 Map",
+    "1937": L.tileLayer('data/redrawn_maps/BASIC/{z}/{x}/{y}.png', {
+        attribution: "Alternative 1937 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
     }),
-    "2024": L.tileLayer('data/template/{z}/{x}/{y}.png', {
-        attribution: "Alternative 2024 Map",
+    "1961": L.tileLayer('data/redrawn_maps/BASIC/{z}/{x}/{y}.png', {
+        attribution: "Alternative 1961 Map",
         
         maxZoom: 18,
         maxNativeZoom: 16
