@@ -27,6 +27,8 @@
 
     <script src="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.css" />
+    <!-- Include leaflet-image library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-image/0.0.4/leaflet-image.js"></script>
 
 
 
@@ -469,19 +471,35 @@ pointsData.forEach(point => {
 }
 
 document.getElementById('save-map').addEventListener('click', function () {
-        leafletImage(map, function (err, canvas) {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            var img = document.createElement('img');
-            img.src = canvas.toDataURL();
-            var link = document.createElement('a');
-            link.href = img.src;
-            link.download = 'map-view.png';
-            link.appendChild(img);
-            link.click();
-        });
+if (typeof leafletImage === 'undefined') {
+        console.error('leaflet-image library is not loaded.');
+        return;
+    }
+
+    // Use leaflet-image to render the map
+    leafletImage(map, function(err, canvas) {
+        if (err) {
+            console.error('Error rendering map:', err);
+            return;
+        }
+
+        // Create an image element
+        const img = document.createElement('img');
+        const dimensions = map.getSize();
+        img.width = dimensions.x;
+        img.height = dimensions.y;
+        img.src = canvas.toDataURL();
+
+        // Create a link element to download the image
+        const link = document.createElement('a');
+        link.href = img.src;
+        link.download = 'map.png';
+
+        // Append the link to the document, trigger click to download, and then remove the link
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    });
     });
 
 
