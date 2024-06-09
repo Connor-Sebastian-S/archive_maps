@@ -28,7 +28,7 @@
     <script src="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.css" />
     <!-- Include leaflet-image library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-image/0.0.4/leaflet-image.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-image/0.0.4/leaflet-image.js"></script>
 
 
 
@@ -172,10 +172,6 @@
 <button id="save-map">Save Map View</button>
 
 <script>
-
-if (location.protocol !== 'https:') {
-    location.replace(`https:${location.href.substring(location.protocol.length)}`);
-}
 
     // Initialize Leaflet
 
@@ -829,9 +825,11 @@ pointsData.forEach(point => {
             var activeLayerName = layerNames[activeIndex];
             var activeLayer = activeOverlayLayers[activeLayerName];
 
+            console.log(percentage);
+
+
             var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
             sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
-
 
             for (var i = 0; i < layerNames.length; i++) {
                 var layerName = layerNames[i];
