@@ -154,6 +154,58 @@
              z-index: 1000;
          }
 
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 5000; /* Sit on top */
+
+  left: 0;
+  top: 0;
+
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (Image) */
+.modal-content {
+  margin: auto;
+  display: block;
+  width: 80%;
+  max-width: 700px;
+}
+
+/* Add Animation */
+.modal-content, .close {
+  animation-name: zoom;
+  animation-duration: 0.6s;
+}
+
+@keyframes zoom {
+  from {transform: scale(0)} 
+  to {transform: scale(1)}
+}
+
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 
   </style>
 </head>
@@ -169,11 +221,7 @@
 
 <button class="toggle-button" id="toggle-button">Switch to redrawn map</button>
 
-<button id="save-map">Save Map View</button>
-
 <script>
-
-    // Initialize Leaflet
 
     //POI attribute text
     var attr_overpass = 'POI via Overpass API';
@@ -211,6 +259,27 @@
     map.setMaxBounds(bounds);
     map.setMinZoom(15);
     map.setMaxZoom(17);
+
+    function enlargeImage(img) {
+        map.closePopup();
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+        modal.style.display = "block";
+        modalImg.src = img.src;
+        captionText.innerHTML = img.alt;
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+    }
 
     // Handle the map moving event to restrict the user from panning out of bounds
     // map.on('drag', function() {
@@ -259,8 +328,6 @@
         }
     }
 
-    //var mainOverlayLayers = {};
-    //var alternativeOverlayLayers = {};
     var activeOverlayLayers = {};
     var alternativeActive = false;
 
@@ -268,14 +335,11 @@
 
     for (var layerName in activeOverlayLayers) {
         initialState.layers.push(activeOverlayLayers[layerName]);
-        //map.addLayer(activeOverlayLayers[layerName]);
     }
 
  function processPointsData() {
     // Clear existing point layers
     pointLayers = {};
-
-    console.log(pointsData); // Debugging: Check the structure of pointsData
 
 pointsData.forEach(point => {
     if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
@@ -283,75 +347,13 @@ pointsData.forEach(point => {
         var popupContent = `<h3>${point.name}</h3><p>${point.description}</p>`;
         var marker;
 
-        if (point.type === "photo" && point.photo) {
-            popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
-            marker = L.marker(pos, {
-                icon: L.divIcon({
-                    html: `<img src="images/poi_photo.png" class="custom-icon">`,
-                    iconSize: [50, 50],
-                    iconAnchor: [25, 25],
-                    popupAnchor: [0, -25],
-                    className: 'custom-div-icon'
-                }),
-                pointYear: { startYear: point.startYear, endYear: point.endYear }
-            });
-        } else if (point.type === "battle") {
-            if (point.photo.length > 0) {
-                popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
-            }
-            marker = L.marker(pos, {
-                icon: L.divIcon({
-                    html: `<img src="images/poi_battle.png" style="width: 100%; height: auto;">`,
-                    iconSize: [50, 50],
-                    iconAnchor: [25, 25],
-                    popupAnchor: [0, -25],
-                    className: 'custom-div-icon'
-                }),
-                pointYear: { startYear: point.startYear, endYear: point.endYear }
-            });
-        } else if (point.type === "construction") {
-            if (point.photo.length > 0) {
-                popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
-            }
-            marker = L.marker(pos, {
-                icon: L.divIcon({
-                    html: `<img src="images/poi_construction.png" style="width: 100%; height: auto;">`,
-                    iconSize: [50, 50],
-                    iconAnchor: [25, 25],
-                    popupAnchor: [0, -25],
-                    className: 'custom-div-icon'
-                }),
-                pointYear: { startYear: point.startYear, endYear: point.endYear }
-            });
-        } else if (point.type === "infrastructure") {
-            if (point.photo.length > 0) {
-                popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
-            }
-            marker = L.marker(pos, {
-                icon: L.divIcon({
-                    html: `<img src="images/poi_infrastructure.png" style="width: 100%; height: auto;">`,
-                    iconSize: [50, 50],
-                    iconAnchor: [25, 25],
-                    popupAnchor: [0, -25],
-                    className: 'custom-div-icon'
-                }),
-                pointYear: { startYear: point.startYear, endYear: point.endYear }
-            });
-        } else if (point.type === "natural monument") {
-            if (point.photo.length > 0) {
-                popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
-            }
-            marker = L.marker(pos, {
-                icon: L.divIcon({
-                    html: `<img src="images/poi_nature.png" style="width: 100%; height: auto;">`,
-                    iconSize: [50, 50],
-                    iconAnchor: [25, 25],
-                    popupAnchor: [0, -25],
-                    className: 'custom-div-icon'
-                }),
-                pointYear: { startYear: point.startYear, endYear: point.endYear }
-            });
+        if (point.photo) {
+            popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto; cursor: pointer;" onclick="enlargeImage(this)">`;
         }
+
+        marker = L.marker(pos, {
+            pointYear: { startYear: point.startYear, endYear: point.endYear }
+        });
 
         if (marker) {
             var rrosePopup = new L.responsivePopup({
@@ -380,90 +382,6 @@ pointsData.forEach(point => {
     }
 });
 
-
-/*pointsData.forEach(point => {
-        if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
-            var pos = new L.LatLng(point.latitude, point.longitude);
-            var popup = `<h3>${point.name}</h3><p>${point.description}</p>`;
-            var marker;
-
-            if (point.type === "photo" && point.photo) {
-                popup += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto;">`;
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_photo.png" class="custom-icon">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            } else if (point.type === "battle") {
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_battle.png" style="width: 100%; height: auto;">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            } else if (point.type === "construction") {
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_construction.png" style="width: 100%; height: auto;">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            } else if (point.type === "infrastructure") {
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_infrastructure.png" style="width: 100%; height: auto;">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            } else if (point.type === "natural monument") {
-                marker = L.marker(pos, {
-                    icon: L.divIcon({
-                        html: `<img src="images/poi_nature.png" style="width: 100%; height: auto;">`,
-                        iconSize: [50, 50],
-                        iconAnchor: [25, 25],
-                        popupAnchor: [0, -25],
-                        className: 'custom-div-icon'
-                    }),
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
-                }).bindPopup(popup);
-            }
-
-            if (marker) {
-                for (var year = point.startYear; year <= point.endYear; year++) {
-                    if (!pointLayers[year]) {
-                        pointLayers[year] = L.layerGroup();
-                    }
-                    pointLayers[year].addLayer(marker);
-                }
-                if (point.type != "photo") {
-                    var year = point.startYear;
-                    yearsOfInterest.push(year);
-                }
-            }
-        }
-    });*/
-
-
-
-
-    console.log(yearsOfInterest)
 }
 
     // Overpass layers - our POIs
@@ -669,9 +587,6 @@ pointsData.forEach(point => {
 
     //map.addControl(new horizontalLayerControl2());
 
-
-
-
     // Track current active layer
     var currentLayerIndex = -1;
 
@@ -810,11 +725,6 @@ pointsData.forEach(point => {
 
         function handleMove(event) {
 
-
-
-            //sliderHandle.style.removeProperty('transition');
-            //sliderLabel.style.removeProperty('transition');
-
             event.preventDefault();
             var clientX = (event.type === 'touchmove') ? event.touches[0].clientX : event.clientX;
             var newX = initialLeft + (clientX - startX);
@@ -824,9 +734,6 @@ pointsData.forEach(point => {
             var activeIndex = Math.round((numLayers - 1) * percentage);
             var activeLayerName = layerNames[activeIndex];
             var activeLayer = activeOverlayLayers[activeLayerName];
-
-            console.log(percentage);
-
 
             var currentYear = Math.round(((endDate - startDate) * percentage) + startDate);
             sliderLabel.textContent = Math.round(((endDate - startDate) * percentage) + startDate);
@@ -850,10 +757,10 @@ pointsData.forEach(point => {
                     }
                 }
             }
+
             sliderHandle.style.left = newX + 'px';
             sliderLabel.style.left = newX + 'px';
             currentLayerIndex = activeIndex;
-
 
             // Handle point layers
             for (var year in pointLayers) {
@@ -907,43 +814,15 @@ pointsData.forEach(point => {
     }
     map.attributionControl.setPrefix(false);
 
-
-            // Remove all active overlay layers
-            // for (var layerName in activeOverlayLayers) {
-            //     map.removeLayer(activeOverlayLayers[layerName]);
-            // }
-
-            // Remove all point layers and clear the pointLayers object
-            // for (var year in pointLayers) {
-            //     var pointsForYear = pointLayers[year];
-            //     pointsForYear.eachLayer(function(layer) {
-            //         map.removeLayer(layer);
-            //     });
-            //     pointsForYear.clearLayers(); // Clear the LayerGroup
-            // }
-            //pointLayers = {}; // Reset the pointLayers object
-            //yearsOfInterest = [];
-
-            //var currentLayerIndex = -1;
-            //sliderHandle.style.left = initialPosition + 'px';
-            //sliderLabel.textContent = startDate;
-            //sliderLabel.style.left = initialPosition + 'px';
-            // alternativeActive = false;
-            //
-            // checkboxes = document.querySelectorAll("input[type='checkbox']");
-            // for (let i = 0; i < checkboxes.length; i++) {
-            //     if (checkboxes[i].checked == true) {
-            //         checkboxes[i].click();
-            //     }
-            // }
-            //processPointsData()
-
             // Revert to initial state after 20 seconds of inactivity
             function resetInactivityTimer() {
                 clearTimeout(inactivityTimeout);
                 clearInterval(intervalId);
 
                 inactivityTimeout = setTimeout(function() {
+
+                    var span = document.getElementsByClassName("close")[0];
+                    span.click();
 
                     //Remove all point layers and clear the pointLayers object
                     for (var year in pointLayers) {
@@ -956,11 +835,7 @@ pointsData.forEach(point => {
                     pointLayers = {}; // Reset the pointLayers object
                     yearsOfInterest = [];
 
-                    //sliderHandle.style.transition = 'left 1.8s ease-in-out';
-                    //sliderLabel.style.transition = 'left 1.8s ease-in-out';
-
                     map.closePopup();
-
 
                     map.setView(initialState.center, initialState.zoom);
 
@@ -987,8 +862,6 @@ pointsData.forEach(point => {
                             }
                         }
                     }, 200);
-                    //sliderHandle.style.removeProperty('transition');
-                    //sliderLabel.style.removeProperty('transition');
                 }, 20000);
 
             }
@@ -1000,6 +873,12 @@ pointsData.forEach(point => {
     resetInactivityTimer(); // Initialise the inactivity timer on page load
 
 </script>
+
+<div id="myModal" class="modal">
+  <span class="close">&times;</span>
+  <img class="modal-content" id="img01">
+  <div id="caption"></div>
+</div>
 
 </body>
 </html>
