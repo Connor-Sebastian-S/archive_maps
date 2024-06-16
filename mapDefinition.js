@@ -1,6 +1,11 @@
 // Layers
 var mainOverlayLayers = {
-
+    "1650": L.tileLayer('data/redrawn_maps/beginning/{z}/{x}/{y}.png', {
+        attribution: "In the beginning, there was nought but rivers and forests",
+        
+        maxZoom: 18,
+        maxNativeZoom: 16
+    }),
     "1747": L.tileLayer('data/original_maps/1747-1752/{z}/{x}/{y}.png', {
         attribution: "Roy Military Survey of Scotland, 1747-55",
         
@@ -46,7 +51,12 @@ var mainOverlayLayers = {
 };
 
 var alternativeOverlayLayers = {
-
+    "1650": L.tileLayer('data/redrawn_maps/beginning/{z}/{x}/{y}.png', {
+        attribution: "Roy Military Survey of Scotland, 1747-55",
+        
+        maxZoom: 18,
+        maxNativeZoom: 16
+    }),
     "1747": L.tileLayer('data/redrawn_maps/BASIC/{z}/{x}/{y}.png', {
         attribution: "Alternative 1747 Map",
         

@@ -154,57 +154,58 @@
              z-index: 1000;
          }
 
-.modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 5000; /* Sit on top */
+   /* The modal */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 5000; /* Sit on top */
+        top: 0;
+        left: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+        display: flex; /* Use flexbox */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+    }
 
-  left: 0;
-  top: 0;
+    /* Modal Content (Image) */
+    .modal-content {
+        display: block;
+        width: 80%;
+        max-width: 600px;
+        margin: auto; /* Center the image horizontally */
+    }
 
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-}
+    /* Add Animation */
+    .modal-content, .close {
+        animation-name: zoom;
+        animation-duration: 1.6s;
+    }
 
-/* Modal Content (Image) */
-.modal-content {
-  margin: auto;
-  display: block;
-  width: 80%;
-  max-width: 700px;
-}
+    @keyframes zoom {
+        from {transform: scale(0)}
+        to {transform: scale(1)}
+    }
 
-/* Add Animation */
-.modal-content, .close {
-  animation-name: zoom;
-  animation-duration: 0.6s;
-}
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
 
-@keyframes zoom {
-  from {transform: scale(0)} 
-  to {transform: scale(1)}
-}
-
-/* The Close Button */
-.close {
-  position: absolute;
-  top: 15px;
-  right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.close:hover,
-.close:focus {
-  color: #bbb;
-  text-decoration: none;
-  cursor: pointer;
-}
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
 
   </style>
@@ -222,6 +223,75 @@
 <button class="toggle-button" id="toggle-button">Switch to redrawn map</button>
 
 <script>
+
+    // Define custom icons for different point types
+    var defaultIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41], // size of the icon
+        iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+        popupAnchor: [1, -34], // point from which the popup should open relative to the iconAnchor
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41] // size of the shadow
+    });
+
+    var photoIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var battleIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var constructionIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var naturalIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var infrastructureIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var historicIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    });
 
     //POI attribute text
     var attr_overpass = 'POI via Overpass API';
@@ -250,7 +320,7 @@
         //dragging: false, //disable panning
         //touchZoom: false, // disable zooming
         zoomControl: false, // hide zoom buttons
-        //zoomSnap: 0.1,
+        zoomSnap: 0.1,
         zoomDelta: 0.1,
         //bounceAtZoomLimits: false,
         maxBoundsViscosity: 1.0
@@ -260,7 +330,7 @@
     map.setMinZoom(15);
     map.setMaxZoom(17);
 
-    function enlargeImage(img) {
+    function enlargeImage(img, desc) {
         map.closePopup();
         // Get the modal
         var modal = document.getElementById("myModal");
@@ -268,9 +338,10 @@
         // Get the image and insert it inside the modal - use its "alt" text as a caption
         var modalImg = document.getElementById("img01");
         var captionText = document.getElementById("caption");
-        modal.style.display = "block";
+        //modal.style.display = "block";
+        modal.style.display = "flex";
         modalImg.src = img.src;
-        captionText.innerHTML = img.alt;
+        //captionText.innerHTML = desc;
 
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
@@ -337,255 +408,80 @@
         initialState.layers.push(activeOverlayLayers[layerName]);
     }
 
- function processPointsData() {
-    // Clear existing point layers
-    pointLayers = {};
+    function processPointsData() {
+        // Clear existing point layers
+        pointLayers = {};
 
-pointsData.forEach(point => {
-    if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
-        var pos = new L.LatLng(point.latitude, point.longitude);
-        var popupContent = `<h3>${point.name}</h3><p>${point.description}</p>`;
-        var marker;
+        pointsData.forEach(point => {
+            if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
+                var pos = new L.LatLng(point.latitude, point.longitude);
+                var popupContent = `<h3>${point.name}</h3><p>${point.description}</p>`;
+                var marker;
 
-        if (point.photo) {
-            popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto; cursor: pointer;" onclick="enlargeImage(this)">`;
-        }
+                if (point.photo) {
+                    popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto; cursor: pointer;" onclick="enlargeImage(this)">`;
+                }
 
-        marker = L.marker(pos, {
-            pointYear: { startYear: point.startYear, endYear: point.endYear }
+                // Determine the appropriate icon based on the point type
+                var icon;
+                switch (point.type) {
+                    case 'photo':
+                        icon = photoIcon;
+                        break;
+                    case 'battle':
+                        icon = battleIcon;
+                        break;
+                    case 'construction':
+                        icon = constructionIcon;
+                        break;
+                    case 'natural monument':
+                        icon = naturalIcon;
+                        break;
+                    case 'infrastructure':
+                        icon = infrastructureIcon;
+                        break;
+                    case 'historic':
+                        icon = historicIcon;
+                        break;
+                    default:
+                        icon = defaultIcon;
+                        break;
+                }
+
+                // Create the marker with the appropriate icon
+                var marker = L.marker(pos, {
+                    icon: icon,
+                    pointYear: { startYear: point.startYear, endYear: point.endYear }
+                });
+
+                if (marker) {
+                    var rrosePopup = new L.responsivePopup({
+                        //offset: L.point(0, -10),
+                        closeButton: false,
+                        //autoPan: false
+                        //autoPanPadding: L.point(10, 10) // Adjust padding as needed
+                    }).setContent(popupContent).setLatLng(pos);
+                    rrosePopup.update();
+
+                    marker.bindPopup(rrosePopup); //.addTo(map).bindPopup(popup);
+                    rrosePopup.update();
+
+                    for (var year = point.startYear; year <= point.endYear; year++) {
+                        if (!pointLayers[year]) {
+                            pointLayers[year] = L.layerGroup();
+                        }
+                        pointLayers[year].addLayer(marker);
+                    }
+
+                    if (point.type != "photo") {
+                        var year = point.startYear;
+                        yearsOfInterest.push(year);
+                    }
+                }
+            }
         });
 
-        if (marker) {
-            var rrosePopup = new L.responsivePopup({
-                //offset: L.point(0, -10),
-                closeButton: false,
-                //autoPan: false
-                //autoPanPadding: L.point(10, 10) // Adjust padding as needed
-            }).setContent(popupContent).setLatLng(pos);
-            rrosePopup.update();
-
-            marker.bindPopup(rrosePopup); //.addTo(map).bindPopup(popup);
-            rrosePopup.update();
-
-            for (var year = point.startYear; year <= point.endYear; year++) {
-                if (!pointLayers[year]) {
-                    pointLayers[year] = L.layerGroup();
-                }
-                pointLayers[year].addLayer(marker);
-            }
-
-            if (point.type != "photo") {
-                var year = point.startYear;
-                yearsOfInterest.push(year);
-            }
-        }
     }
-});
-
-}
-
-    // Overpass layers - our POIs
-    var plaques = new L.OverPassLayer({
-        query: "node(BBOX)['memorial'='blue_plaque'];out;",
-        callback: function(data) {
-            for (var i = 0; i < data.elements.length; i++) {
-                var e = data.elements[i];
-                if (e.id in this.instance._ids) return;
-                this.instance._ids[e.id] = true;
-                var pos = new L.LatLng(e.lat, e.lon);
-                var popup = this.instance._poiInfo(e.tags, e.id);
-                var color = e.tags.collection_times ? 'green' : 'red';
-                var circle = L.circle(pos, 10, {
-                    color: color,
-                    fillColor: '#33F',
-                    fillOpacity: 0.5
-                }).bindPopup(popup);
-                this.instance.addLayer(circle);
-            }
-        }
-    });
-
-    var shop = new L.OverPassLayer({
-        query: "node(BBOX)['shop'];out;",
-        callback: function(data) {
-            for (var i = 0; i < data.elements.length; i++) {
-                var e = data.elements[i];
-                if (e.id in this.instance._ids) return;
-                this.instance._ids[e.id] = true;
-                var pos = new L.LatLng(e.lat, e.lon);
-                var popup = this.instance._poiInfo(e.tags, e.id);
-                var color = e.tags.collection_times ? 'green' : 'red';
-                var circle = L.circle(pos, 10, {
-                    color: color,
-                    fillColor: '#F33',
-                    fillOpacity: 0.5
-                }).bindPopup(popup);
-                this.instance.addLayer(circle);
-            }
-        }
-    });
-
-    var cafe = new L.OverPassLayer({
-        query: "node(BBOX)['amenity'='cafe'];out;",
-        callback: function(data) {
-            for (var i = 0; i < data.elements.length; i++) {
-                var e = data.elements[i];
-                if (e.id in this.instance._ids) return;
-                this.instance._ids[e.id] = true;
-                var pos = new L.LatLng(e.lat, e.lon);
-                var popup = this.instance._poiInfo(e.tags, e.id);
-                var color = e.tags.collection_times ? 'green' : 'red';
-                var circle = L.circle(pos, 10, {
-                    color: color,
-                    fillColor: '#3F3',
-                    fillOpacity: 0.5
-                }).bindPopup(popup);
-                this.instance.addLayer(circle);
-            }
-        }
-    });
-
-    var bins = new L.OverPassLayer({
-        query: "node(BBOX)['amenity'='waste_basket'];out;",
-        callback: function(data) {
-            for (var i = 0; i < data.elements.length; i++) {
-                var e = data.elements[i];
-                if (e.id in this.instance._ids) return;
-                this.instance._ids[e.id] = true;
-                var pos = new L.LatLng(e.lat, e.lon);
-                var popup = this.instance._poiInfo(e.tags, e.id);
-                var color = e.tags.collection_times ? 'green' : 'red';
-                var circle = L.circle(pos, 10, {
-                    color: color,
-                    fillColor: '#555',
-                    fillOpacity: 0.5
-                }).bindPopup(popup);
-                this.instance.addLayer(circle);
-            }
-        }
-    });
-
-    var defib = new L.OverPassLayer({
-        query: "node(BBOX)['emergency'='defibrillator'];out;",
-        callback: function(data) {
-            for (var i = 0; i < data.elements.length; i++) {
-                var e = data.elements[i];
-                if (e.id in this.instance._ids) return;
-                this.instance._ids[e.id] = true;
-                var pos = new L.LatLng(e.lat, e.lon);
-                var popup = this.instance._poiInfo(e.tags, e.id);
-                var color = e.tags.collection_times ? 'green' : 'red';
-                var circle = L.circle(pos, 10, {
-                    color: color,
-                    fillOpacity: 0.5
-                }).bindPopup(popup);
-                this.instance.addLayer(circle);
-            }
-        }
-    });
-
-    var historic = new L.OverPassLayer({
-        query: "node(BBOX)['historic'~'.*'];out;",
-        callback: function(data) {
-            for (var i = 0; i < data.elements.length; i++) {
-                var e = data.elements[i];
-                if (e.id in this.instance._ids) return;
-                this.instance._ids[e.id] = true;
-                var pos = new L.LatLng(e.lat, e.lon);
-                var popup = this.instance._poiInfo(e.tags, e.id);
-                var color = e.tags.collection_times ? 'green' : 'red';
-                var circle = L.circle(pos, 10, {
-                    color: color,
-                    fillOpacity: 0.5
-                }).bindPopup(popup);
-                this.instance.addLayer(circle);
-            }
-        }
-    });
-
-    var tourism = new L.OverPassLayer({
-        query: "node(BBOX)['tourism'];out;",
-        callback: function(data) {
-            for (var i = 0; i < data.elements.length; i++) {
-                var e = data.elements[i];
-                if (e.id in this.instance._ids) return;
-                this.instance._ids[e.id] = true;
-                var pos = new L.LatLng(e.lat, e.lon);
-                var popup = this.instance._poiInfo(e.tags, e.id);
-                var color = e.tags.collection_times ? 'green' : 'red';
-                var circle = L.circle(pos, 10, {
-                    color: color,
-                    fillColor: '#000',
-                    fillOpacity: 0.5
-                }).bindPopup(popup);
-                this.instance.addLayer(circle);
-            }
-        }
-    });
-
-    var photos = new L.OverPassLayer({
-        query: "node(BBOX)['tourism'='photo'];out;",
-        callback: function(data) {
-            for (var i = 0; i < data.elements.length; i++) {
-                var e = data.elements[i];
-                if (e.id in this.instance._ids) return;
-                this.instance._ids[e.id] = true;
-                var pos = new L.LatLng(e.lat, e.lon);
-                var popup = `<img src="images/${e.id}.jpg" alt="Photo" style="width: 100%; height: auto;">`;
-                var color = e.tags.collection_times ? 'green' : 'red';
-                var circle = L.circle(pos, 10, {
-                    color: color,
-                    fillColor: '#000',
-                    fillOpacity: 0.5
-                }).bindPopup(popup);
-                this.instance.addLayer(circle);
-            }
-        }
-    });
-
-    // And here we list of the aforementioned POI
-    var additionalOverlayLayers = {
-        "Plaques": plaques,
-        "Shops": shop,
-        "Cafes": cafe,
-        "Bins": bins,
-        "Defibrillator": defib,
-        "Historic": historic,
-        "Tourism": tourism
-        //"Photos": photoLayer
-    };
-
-    // The scrollbar for our POIs
-    var horizontalLayerControl2 = L.Control.extend({
-        options: {
-            position: 'topright'
-        },
-        onAdd: function (map) {
-            var container = L.DomUtil.create('div', 'leaflet-control-layers-horizontal');
-
-            for (var overlayName in additionalOverlayLayers) {
-                var label = L.DomUtil.create('label', '', container);
-                var input = L.DomUtil.create('input', '', label);
-                input.type = 'checkbox';
-                input.name = 'overlaylayer';
-                input.value = overlayName;
-                input.checked = map.hasLayer(additionalOverlayLayers[overlayName]);
-                input.layer = additionalOverlayLayers[overlayName];
-                input.onclick = function () {
-                    if (map.hasLayer(this.layer)) {
-                        map.removeLayer(this.layer);
-                    } else {
-                        map.addLayer(this.layer);
-                    }
-                };
-                label.appendChild(document.createTextNode(overlayName));
-            }
-
-            return container;
-        }
-    });
-
-    //map.addControl(new horizontalLayerControl2());
 
     // Track current active layer
     var currentLayerIndex = -1;
@@ -664,7 +560,6 @@ pointsData.forEach(point => {
         }
 
         function moveSliderToYear(year) {
-            
 
             var yearPosition = ((year - startDate) / diff) * sliderWidth;
             
@@ -798,6 +693,8 @@ pointsData.forEach(point => {
     sliderHandle.style.left = initialPosition + 'px';
     sliderLabel.textContent = startDate;//layerNames[0]; // Set initial label text
 
+    moveSliderToYear(startDate)
+
     sliderLabel.style.left = initialPosition + 'px';
 
     // Update sliderBarRect on window resize
@@ -875,9 +772,9 @@ pointsData.forEach(point => {
 </script>
 
 <div id="myModal" class="modal">
-  <span class="close">&times;</span>
-  <img class="modal-content" id="img01">
-  <div id="caption"></div>
+    <span class="close">&times;</span>
+    <img class="modal-content" id="img01">
+    <!-- <div id="caption"></div> -->
 </div>
 
 </body>
