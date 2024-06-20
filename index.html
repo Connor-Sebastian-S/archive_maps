@@ -154,59 +154,96 @@
              z-index: 1000;
          }
 
-   /* The modal */
-    .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 5000; /* Sit on top */
-        top: 0;
-        left: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
-        display: flex; /* Use flexbox */
-        justify-content: center; /* Center horizontally */
-        align-items: center; /* Center vertically */
-    }
+/* The modal */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 5000; /* Sit on top */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    flex-direction: column;
+}
 
-    /* Modal Content (Image) */
-    .modal-content {
-        display: block;
-        width: 80%;
-        max-width: 600px;
-        margin: auto; /* Center the image horizontally */
-    }
+/* Modal Content (Image) */
+.modal-content {
+    display: block;
+    width: 80%;
+    max-width: 600px;
+    max-height: 50vh; /* Limit height to 80% of viewport height */
+    margin: auto; /* Center the image horizontally */
+    object-fit: contain;
+}
 
-    /* Add Animation */
-    .modal-content, .close {
-        animation-name: zoom;
-        animation-duration: 1.6s;
-    }
+/* Modal Content (QR code) */
+.img-qr {
+    display: block;
+    width: 80%;
+    max-width: 200px;
+    max-height: 20vh; /* Limit height to 80% of viewport height */
+    margin: auto; /* Center the image horizontally */
+    object-fit: contain;
+}
 
-    @keyframes zoom {
-        from {transform: scale(0)}
-        to {transform: scale(1)}
-    }
+/* Add Animation */
+.modal-content, .close {
+    animation-name: zoom;
+    animation-duration: 1.6s;
+}
 
-    /* The Close Button */
-    .close {
-        position: absolute;
-        top: 15px;
-        right: 35px;
-        color: #f1f1f1;
-        font-size: 40px;
-        font-weight: bold;
-        transition: 0.3s;
-    }
+.img-qr, .close {
+    animation-name: zoom;
+    animation-duration: 1.6s;
+}
 
-    .close:hover,
-    .close:focus {
-        color: #bbb;
-        text-decoration: none;
-        cursor: pointer;
-    }
+@keyframes zoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+}
 
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#caption {
+    color: #f1f1f1;
+    text-align: center;
+    padding: 10px 20px;
+    max-height: 20%; /* Ensure caption height is limited */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#scan {
+    color: #f1f1f1;
+    text-align: center;
+    padding: 10px 20px;
+    max-height: 20%; /* Ensure scan height is limited */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
   </style>
 </head>
@@ -301,9 +338,11 @@
         attribution: [attr_osm, attr_overpass].join(', ')
     });
 
-    var southWest = L.latLng(56.554596, -3.614255),
+    //var southWest = L.latLng(56.554596, -3.614255),
+    var southWest = L.latLng(56.5560324, -3.6201320),
     northEast = L.latLng(56.569676, -3.571052),
     bounds = L.latLngBounds(southWest, northEast);
+    //56.5560324,-3.6201320
 
     // Initial state variables
     var initialState = {
@@ -323,14 +362,16 @@
         zoomSnap: 0.1,
         zoomDelta: 0.1,
         //bounceAtZoomLimits: false,
-        maxBoundsViscosity: 1.0
+        //maxBoundsViscosity: 1.0
     });
 
     map.setMaxBounds(bounds);
     map.setMinZoom(15);
     map.setMaxZoom(17);
 
-    function enlargeImage(img, desc) {
+    var currentIndex = 0;
+
+    function enlargeImage(img, qr) {
         map.closePopup();
         // Get the modal
         var modal = document.getElementById("myModal");
@@ -338,10 +379,25 @@
         // Get the image and insert it inside the modal - use its "alt" text as a caption
         var modalImg = document.getElementById("img01");
         var captionText = document.getElementById("caption");
+
+        var imgQR = document.getElementById("qr");
+        var scanMe = document.getElementById("scan");
+
         //modal.style.display = "block";
         modal.style.display = "flex";
         modalImg.src = img.src;
-        //captionText.innerHTML = desc;
+        
+        captionText.innerHTML = img.alt;
+
+        if (qr) {
+            imgQR.src = qr;
+            scanMe.innerHTML = "Scan me with your phone to visit this location!";
+        }
+
+        if (!qr) {
+            imgQR.style.display = "none";
+        }
+        
 
         // Get the <span> element that closes the modal
         var span = document.getElementsByClassName("close")[0];
@@ -388,6 +444,9 @@
                 if (point.photo) {
                     point.photo = point.photo.replace("https://www.dropbox.com", "https://dl.dropboxusercontent.com");
                 }
+                if (point.qr) {
+                    point.qr = point.qr.replace("https://www.dropbox.com", "https://dl.dropboxusercontent.com");
+                }
                 return point;
             });
 
@@ -418,7 +477,11 @@
                 var popupContent = `<h3>${point.name}</h3><p>${point.description}</p>`;
                 var marker;
 
-                if (point.photo) {
+                if (point.photo && point.qr) {
+                    popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto; cursor: pointer;" onclick="enlargeImage(this, '${point.qr}')">`;
+                }
+
+                if (point.photo && point.qr.length == 0) {
                     popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto; cursor: pointer;" onclick="enlargeImage(this)">`;
                 }
 
@@ -540,6 +603,7 @@
     var startDate = 1650;
     var endDate = 2024;
     var diff = endDate - startDate;
+    //ZmBQR94N.uWP3rn
 
     function getDate(date) {
             var year_button = document.createElement("button");
@@ -759,13 +823,15 @@
                             }
                         }
                     }, 200);
-                }, 20000);
+                }, 1200000);
 
             }
 
     document.addEventListener('mousemove', resetInactivityTimer);
     document.addEventListener('mousedown', resetInactivityTimer);
     document.addEventListener('touchstart', resetInactivityTimer);
+    document.addEventListener('ontouchmove', resetInactivityTimer);
+    
 
     resetInactivityTimer(); // Initialise the inactivity timer on page load
 
@@ -774,7 +840,9 @@
 <div id="myModal" class="modal">
     <span class="close">&times;</span>
     <img class="modal-content" id="img01">
-    <!-- <div id="caption"></div> -->
+    <div id="caption"></div>
+    <img class="img-qr" id="qr">
+    <div id="scan"></div>
 </div>
 
 </body>
