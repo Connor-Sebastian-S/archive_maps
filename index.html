@@ -210,20 +210,20 @@
     <button class="toggle-button" id="toggle-button">Switch to Original Map</button>
 
     <script>
-        var stylesByLayer = {
-  /* Historic */
-  O: 'https://www.openhistoricalmap.org/map-styles/main/main.json',
-  /* Railway */
-  R: 'https://www.openhistoricalmap.org/map-styles/rail/rail.json',
-  /* Japanese Scroll */
-  J: 'https://www.openhistoricalmap.org/map-styles/japanese_scroll/ohm-japanese-scroll-map.json',
-  /* Woodblock */
-  W: 'https://www.openhistoricalmap.org/map-styles/woodblock/woodblock.json',
-};
+    var stylesByLayer = {
+      /* Historic */
+      O: 'https://www.openhistoricalmap.org/map-styles/main/main.json',
+      /* Railway */
+      R: 'https://www.openhistoricalmap.org/map-styles/rail/rail.json',
+      /* Japanese Scroll */
+      J: 'https://www.openhistoricalmap.org/map-styles/japanese_scroll/ohm-japanese-scroll-map.json',
+      /* Woodblock */
+      W: 'https://dl.dropboxusercontent.com/scl/fi/egd6im2jh48di7ryn9s1q/woodblock.json?rlkey=12v4zfk536wmqvztzuvsyqq0o&dl=0',
+    };
 
 
     let params = new URLSearchParams(location.hash.substring(1));
-    let stylistic = stylesByLayer[params.get('layer') || ''] || stylesByLayer.W;
+    let stylistic = stylesByLayer[params.get('layer') || ''] || stylesByLayer.O;
 
     // Define custom icons for different point types
     var defaultIcon = L.icon({
