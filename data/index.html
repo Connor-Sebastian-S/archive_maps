@@ -533,7 +533,7 @@
                 });
 
                 if (marker) {
-                    var currentViewCenter = map.getCenter();
+                    var currentViewCenter = MAP.getCenter();
                     var rrosePopup = new L.responsivePopup({
                         //offset: L.point(0, -10),
                         closeButton: false,
@@ -801,7 +801,6 @@
             // Revert to initial state after 20 seconds of inactivity
             function resetInactivityTimer() {
                 clearTimeout(inactivityTimeout);
-                clearInterval(intervalId);
 
                 inactivityTimeout = setTimeout(function() {
 

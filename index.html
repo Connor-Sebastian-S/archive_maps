@@ -30,6 +30,29 @@
     <script src="mapstyle.js"></script>
 
     <script src="./maps.js"></script>
+
+    <script src="https://unpkg.com/maplibre-gl@%5E2.4/dist/maplibre-gl.js" type="text/javascript"></script>
+  
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@%5E2.4/dist/maplibre-gl.css">
+
+  <script src="./pointsOfInterest.js"></script>
+
+    <script src=" https://unpkg.com/leaflet-image@latest/leaflet-image.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+
+    <script src="./papaparse.min.js"></script>
+
+    <script src="./leaflet.rrose-src.js"></script>
+
+    <script src="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.css" />
+    <!-- Include leaflet-image library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-image/0.0.4/leaflet-image.js"></script>
+
+    <script src="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.rtl.css" />
 </head>
 <body>
 
@@ -48,6 +71,7 @@
 
     .leaflet-ohm-timeslider-modal.leaflet-ohm-timeslider-datepicker .leaflet-ohm-timeslider-modal-panel {
         display: None;
+        z-index: 2000;
     }
     .leaflet-ohm-timeslider-rangeinputs {
         display: None;
@@ -75,6 +99,7 @@
     }*/
     .leaflet-ohm-timeslider{
         width: 98vw;
+        z-index: 1000;
     }
 
     .toggle-button {
@@ -89,11 +114,186 @@
           border-radius: 5px;
       }
 
+      /* The modal */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 5000; /* Sit on top */
+        top: 0;
+        left: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+        display: flex; /* Use flexbox */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+        flex-direction: column;
+    }
+
+    /* Modal Content (Image) */
+    .modal-content {
+        display: block;
+        width: 80%;
+        max-width: 600px;
+        max-height: 50vh; /* Limit height to 80% of viewport height */
+        margin: auto; /* Center the image horizontally */
+        object-fit: contain;
+    }
+
+    /* Modal Content (QR code) */
+    .img-qr {
+        display: block;
+        width: 80%;
+        max-width: 200px;
+        max-height: 20vh; /* Limit height to 80% of viewport height */
+        margin: auto; /* Center the image horizontally */
+        object-fit: contain;
+    }
+
+    /* Add Animation */
+    .modal-content, .close {
+        animation-name: zoom;
+        animation-duration: 1.6s;
+    }
+
+    .img-qr, .close {
+        animation-name: zoom;
+        animation-duration: 1.6s;
+    }
+
+    @keyframes zoom {
+        from {transform: scale(0)}
+        to {transform: scale(1)}
+    }
+
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #caption {
+        color: #f1f1f1;
+        text-align: center;
+        padding: 10px 20px;
+        max-height: 20%; /* Ensure caption height is limited */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #scan {
+        color: #f1f1f1;
+        text-align: center;
+        padding: 10px 20px;
+        max-height: 20%; /* Ensure scan height is limited */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     </style>
 
-    <button class="toggle-button" id="toggle-button">Switch to redrawn map</button>
+    <button class="toggle-button" id="toggle-button">Switch to Original Map</button>
 
     <script>
+        var stylesByLayer = {
+  /* Historic */
+  O: 'https://www.openhistoricalmap.org/map-styles/main/main.json',
+  /* Railway */
+  R: 'https://www.openhistoricalmap.org/map-styles/rail/rail.json',
+  /* Japanese Scroll */
+  J: 'https://www.openhistoricalmap.org/map-styles/japanese_scroll/ohm-japanese-scroll-map.json',
+  /* Woodblock */
+  W: 'https://www.openhistoricalmap.org/map-styles/woodblock/woodblock.json',
+};
+
+
+    let params = new URLSearchParams(location.hash.substring(1));
+    let stylistic = stylesByLayer[params.get('layer') || ''] || stylesByLayer.W;
+
+    // Define custom icons for different point types
+    var defaultIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41], // size of the icon
+        iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
+        popupAnchor: [1, -34], // point from which the popup should open relative to the iconAnchor
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41] // size of the shadow
+    });
+
+    var photoIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var battleIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var constructionIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var naturalIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var infrastructureIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    var historicIcon = L.icon({
+        iconUrl: './images/flag.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowUrl: './images/marker-shadow.png',
+        shadowSize: [41, 41]
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    });
+
     const START_ZOOM = 15.0;
     const START_CENTER = [56.563729541410666, -3.584791427303605];
 
@@ -116,7 +316,7 @@
             layers: []
         };
 
-        MAP = L.map('map', {
+        MAP = new L.map('map', {
             zoomControl: false, // hide zoom buttons
             zoomSnap: 0.1,
             zoomDelta: 0.1,
@@ -132,7 +332,7 @@
 
         OHMLAYER = new L.MapboxGL({
             attribution: "<a href='http://wiki.openstreetmap.org/wiki/OHM'>OHM</a>",
-            style: OHM_MAP_STYLE,
+            style: stylistic,
             accessToken: "no-token",
         });
         OHMLAYER.addTo(MAP);
@@ -148,23 +348,195 @@
                 dateChange(date);
             },
             onRangeChange: function (range) {},
-            onReady: function () {},
+            onReady: function () {document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent = "1860";  },
+            autoplayIsRunning: function () {},
+            autoplayPause: function () {},
+            autoplayStart: function () {},
         };
 
         TIMESLIDER = new L.Control.OHMTimeSlider(tsoptions).addTo(MAP);
-
-        var element = document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]');
-        element.textContent = '1860'; 
-        //element.style.fontSize = "20px";
-        //element.style.height = "20px";
 
         originalLayer = OHMLAYER;
 
         document.getElementById('toggle-button').addEventListener('click', function() {
             toggleMap();
         });
-
     });
+
+    function enlargeImage(img, qr) {
+        MAP.closePopup();
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the image and insert it inside the modal - use its "alt" text as a caption
+        var modalImg = document.getElementById("img01");
+        var captionText = document.getElementById("caption");
+
+        var imgQR = document.getElementById("qr");
+        var scanMe = document.getElementById("scan");
+
+        modal.style.display = "flex";
+        modalImg.src = img.src;
+        
+        captionText.innerHTML = img.alt;
+
+        if (qr) {
+            imgQR.src = qr;
+            scanMe.innerHTML = "Scan me with your phone to visit this location!";
+        }
+
+        if (!qr) {
+            imgQR.style.display = "none";
+        }
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+
+        modal.onclick = function() { 
+            modal.style.display = "none";
+        }
+    }
+
+    // Handle the map moving event to restrict the user from panning out of bounds
+    // map.on('drag', function() {
+    //     map.panInsideBounds(bounds, { animate: false });
+    // });
+
+    var pointsData = [];
+
+    // Process the points data
+    var pointLayers = {};
+
+    var yearsOfInterest = [];
+
+    var pointsUrl = 'https://dl.dropboxusercontent.com/scl/fi/ld2b8iz9nc1tajc75glbe/points_data.csv?rlkey=notfe9hejjo3lixquvpe7kdmj&dl=0';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetchAndParseCSV(pointsUrl, parsePointsCSV);
+    });
+
+    function fetchAndParseCSV(url, callback) {
+        fetch(url)
+            .then(response => response.text())
+            .then(data => {
+                callback(data);
+            })
+            .catch(error => console.error('Error fetching the CSV file:', error));
+    }
+
+    function parsePointsCSV(csvText) {
+        const options = { header: true };
+        let parsedData = Papa.parse(csvText, options);
+        pointsData = parsedData.data; // Accessing the data property
+        if (pointsData.length > 0) {
+            pointsData = pointsData.map(point => {
+                if (point.photo) {
+                    point.photo = point.photo.replace("https://www.dropbox.com", "https://dl.dropboxusercontent.com");
+                }
+                if (point.qr) {
+                    point.qr = point.qr.replace("https://www.dropbox.com", "https://dl.dropboxusercontent.com");
+                }
+                return point;
+            });
+
+            console.debug(pointsData.length);
+
+            processPointsData();
+        }
+    }
+
+    function processPointsData() {
+        // Clear existing point layers
+        pointLayers = {};
+
+        pointsData.forEach(point => {
+            if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
+                var pos = new L.LatLng(point.latitude, point.longitude);
+                var popupContent = `<h3>${point.name}</h3><p>${point.description}</p>`;
+                var marker;
+
+                if (point.photo && point.qr) {
+                    var img = new Image();
+                    img.src = point.photo;
+                    if (!img.complete || img.naturalWidth === 0) {
+                        popupContent += `<img src="${img.src}" alt="${point.name}" style="width: 100%; cursor: pointer;" onclick="enlargeImage(this, '${point.qr}')">`;
+                    }
+                }
+
+                if (point.photo && point.qr.length == 0) {
+                    var img = new Image();
+                    img.src = point.photo;
+                    if (!img.complete || img.naturalWidth === 0) {
+                        popupContent += `<img src="${img.src}" alt="${point.name}" style="width: 100%; cursor: pointer;" onclick="enlargeImage(this)">`;
+                    }
+                }
+
+                // Determine the appropriate icon based on the point type
+                var icon;
+                switch (point.type) {
+                    case 'photo':
+                        icon = photoIcon;
+                        break;
+                    case 'battle':
+                        icon = battleIcon;
+                        break;
+                    case 'construction':
+                        icon = constructionIcon;
+                        break;
+                    case 'natural monument':
+                        icon = naturalIcon;
+                        break;
+                    case 'infrastructure':
+                        icon = infrastructureIcon;
+                        break;
+                    case 'historic':
+                        icon = historicIcon;
+                        break;
+                    default:
+                        icon = defaultIcon;
+                        break;
+                }
+
+                // Create the marker with the appropriate icon
+                var marker = L.marker(pos, {
+                    icon: icon,
+                    pointYear: { startYear: point.startYear, endYear: point.endYear }
+                });
+
+                if (marker) {
+                    var currentViewCenter = MAP.getCenter();
+                    var rrosePopup = new L.responsivePopup({
+                        //offset: L.point(0, -60),
+                        closeButton: false,
+                        //autoPan: true,
+                        //autoPanPadding: L.point(10, 10), // Adjust padding as needed
+                    }).setContent(popupContent).setLatLng(pos);
+                    
+
+                    marker.bindPopup(rrosePopup);//.addTo(map).bindPopup(rrosePopup);
+
+
+                    for (var year = point.startYear; year <= point.endYear; year++) {
+                        if (!pointLayers[year]) {
+                            pointLayers[year] = L.layerGroup();
+                        }
+                        pointLayers[year].addLayer(marker);
+                    }
+
+                    if (point.type != "photo") {
+                        var year = point.startYear;
+                        yearsOfInterest.push(year);
+                    }   
+                }
+                    rrosePopup.update();
+            }
+        });
+    }
 
     function dateChange(date) {
         const YEAR = parseInt(date.substring(0, date.indexOf("-")));
@@ -172,6 +544,19 @@
 
         if (!isOriginalMap) {
             updateMapLayer(YEAR);
+        }
+
+        currentYear = YEAR;
+        for (var y in pointLayers) {
+            var pointsForYear = pointLayers[y];
+            pointsForYear.eachLayer(function(layer) {
+                var pointYear = layer.options.pointYear;
+                if (currentYear >= pointYear.startYear && currentYear <= pointYear.endYear) {
+                    MAP.addLayer(layer);
+                } else {
+                    MAP.removeLayer(layer);
+                }
+            });
         }
     }
 
@@ -197,16 +582,82 @@
         const year = parseInt(document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent);
         if (isOriginalMap) {
             updateMapLayer(year);
+            document.getElementById("toggle-button").textContent = "Switch to Redrawn Map";
         } else {
             if (currentLayer) {
                 MAP.removeLayer(currentLayer);
             }
             OHMLAYER.addTo(MAP);
             currentYearLayer = null;
+            document.getElementById("toggle-button").textContent = "Switch to Original Map";
         }
         isOriginalMap = !isOriginalMap;
     }
+
+    // Disable all clickable URLs
+    var links = document.getElementsByTagName('a');
+    for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function(event) {
+            event.preventDefault();
+        });
+    }
+
+    //MAP.attributionControl.setPrefix(false);
+    var inactivityTimeout;
+
+    // Revert to initial state after 20 seconds of inactivity
+    function resetInactivityTimer() {
+        clearTimeout(inactivityTimeout);
+        if(TIMESLIDER.autoplayIsRunning()){
+            TIMESLIDER.autoplayPause();
+        }
+
+        inactivityTimeout = setTimeout(function() {
+
+            var span = document.getElementsByClassName("close")[0];
+            span.click();
+
+            //Remove all point layers and clear the pointLayers object
+            for (var year in pointLayers) {
+                var pointsForYear = pointLayers[year];
+                pointsForYear.eachLayer(function(layer) {
+                    MAP.removeLayer(layer);
+                });
+                pointsForYear.clearLayers(); // Clear the LayerGroup
+            }
+            pointLayers = {}; // Reset the pointLayers object
+            yearsOfInterest = [];
+
+            MAP.closePopup();
+
+            //MAP.setView(initialState.center, initialState.zoom);
+
+            TIMESLIDER.autoplayStart();
+
+            fetchAndParseCSV(pointsUrl, parsePointsCSV);
+
+        }, 10000);
+    }
+
+    document.addEventListener('mousemove', resetInactivityTimer);
+    document.addEventListener('mousedown', resetInactivityTimer);
+    document.addEventListener('touchstart', resetInactivityTimer);
+    document.addEventListener('ontouchmove', resetInactivityTimer);
+    
+
+    resetInactivityTimer(); // Initialise the inactivity timer on page load
+
+    document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent = "1860";  
+
     </script>
+
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="img01">
+        <div id="caption"></div>
+        <img class="img-qr" id="qr">
+        <div id="scan"></div>
+    </div>
 
 </body>
 </html>
