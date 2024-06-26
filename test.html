@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Dunkeld and Birnam History Timelapse</title>
+
+    <!-- Leaflet and Mapbox GL JS API, the the adapter for using MB within L -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.4.0/leaflet.css" rel="stylesheet" />
+
+    <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.js"></script>
+    <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v0.54.0/mapbox-gl.css" rel="stylesheet" />
+
+    <script src="https://unpkg.com/mapbox-gl-leaflet@0.0.15/leaflet-mapbox-gl.js"></script>
+
+    <!-- the timeslider control and supporting DecimalDate library -->
+    <!-- pick either the minified or full-length version -->
+    <script src="decimaldate.js"></script>
+    <script src="leaflet-ohm-timeslider.js"></script>
+    <link href="leaflet-ohm-timeslider.css" rel="stylesheet" />
+    <!--
+    <script src="decimaldate.min.js"></script>
+    <script src="leaflet-ohm-timeslider.min.js"></script>
+    <link href="leaflet-ohm-timeslider.min.css" rel="stylesheet" />
+    -->
+
+    <!-- a map style -->
+    <script src="mapstyle.js"></script>
+
+    <script src="./maps.js"></script>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+    }
+    #map {
+      background-color: #ccc;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    .leaflet-ohm-timeslider-modal.leaflet-ohm-timeslider-datepicker .leaflet-ohm-timeslider-modal-panel {
+        display: None;
+    }
+    .leaflet-ohm-timeslider-rangeinputs {
+        display: None;
+    }
+    div.leaflet-ohm-timeslider-expandcollapse{
+        display: None;
+    }
+    .leaflet-ohm-timeslider div.leaflet-ohm-timeslider-rangeinputs{
+        display: None;
+    }
+    .leaflet-ohm-timeslider div.leaflet-ohm-timeslider-playcontrols-wrap{
+        display: None;
+    }
+    .leaflet-ohm-timeslider div.leaflet-ohm-timeslider-playcontrols-wrap div.leaflet-ohm-timeslider-playcontrols-buttons{
+        display: None;
+    }
+    .leaflet-ohm-timeslider div.leaflet-ohm-timeslider-playcontrols-wrap div.leaflet-ohm-timeslider-playcontrols-settings{
+        display: None;
+    }
+    .leaflet-ohm-timeslider div.leaflet-ohm-timeslider-datereadout button{
+        display: None;
+    }
+/*    .leaflet-ohm-timeslider div.leaflet-ohm-timeslider-slider-wrap > div:last-child {
+        width: 100%;
+    }*/
+    .leaflet-ohm-timeslider{
+        width: 98vw;
+    }
+
+    .toggle-button {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          z-index: 1000;
+          background-color: white;
+          border: 1px solid #ccc;
+          padding: 10px;
+          cursor: pointer;
+          border-radius: 5px;
+      }
+
+    </style>
+
+    <button class="toggle-button" id="toggle-button">Switch to redrawn map</button>
+
+    <script>
+    const START_ZOOM = 15.0;
+    const START_CENTER = [56.563729541410666, -3.584791427303605];
+
+    var southWest = L.latLng(56.5560324, -3.6201320),
+    northEast = L.latLng(56.569676, -3.571052),
+    bounds = L.latLngBounds(southWest, northEast);
+
+    let MAP, TIMESLIDER, OHMLAYER;
+    let originalLayer = null;
+    let currentLayer = null;
+    let isOriginalMap = true;
+    let currentYearLayer = null;
+    let layerYears = Object.keys(mainOverlayLayers).map(year => parseInt(year));
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initial state variables
+        var initialState = {
+            center: [56.563729541410666, -3.584791427303605],
+            zoom: 15,
+            layers: []
+        };
+
+        MAP = L.map('map', {
+            zoomControl: false, // hide zoom buttons
+            zoomSnap: 0.1,
+            zoomDelta: 0.1,
+            layers: [],
+        })
+        .setView(START_CENTER, START_ZOOM);
+
+        MAP.setMaxBounds(bounds);
+        MAP.setMinZoom(15);
+        MAP.setMaxZoom(17);
+
+        L.control.scale().addTo(MAP);
+
+        OHMLAYER = new L.MapboxGL({
+            attribution: "<a href='http://wiki.openstreetmap.org/wiki/OHM'>OHM</a>",
+            style: OHM_MAP_STYLE,
+            accessToken: "no-token",
+        });
+        OHMLAYER.addTo(MAP);
+
+        const tsoptions = {
+            vectorLayer: OHMLAYER,
+            vectorSourceName: 'osm',
+            range: ['1850-01-01', '2020-12-31'],
+            date: '1860-06-15',
+            stepInterval: 1,
+            stepAmount: '1year',
+            onDateChange: function (date) {
+                dateChange(date);
+            },
+            onRangeChange: function (range) {},
+            onReady: function () {},
+        };
+
+        TIMESLIDER = new L.Control.OHMTimeSlider(tsoptions).addTo(MAP);
+
+        var element = document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]');
+        element.textContent = '1860'; 
+        //element.style.fontSize = "20px";
+        //element.style.height = "20px";
+
+        originalLayer = OHMLAYER;
+
+        document.getElementById('toggle-button').addEventListener('click', function() {
+            toggleMap();
+        });
+
+    });
+
+    function dateChange(date) {
+        const YEAR = parseInt(date.substring(0, date.indexOf("-")));
+        document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent = YEAR; 
+
+        if (!isOriginalMap) {
+            updateMapLayer(YEAR);
+        }
+    }
+
+    function updateMapLayer(year) {
+        let closestYear = layerYears.reduce((prev, curr) => {
+            return (Math.abs(curr - year) < Math.abs(prev - year) ? curr : prev);
+        });
+
+        if (closestYear !== currentYearLayer) {
+            if (currentLayer) {
+                MAP.removeLayer(currentLayer);
+            }
+            if (OHMLAYER) {
+                MAP.removeLayer(OHMLAYER);
+            }
+            currentLayer = mainOverlayLayers[closestYear];
+            currentLayer.addTo(MAP);
+            currentYearLayer = closestYear;
+        }
+    }
+
+    function toggleMap() {
+        const year = parseInt(document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent);
+        if (isOriginalMap) {
+            updateMapLayer(year);
+        } else {
+            if (currentLayer) {
+                MAP.removeLayer(currentLayer);
+            }
+            OHMLAYER.addTo(MAP);
+            currentYearLayer = null;
+        }
+        isOriginalMap = !isOriginalMap;
+    }
+    </script>
+
+</body>
+</html>

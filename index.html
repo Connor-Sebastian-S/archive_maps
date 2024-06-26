@@ -30,6 +30,9 @@
     <!-- Include leaflet-image library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-image/0.0.4/leaflet-image.js"></script>
 
+    <script src="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.rtl.css" />
 
 
 
@@ -482,11 +485,19 @@
                 var marker;
 
                 if (point.photo && point.qr) {
-                    popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto; cursor: pointer;" onclick="enlargeImage(this, '${point.qr}')">`;
+                    var img = new Image();
+                    img.src = point.photo;
+                    if (!img.complete || img.naturalWidth === 0) {
+                        popupContent += `<img src="${img.src}" alt="${point.name}" style="width: 100%; cursor: pointer;" onclick="enlargeImage(this, '${point.qr}')">`;
+                    }
                 }
 
                 if (point.photo && point.qr.length == 0) {
-                    popupContent += `<img src="${point.photo}" alt="${point.name}" style="width: 100%; height: auto; cursor: pointer;" onclick="enlargeImage(this)">`;
+                    var img = new Image();
+                    img.src = point.photo;
+                    if (!img.complete || img.naturalWidth === 0) {
+                        popupContent += `<img src="${img.src}" alt="${point.name}" style="width: 100%; cursor: pointer;" onclick="enlargeImage(this)">`;
+                    }
                 }
 
                 // Determine the appropriate icon based on the point type
@@ -522,16 +533,17 @@
                 });
 
                 if (marker) {
+                    var currentViewCenter = map.getCenter();
                     var rrosePopup = new L.responsivePopup({
                         //offset: L.point(0, -10),
                         closeButton: false,
-                        //autoPan: false
-                        //autoPanPadding: L.point(10, 10) // Adjust padding as needed
+                        //autoPan: true,
+                        //autoPanPadding: L.point(10, 10), // Adjust padding as needed
                     }).setContent(popupContent).setLatLng(pos);
-                    rrosePopup.update();
+                    
 
-                    marker.bindPopup(rrosePopup); //.addTo(map).bindPopup(popup);
-                    rrosePopup.update();
+                    marker.bindPopup(rrosePopup);//.addTo(map).bindPopup(rrosePopup);
+
 
                     for (var year = point.startYear; year <= point.endYear; year++) {
                         if (!pointLayers[year]) {
@@ -544,9 +556,16 @@
                         var year = point.startYear;
                         yearsOfInterest.push(year);
                     }
+
+                    
                 }
+                    rrosePopup.update();
+
             }
+
         });
+
+
 
     }
 
