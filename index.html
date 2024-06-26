@@ -210,20 +210,7 @@
     <button class="toggle-button" id="toggle-button">Switch to Original Map</button>
 
     <script>
-    var stylesByLayer = {
-      /* Historic */
-      O: 'https://www.openhistoricalmap.org/map-styles/main/main.json',
-      /* Railway */
-      R: 'https://www.openhistoricalmap.org/map-styles/rail/rail.json',
-      /* Japanese Scroll */
-      J: 'https://www.openhistoricalmap.org/map-styles/japanese_scroll/ohm-japanese-scroll-map.json',
-      /* Woodblock */
-      W: 'https://dl.dropboxusercontent.com/scl/fi/egd6im2jh48di7ryn9s1q/woodblock.json?rlkey=12v4zfk536wmqvztzuvsyqq0o&dl=0',
-    };
-
-
-    let params = new URLSearchParams(location.hash.substring(1));
-    let stylistic = stylesByLayer[params.get('layer') || ''] || stylesByLayer.O;
+   
 
     // Define custom icons for different point types
     var defaultIcon = L.icon({
@@ -289,11 +276,6 @@
         shadowSize: [41, 41]
     });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
-    });
-
     const START_ZOOM = 15.0;
     const START_CENTER = [56.563729541410666, -3.584791427303605];
 
@@ -309,6 +291,21 @@
     let layerYears = Object.keys(mainOverlayLayers).map(year => parseInt(year));
 
     document.addEventListener('DOMContentLoaded', function () {
+         var stylesByLayer = {
+      /* Historic */
+      O: 'https://www.openhistoricalmap.org/map-styles/main/main.json',
+      /* Railway */
+      R: 'https://www.openhistoricalmap.org/map-styles/rail/rail.json',
+      /* Japanese Scroll */
+      J: 'https://www.openhistoricalmap.org/map-styles/japanese_scroll/ohm-japanese-scroll-map.json',
+      /* Woodblock */
+      W: 'https://dl.dropboxusercontent.com/scl/fi/egd6im2jh48di7ryn9s1q/woodblock.json?rlkey=12v4zfk536wmqvztzuvsyqq0o&dl=0',
+    };
+
+
+    let params = new URLSearchParams(location.hash.substring(1));
+    let stylistic = stylesByLayer[params.get('layer') || ''] || stylesByLayer.O;
+    
         // Initial state variables
         var initialState = {
             center: [56.563729541410666, -3.584791427303605],
@@ -361,6 +358,11 @@
         document.getElementById('toggle-button').addEventListener('click', function() {
             toggleMap();
         });
+
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+
+        fetchAndParseCSV(pointsUrl, parsePointsCSV);
     });
 
     function enlargeImage(img, qr) {
@@ -402,11 +404,6 @@
         }
     }
 
-    // Handle the map moving event to restrict the user from panning out of bounds
-    // map.on('drag', function() {
-    //     map.panInsideBounds(bounds, { animate: false });
-    // });
-
     var pointsData = [];
 
     // Process the points data
@@ -415,10 +412,6 @@
     var yearsOfInterest = [];
 
     var pointsUrl = 'https://dl.dropboxusercontent.com/scl/fi/ld2b8iz9nc1tajc75glbe/points_data.csv?rlkey=notfe9hejjo3lixquvpe7kdmj&dl=0';
-
-    document.addEventListener('DOMContentLoaded', () => {
-        fetchAndParseCSV(pointsUrl, parsePointsCSV);
-    });
 
     function fetchAndParseCSV(url, callback) {
         fetch(url)
@@ -636,7 +629,7 @@
 
             fetchAndParseCSV(pointsUrl, parsePointsCSV);
 
-        }, 10000);
+        }, 120000);
     }
 
     document.addEventListener('mousemove', resetInactivityTimer);
