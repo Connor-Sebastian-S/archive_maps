@@ -114,85 +114,84 @@
           border-radius: 5px;
       }
 
-/* The modal */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 5000; /* Sit on top */
-    top: 0;
-    left: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
-    display: flex; /* Use flexbox */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-}
+      /* The modal */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 5000; /* Sit on top */
+        top: 0;
+        left: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.9); /* Black w/ opacity */
+        display: flex; /* Use flexbox */
+        justify-content: center; /* Center horizontally */
+        align-items: center; /* Center vertically */
+    }
 
-.modal-content {
-    display: flex; /* Use flexbox for layout */
-    justify-content: center;
-    align-items: center;
-    width: 80%;
-    max-width: 800px;
-    max-height: 80vh;
-    background-color: white;
-    padding: 20px;
-}
+    .modal-content {
+        display: flex; /* Use flexbox for layout */
+        justify-content: center;
+        align-items: center;
+        width: 80%;
+        max-width: 800px;
+        max-height: 80vh;
+        background-color: white;
+        padding: 20px;
+    }
 
-.modal-left {
-    flex: 1; /* Take up half the modal width */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+    .modal-left {
+        flex: 1; /* Take up half the modal width */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
 
-.modal-right {
-    flex: 1; /* Take up half the modal width */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    padding-left: 20px;
-}
+    .modal-right {
+        flex: 1; /* Take up half the modal width */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-left: 20px;
+    }
 
-.modal-right p {
-    color: black;
-    margin-bottom: 20px;
-}
+    .modal-right p {
+        color: black;
+        margin-bottom: 20px;
+    }
 
-.modal-right img {
-    max-width: 80%;
-    max-height: 20vh;
-    margin-top: 20px; /* Add margin to create spacing */
-}
+    .modal-right img {
+        max-width: 80%;
+        max-height: 20vh;
+    }
 
-/* Modal Content (Image) */
-.modal-img {
-    width: 100%;
-    max-width: 300px;
-    max-height: 50vh; /* Limit height to 50% of viewport height */
-    object-fit: contain;
-}
+    /* Modal Content (Image) */
+    .modal-img {
+        width: 100%;
+        max-width: 300px;
+        max-height: 50vh; /* Limit height to 50% of viewport height */
+        object-fit: contain;
+    }
 
-/* The Close Button */
-.close {
-    position: absolute;
-    top: 15px;
-    right: 35px;
-    color: #f1f1f1;
-    font-size: 40px;
-    font-weight: bold;
-    transition: 0.3s;
-}
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
 
-.close:hover,
-.close:focus {
-    color: #bbb;
-    text-decoration: none;
-    cursor: pointer;
-}
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
     </style>
 
@@ -287,7 +286,7 @@
       J: 'https://www.openhistoricalmap.org/map-styles/japanese_scroll/ohm-japanese-scroll-map.json',
       /* Woodblock */
       W: 'https://dl.dropboxusercontent.com/scl/fi/egd6im2jh48di7ryn9s1q/woodblock.json?rlkey=12v4zfk536wmqvztzuvsyqq0o&dl=0',
-      T: 'https://dl.dropboxusercontent.com/scl/fi/umo2w4lhkipy29zhr2t90/style.json?rlkey=x4xhbnmwo4hkzo1ceeneke22f&dl=0',
+      T: 'https://raw.githubusercontent.com/openmaptiles/maptiler-terrain-gl-style/master/style.json',
     };
 
 
@@ -327,15 +326,11 @@
         });
         OHMLAYER.addTo(MAP);
 
-        const startDate = '1850-01-01';
-        const endDate = '2024-12-31';
-        const initDate = '1860-06-15';
-
         const tsoptions = {
             vectorLayer: OHMLAYER,
             vectorSourceName: 'osm',
-            range: [startDate, endDate],
-            date: initDate,
+            range: ['1850-01-01', '2020-12-31'],
+            date: '1860-06-15',
             stepInterval: 1,
             stepAmount: '1year',
             onDateChange: function (date) {
@@ -642,19 +637,19 @@
 
     </script>
 
-<div id="myModal" class="modal">
-    <span class="close">&times;</span>
-    <div class="modal-content">
-        <div class="modal-left">
-            <img class="modal-img" id="img01">
-        </div>
-        <div class="modal-right">
-            <div id="caption"></div>
-            <img class="img-qr" id="qr">
-            <div id="scan"></div>
+    <div id="myModal" class="modal">
+        <span class="close">&times;</span>
+        <div class="modal-content">
+            <div class="modal-left">
+                <img class="modal-img" id="img01">
+            </div>
+            <div class="modal-right">
+                <div id="caption"></div>
+                <img class="img-qr" id="qr">
+                <div id="scan"></div>
+            </div>
         </div>
     </div>
-</div>
 
 </body>
 </html>
