@@ -104,8 +104,9 @@
 
     .toggle-button {
           position: absolute;
-          top: 10px;
-          left: 10px;
+          width: 15vw;
+          bottom: 10px;
+          left: 43vw;
           z-index: 1000;
           background-color: white;
           border: 1px solid #ccc;
@@ -210,7 +211,7 @@
     });
 
     var photoIcon = L.icon({
-        iconUrl: './images/marker-icon-2x.png',
+        iconUrl: './images/marker-icon-2x-pink.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -219,7 +220,7 @@
     });
 
     var battleIcon = L.icon({
-        iconUrl: './images/marker-icon-2x.png',
+        iconUrl: './images/marker-icon-2x-red.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -228,7 +229,7 @@
     });
 
     var constructionIcon = L.icon({
-        iconUrl: './images/marker-icon-2x.png',
+        iconUrl: './images/marker-icon-2x-green.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -266,7 +267,7 @@
     const START_ZOOM = 15.0;
     const START_CENTER = [56.563729541410666, -3.584791427303605];
 
-    var southWest = L.latLng(56.5560324, -3.6201320),
+    var southWest = L.latLng(56.550324, -3.6201320),
     northEast = L.latLng(56.569676, -3.571052),
     bounds = L.latLngBounds(southWest, northEast);
 
@@ -277,8 +278,10 @@
     let currentYearLayer = null;
     let layerYears = Object.keys(mainOverlayLayers).map(year => parseInt(year));
 
+    var d = new Date().getFullYear();
+
     const startDate = '1750-01-01';
-        const endDate = '2024-12-31';
+        const endDate = d + '-12-31';
         const initDate = '1860-06-15';
 
     document.addEventListener('DOMContentLoaded', function () {
@@ -542,6 +545,7 @@
         if (closestYear !== currentYearLayer) {
             if (currentLayer) {
                 MAP.removeLayer(currentLayer);
+
             }
             if (OHMLAYER) {
                 MAP.removeLayer(OHMLAYER);
@@ -576,7 +580,8 @@
         });
     }
 
-    //MAP.attributionControl.setPrefix(false);
+    //MAP.attributionControl.setPrefix('');
+
     var inactivityTimeout;
 
     // Revert to initial state after 20 seconds of inactivity
