@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -205,6 +205,15 @@
         align-items: center;
     }
 
+    .map-layer {
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.map-layer-visible {
+    opacity: 1;
+}
+
     </style>
 
     <button class="toggle-button" id="toggle-button">Switch to Original Map</button>
@@ -304,8 +313,13 @@
 
 
     let params = new URLSearchParams(location.hash.substring(1));
-    let stylistic = stylesByLayer[params.get('layer') || ''] || stylesByLayer.O;
-    
+    let stylistic = stylesByLayer[params.get('layer') || ''] || stylesByLayer.W;
+
+    if (!stylistic) {
+        console.error("Selected stylistic layer is not available.");
+        return;
+    }
+
         // Initial state variables
         var initialState = {
             center: [56.563729541410666, -3.584791427303605],
@@ -329,8 +343,8 @@
 
         OHMLAYER = new L.MapboxGL({
             attribution: "<a href='http://wiki.openstreetmap.org/wiki/OHM'>OHM</a>",
-            style: stylistic,
-            accessToken: "no-token",
+            style: OHM_MAP_STYLE,
+            accessToken: "no-token"
         });
         OHMLAYER.addTo(MAP);
 
@@ -348,7 +362,7 @@
             onReady: function () {document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent = "1860";  },
             autoplayIsRunning: function () {},
             autoplayPause: function () {},
-            autoplayStart: function () {},
+            autoplayStart: function () {}
         };
 
         TIMESLIDER = new L.Control.OHMTimeSlider(tsoptions).addTo(MAP);
@@ -437,7 +451,7 @@
                 return point;
             });
 
-            console.debug(pointsData.length);
+            //console.debug(pointsData.length);
 
             processPointsData();
         }
@@ -632,15 +646,15 @@
         }, 120000);
     }
 
-    document.addEventListener('mousemove', resetInactivityTimer);
-    document.addEventListener('mousedown', resetInactivityTimer);
-    document.addEventListener('touchstart', resetInactivityTimer);
-    document.addEventListener('ontouchmove', resetInactivityTimer);
+   // document.addEventListener('mousemove', resetInactivityTimer);
+   // document.addEventListener('mousedown', resetInactivityTimer);
+   // document.addEventListener('touchstart', resetInactivityTimer);
+   // document.addEventListener('ontouchmove', resetInactivityTimer);
     
 
-    resetInactivityTimer(); // Initialise the inactivity timer on page load
+   // resetInactivityTimer(); // Initialise the inactivity timer on page load
 
-    document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent = "1860";  
+  //  document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent = "1860";  
 
     </script>
 
