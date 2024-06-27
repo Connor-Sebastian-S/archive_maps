@@ -171,7 +171,7 @@
 /* Modal Content (Image) */
 .modal-img {
     width: 100%;
-    max-width: 300px;
+    max-width: 100%;
     max-height: 50vh; /* Limit height to 50% of viewport height */
     object-fit: contain;
 }
@@ -201,7 +201,7 @@
     <script>
     // Define custom icons for different point types
     var defaultIcon = L.icon({
-        iconUrl: './images/flag.png',
+        iconUrl: './images/marker-icon-2x.png',
         iconSize: [25, 41], // size of the icon
         iconAnchor: [12, 41], // point of the icon which will correspond to marker's location
         popupAnchor: [1, -34], // point from which the popup should open relative to the iconAnchor
@@ -210,7 +210,7 @@
     });
 
     var photoIcon = L.icon({
-        iconUrl: './images/flag.png',
+        iconUrl: './images/marker-icon-2x.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -219,7 +219,7 @@
     });
 
     var battleIcon = L.icon({
-        iconUrl: './images/flag.png',
+        iconUrl: './images/marker-icon-2x.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -228,7 +228,7 @@
     });
 
     var constructionIcon = L.icon({
-        iconUrl: './images/flag.png',
+        iconUrl: './images/marker-icon-2x.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -237,7 +237,7 @@
     });
 
     var naturalIcon = L.icon({
-        iconUrl: './images/flag.png',
+        iconUrl: './images/marker-icon-2x.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -246,7 +246,7 @@
     });
 
     var infrastructureIcon = L.icon({
-        iconUrl: './images/flag.png',
+        iconUrl: './images/marker-icon-2x.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -255,7 +255,7 @@
     });
 
     var historicIcon = L.icon({
-        iconUrl: './images/flag.png',
+        iconUrl: './images/marker-icon-2x.png',
         iconSize: [25, 41],
         iconAnchor: [12, 41],
         popupAnchor: [1, -34],
@@ -278,26 +278,6 @@
     let layerYears = Object.keys(mainOverlayLayers).map(year => parseInt(year));
 
     document.addEventListener('DOMContentLoaded', function () {
-         var stylesByLayer = {
-      /* Historic */
-      O: 'https://www.openhistoricalmap.org/map-styles/main/main.json',
-      /* Railway */
-      R: 'https://www.openhistoricalmap.org/map-styles/rail/rail.json',
-      /* Japanese Scroll */
-      J: 'https://www.openhistoricalmap.org/map-styles/japanese_scroll/ohm-japanese-scroll-map.json',
-      /* Woodblock */
-      W: 'https://dl.dropboxusercontent.com/scl/fi/egd6im2jh48di7ryn9s1q/woodblock.json?rlkey=12v4zfk536wmqvztzuvsyqq0o&dl=0',
-      T: 'https://dl.dropboxusercontent.com/scl/fi/umo2w4lhkipy29zhr2t90/style.json?rlkey=x4xhbnmwo4hkzo1ceeneke22f&dl=0',
-    };
-
-
-    let params = new URLSearchParams(location.hash.substring(1));
-    let stylistic = stylesByLayer[params.get('layer') || ''] || stylesByLayer.T;
-
-    if (!stylistic) {
-        console.error("Selected stylistic layer is not available.");
-        return;
-    }
 
         // Initial state variables
         var initialState = {
