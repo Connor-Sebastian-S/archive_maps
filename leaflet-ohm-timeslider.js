@@ -818,13 +818,30 @@ L.Control.OHMTimeSlider = L.Control.extend({
             this.controls.autoplaysubmit.classList.remove('leaflet-ohm-timeslider-outofsync');
         }
     },
-    autoplayStart: function () {
+    autoplayStart: function (forward) {
+        this.controls.playbutton.style.display = 'none';
+        this.controls.pausebutton.style.display = '';
+        if (this.autoplay.timer) return; // already running
+
+        if (forward == true){
+            this.autoplay.timer = setInterval(() => {
+                this.sliderForwardOneStep();
+            }, this.getStepInterval() * 1000);
+        }
+
+        if (forward == false){
+            this.autoplay.timer = setInterval(() => {
+                this.sliderBackOneStep();
+            }, this.getStepInterval() * 1000);
+        }
+    },
+    autoplayStartBackwards: function () {
         this.controls.playbutton.style.display = 'none';
         this.controls.pausebutton.style.display = '';
         if (this.autoplay.timer) return; // already running
 
         this.autoplay.timer = setInterval(() => {
-            this.sliderForwardOneStep();
+            this.sliderBackOneStep();
         }, this.getStepInterval() * 1000);
     },
     autoplayPause: function () {

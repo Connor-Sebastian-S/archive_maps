@@ -277,6 +277,10 @@
     let currentYearLayer = null;
     let layerYears = Object.keys(mainOverlayLayers).map(year => parseInt(year));
 
+    const startDate = '1750-01-01';
+        const endDate = '2024-12-31';
+        const initDate = '1860-06-15';
+
     document.addEventListener('DOMContentLoaded', function () {
 
         // Initial state variables
@@ -307,9 +311,7 @@
         });
         OHMLAYER.addTo(MAP);
 
-        const startDate = '1850-01-01';
-        const endDate = '2024-12-31';
-        const initDate = '1860-06-15';
+        
 
         const tsoptions = {
             vectorLayer: OHMLAYER,
@@ -325,7 +327,8 @@
             onReady: function () {document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent = "1860";  },
             autoplayIsRunning: function () {},
             autoplayPause: function () {},
-            autoplayStart: function () {}
+            autoplayStart: function () {},
+            autoplayStartBackwards: function () {}
         };
 
         TIMESLIDER = new L.Control.OHMTimeSlider(tsoptions).addTo(MAP);
@@ -581,6 +584,7 @@
         clearTimeout(inactivityTimeout);
         if(TIMESLIDER.autoplayIsRunning()){
             TIMESLIDER.autoplayPause();
+            fetchAndParseCSV(pointsUrl, parsePointsCSV);
         }
 
         inactivityTimeout = setTimeout(function() {
@@ -603,9 +607,14 @@
 
             //MAP.setView(initialState.center, initialState.zoom);
 
-            TIMESLIDER.autoplayStart();
+        
+            
+            TIMESLIDER.autoplayStart(true);
+            // if (TIMESLIDER.getDate(asdecimal=false) >= TIMESLIDER.getRange(asdecimal=false)[1]) {
+            //     console.debug("Reached the end");
+            //     TIMESLIDER.setDate(startDate, redraw=true)
 
-            fetchAndParseCSV(pointsUrl, parsePointsCSV);
+            // }
 
         }, 120000);
     }
