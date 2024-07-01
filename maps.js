@@ -1,7 +1,13 @@
 // Layers
 var mainOverlayLayers = {
-    "1650": L.tileLayer('data/redrawn_maps/beginning/{z}/{x}/{y}.png', {
+    "1500": L.tileLayer('data/redrawn_maps/beginning/{z}/{x}/{y}.png', {
         attribution: "In the beginning, there was nought but rivers and forests",
+        
+        maxZoom: 18,
+        maxNativeZoom: 18
+    }),
+    "1560": L.tileLayer('data/original_maps/1560-1614/{z}/{x}/{y}.png', {
+        attribution: "Timothy Pont, 'Garry, Tummel, and Upper Tay; Dunkeld to Blairgowrie - Pont 23 (front)' - 1560?-1614?",
         
         maxZoom: 18,
         maxNativeZoom: 18
