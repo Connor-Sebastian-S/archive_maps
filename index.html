@@ -378,7 +378,7 @@
 
     function truncateString(str, length) {
         if (str.length > length) {
-            return str.substring(0, length) + "...";
+            return str.substring(0, length) + "...click to learn more!";
         } else {
             return str;
         }
@@ -474,7 +474,7 @@
         pointsData.forEach(point => {
             if (point.latitude && point.longitude && point.name) { // Ensure necessary fields are present
                 var pos = new L.LatLng(point.latitude, point.longitude);
-                var popupContent = `<h3>${point.name}</h3><p>${truncateString(point.description, 100)}</p>`;
+                var popupContent = `<h3>${point.startYear} - ${point.name}</h3><p>${truncateString(point.description, 100)}</p>`;
                 var marker;
 
                 if (point.photo && point.qr) {
@@ -488,6 +488,14 @@
                 if (point.photo && point.qr.length == 0) {
                     var img = new Image();
                     img.src = point.photo;
+                    if (!img.complete || img.naturalWidth === 0) {
+                        popupContent += `<img src="${img.src}" alt="${point.name}" class=popupImage style=" cursor: pointer;" onclick="enlargeImage(this, null, \`${point.description}\`)">`;
+                    }
+                }
+
+                if (point.photo.length == 0 && point.qr.length == 0) {
+                        var img = new Image();
+                    img.src = "./images/background.png";
                     if (!img.complete || img.naturalWidth === 0) {
                         popupContent += `<img src="${img.src}" alt="${point.name}" class=popupImage style=" cursor: pointer;" onclick="enlargeImage(this, null, \`${point.description}\`)">`;
                     }
