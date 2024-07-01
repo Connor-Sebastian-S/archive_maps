@@ -97,7 +97,7 @@ a.leaflet-rrose-close-button:hover {
 /* Visual appearance */
 
 .leaflet-rrose-content-wrapper, .leaflet-rrose-tip {
-    background: white;
+    background: rgba(0, 0, 0, 0.7);
 
     box-shadow: 0 3px 10px #888;
     -moz-box-shadow: 0 3px 10px #888;
@@ -136,4 +136,5 @@ a.leaflet-rrose-close-button:hover {
 
 .leaflet-rrose-content {
     font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
+    color: white;
 }
