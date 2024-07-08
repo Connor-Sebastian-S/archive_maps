@@ -101,8 +101,9 @@
         width: 100%;
     }*/
     .leaflet-ohm-timeslider{
-        width: 98vw;
+        width: 100vw;
         z-index: 1000;
+        margin-left: 10px;
         font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
     }
 
@@ -226,6 +227,7 @@
     <button class="toggle-button" id="toggle-button">Switch to Original Map</button>
 
     <script>
+
     // Define custom icons for different point types
     var defaultIcon = L.icon({
         iconUrl: './images/marker-icon-2x.png',
@@ -688,6 +690,7 @@
    resetInactivityTimer(); // Initialise the inactivity timer on page load
 
    document.querySelector('.leaflet-ohm-timeslider-datereadout span[data-timeslider="datereadout"]').textContent = timelineInitDate;  
+   
 
     </script>
 

@@ -52,7 +52,7 @@
     cursor: pointer;
 }
 
-@media screen /*and (max-width: 767px)*/ {
+@media screen and (max-width: 767px) {
     /* wide screen, this goes to the top-left of the main box */
     .leaflet-ohm-timeslider {
         border-top-left-radius: 0;
@@ -88,7 +88,7 @@
         margin: 3px;
     }
 }
-@media screen/* and (min-width: 768px)*/ {
+@media screen and (min-width: 768px) {
     /* wide screen, this goes to the left of the main box */
     .leaflet-ohm-timeslider {
         border-top-left-radius: 0;
