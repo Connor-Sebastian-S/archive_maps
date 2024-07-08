@@ -3,6 +3,7 @@
 .leaflet-rrose {
     position: absolute;
     text-align: center;
+    z-index: 10000;
 }
 
 .leaflet-rrose-content-wrapper {

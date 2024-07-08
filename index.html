@@ -51,7 +51,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-image/0.0.4/leaflet-image.js"></script>
 
     <script src="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.js"></script>
-
+    <script src="./forceZIndex.js"></script>
     <script src="https://dl.dropboxusercontent.com/scl/fi/p6isftxdrz6rxj441ut4g/variables.js?rlkey=bw32ntu0wdta4f191m3p3vil1&dl=0"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet-responsive-popup@1.0.0/leaflet.responsive.popup.rtl.css" />
@@ -66,11 +66,25 @@
       padding: 0;
       font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
     }
+
     #map {
       background-color: #ccc;
       width: 100vw;
       height: 100vh;
     }
+
+    h1 {
+        position:relative;
+        z-index: 5;
+        font: 18px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
+        color: white;
+        background: rgba(0, 0, 0, 0.7);
+    }
+
+    .leaflet-popup-tip {
+        width: 0px;
+        height: 0px;
+      }
 
     .leaflet-ohm-timeslider-modal.leaflet-ohm-timeslider-datepicker .leaflet-ohm-timeslider-modal-panel {
         display: None;
@@ -121,7 +135,7 @@
 .modal {
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
-    z-index: 5000; /* Sit on top */
+    z-index: 10000; /* Sit on top */
     top: 0;
     left: 0;
     width: 100%; /* Full width */
@@ -233,6 +247,7 @@
           width: fit-content;
 
       }
+
     </style>
 
     <button class="toggle-button" id="toggle-button">Switch to Original Map</button>
@@ -381,6 +396,22 @@
 
         var modal = document.getElementById("myModal");
         modal.style.display = "none";
+
+        L.Control.textbox = L.Control.extend({
+            onAdd: function(MAP) {
+                
+            var text = L.DomUtil.create('div');
+            text.id = "info_text";
+            text.innerHTML = "<h1>Dunkeld and Birnam - Historical Maps</h1>"
+            return text;
+            },
+
+            onRemove: function(MAP) {
+                // Nothing to do here
+            }
+        });
+        L.control.textbox = function(opts) { return new L.Control.textbox(opts);}
+        L.control.textbox({ position: 'topleft' }).addTo(MAP);
 
         fetchAndParseCSV(pointsUrl, parsePointsCSV);
     });
@@ -539,7 +570,8 @@
                 // Create the marker with the appropriate icon
                 var marker = L.marker(pos, {
                     icon: icon,
-                    pointYear: { startYear: point.startYear, endYear: point.endYear }
+                    pointYear: { startYear: point.startYear, endYear: point.endYear },
+                    forceZIndex: 10000
                 });
 
                 if (marker) {
