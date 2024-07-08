@@ -14,6 +14,10 @@
 	left: 0;
 	top: 0;
 	font: 12px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
+	user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 	}
 .leaflet-container {
 	overflow: hidden;
@@ -405,6 +409,10 @@ svg.leaflet-image-layer.leaflet-interactive path {
 	background: #fff;
 	background: rgba(255, 255, 255, 0.7);
 	margin: 0;
+	user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 	}
 .leaflet-control-attribution,
 .leaflet-control-scale-line {
