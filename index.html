@@ -525,7 +525,7 @@
                 var marker;
 
                 if (point.photo.length == 0){
-                    point.photo = "./images/background.png";
+                    point.photo = "https://dl.dropboxusercontent.com/s/sk4pd9u3s8v2v1r/background.png?dl=0";
                 }
 
                 if (point.photo && point.qr) {
@@ -546,7 +546,7 @@
 
                 if (point.photo.length == 0 && point.qr.length == 0) {
                         var img = new Image();
-                    img.src = "./images/background.png";
+                    img.src = "https://dl.dropboxusercontent.com/s/sk4pd9u3s8v2v1r/background.png?dl=0";
                     if (!img.complete || img.naturalWidth === 0) {
                         popupContent += `<img src="${img.src}" alt="${point.name}" class=popupImage style=" cursor: pointer;" onclick="enlargeImage(this, null, \`${point.description}\`)">`;
                     }
