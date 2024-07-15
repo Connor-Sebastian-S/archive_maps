@@ -342,6 +342,8 @@
     const endDate = timelineEndYear + '-12-31';
     const initDate = timelineInitDate + '-01-01';
 
+    // http://maps.apple.com/?saddr=56.56566242729967+-3.58727060799942&daddr=56.56481+-3.58967&dirflg=w
+
     document.addEventListener('DOMContentLoaded', function () {
 
         // Initial state variables
@@ -422,7 +424,7 @@
 
     function truncateString(str, length) {
         if (str.length > length) {
-            return str.substring(0, length) + "...click to learn more!";
+            return str.substring(0, length) + "...click the image to learn more!";
         } else {
             return str;
         }
@@ -455,6 +457,7 @@
 
         if (!qr) {
             imgQR.style.display = "none";
+            scanMe.innerHTML = "";
         }
 
         // Get the <span> element that closes the modal
@@ -520,6 +523,10 @@
                 var pos = new L.LatLng(point.latitude, point.longitude);
                 var popupContent = `<h3>${point.startYear} - ${point.name}</h3><p>${truncateString(point.description, 100)}</p>`;
                 var marker;
+
+                if (point.photo.length == 0){
+                    point.photo = "./images/background.png";
+                }
 
                 if (point.photo && point.qr) {
                     var img = new Image();
