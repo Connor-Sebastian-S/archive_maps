@@ -2,6 +2,8 @@
 ## Introduction 
 This webpage is a Leaflet application that is designed to show historical maps for a region as well as OpenHistoricalMaps (OHM) for the region.
 
+https://connor-sebastian-s.github.io/archive_maps/
+
 Simply, it allows for the user to scroll through a timeline of the region, as the years change the historical map changes as well as the OHM. 
 Pins are shown on the map for any points of interest, clicking a pin wil show a popup with a abridged description of the point as well as a relevant photo.
 Clicking the photo enlarges the image, shows a full description, and also shows a QR code that - once scanned - will open the mobile photo map app and direct the user there.
