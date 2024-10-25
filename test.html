@@ -314,8 +314,9 @@
         .setView(START_CENTER, START_ZOOM);
 
         MAP.setMaxBounds(bounds);
-        MAP.setMinZoom(15);
+        //MAP.setMinZoom(15);
         MAP.setMaxZoom(17);
+        MAP.setMinZoom(5);
 
         L.control.scale().addTo(MAP);
 
