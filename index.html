@@ -323,7 +323,7 @@
     });
 
     const START_ZOOM = 18.0;
-    const START_CENTER = [56.56508068059957, -3.590080480735924];
+    const START_CENTER = [56.565384219324876, -3.5901644729469453];
 
     var southWest = southWestBounds,
     northEast = northEastBounds,
@@ -419,7 +419,7 @@
         L.control.textbox = function(opts) { return new L.Control.textbox(opts);}
         L.control.textbox({ position: 'topleft' }).addTo(MAP);
 
-        fetchAndParseCSV(pointsUrl, parsePointsCSV);
+        //fetchAndParseCSV(pointsUrl, parsePointsCSV);
     });
 
     function truncateString(str, length) {
