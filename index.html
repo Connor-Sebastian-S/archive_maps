@@ -349,7 +349,7 @@
         // Initial state variables
         var initialState = {
             center: mapCenter,
-            zoom: 15,
+            zoom: 20,
             layers: []
         };
 
@@ -362,8 +362,8 @@
         .setView(START_CENTER, START_ZOOM);
 
         MAP.setMaxBounds(bounds);
-        MAP.setMinZoom(15);
-        MAP.setMaxZoom(17);
+        MAP.setMinZoom(20);
+        MAP.setMaxZoom(20);
 
         L.control.scale().addTo(MAP);
 
