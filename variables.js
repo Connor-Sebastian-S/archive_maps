@@ -1,5 +1,5 @@
 // By default, what is the center of the map view
-var mapCenter = [56.565073501615025, -3.5897729902410345];
+var mapCenter = [56.56508068059957, -3.590080480735924];
 
 // What is the earliest date in the timeline
 var timelineStartDate = '1200';
