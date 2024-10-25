@@ -2,13 +2,13 @@
 var mapCenter = [56.56508068059957, -3.590080480735924];
 
 // What is the earliest date in the timeline
-var timelineStartDate = '1200';
+var timelineStartDate = '1640';
 
 // When the page opens, what year does it start on
-var timelineInitDate = '1860';
+var timelineInitDate = '1680';
 
 // The year that the timeline ends on
-var timelineEndYear = '2024';
+var timelineEndYear = '1800';
 
 // The maximum boundaries for the map
 var southWestBounds = L.latLng(56.550324, -3.6201320);
