@@ -25,4 +25,4 @@ var switchMessage02 = "Switch to Original Map";
 var qrCodeMessage = "Scan me with your phone to visit this location!";
 
 // How many seconds does the timeline automove feature take per year
-var timelineInterval = 0.2;
+var timelineInterval = 0.6;
