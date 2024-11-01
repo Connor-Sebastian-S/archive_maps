@@ -8,14 +8,14 @@ var timelineStartDate = '1640';
 var timelineInitDate = '1680';
 
 // The year that the timeline ends on
-var timelineEndYear = '1800';
+var timelineEndYear = '1900';
 
 // The maximum boundaries for the map
 var southWestBounds = L.latLng(56.550324, -3.6201320);
 var northEastBounds = L.latLng(56.580230488, -3.571052);
 
 // After how many seconds does the timeline move automatically
-var autoPlayTimer = 20;
+var autoPlayTimer = 10;
 
 // The text that appears on the toggle map view button
 var switchMessage01 = "Switch to Redrawn Map";
@@ -25,4 +25,4 @@ var switchMessage02 = "Switch to Original Map";
 var qrCodeMessage = "Scan me with your phone to visit this location!";
 
 // How many seconds does the timeline automove feature take per year
-var timelineInterval = 0.2;
+var timelineInterval = 0.3;
