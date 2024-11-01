@@ -15,7 +15,7 @@ var southWestBounds = L.latLng(56.550324, -3.6201320);
 var northEastBounds = L.latLng(56.580230488, -3.571052);
 
 // After how many seconds does the timeline move automatically
-var autoPlayTimer = 120;
+var autoPlayTimer = 20;
 
 // The text that appears on the toggle map view button
 var switchMessage01 = "Switch to Redrawn Map";
