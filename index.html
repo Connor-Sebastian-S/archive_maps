@@ -349,7 +349,7 @@
         // Initial state variables
         var initialState = {
             center: mapCenter,
-            zoom: 18,
+            zoom: 15,
             layers: []
         };
 
@@ -364,8 +364,8 @@
         MAP.setMaxBounds(bounds);
         MAP.setMinZoom(18);
         MAP.setMaxZoom(18);
-		MAP.dragging.disable();
-		MAP.touchZoom.disable();
+		//MAP.dragging.disable();
+		//MAP.touchZoom.disable();
 		MAP.doubleClickZoom.disable();
 		MAP.scrollWheelZoom.disable();
 		MAP.boxZoom.disable();
