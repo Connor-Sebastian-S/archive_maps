@@ -5,7 +5,7 @@ var mapCenter = [56.56508068059957, -3.590080480735924];
 var timelineStartDate = '1640';
 
 // When the page opens, what year does it start on
-var timelineInitDate = '1680';
+var timelineInitDate = '1900';
 
 // The year that the timeline ends on
 var timelineEndYear = '1900';
